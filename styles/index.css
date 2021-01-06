@@ -8,12 +8,15 @@
 
 html,
 body {
-  @apply bg-gray-50 dark:bg-gray-900;
+  @apply dark:bg-gray-darker;
 }
 
-/* Write your own custom component styles here */
-.btn-blue {
-  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+.login-input {
+  @apply p-4 shadow-lg rounded-lg w-full md:w-3/4 focus:shadow-xl focus:border-accent-1-500 hover:border-gray-300 border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 dark:hover:border-gray-500 dark:focus:border-accent-1-600 border-2 transition-all outline-none;
+}
+
+.login-btn {
+  @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 text-lg shadow-lg rounded-lg box-border transition-all;
 }
 
 /* Start purging... */

@@ -1,11 +1,34 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'media', // 'media' or 'class'
+  darkMode: 'class', // 'media' or 'class'
   theme: {
     extend: {
       colors: {
-        'accent-1': '#333',
+        "accent-1": {
+          "50": "#72a5d0",
+          "100": "#689bc6",
+          "200": "#5e91bc",
+          "300": "#5487b2",
+          "400": "#4a7da8",
+          "500": "#40739e",
+          "600": "#366994",
+          "700": "#2c5f8a",
+          "800": "#225580",
+          "900": "#184b76"
+        },
+        'accent-2': '#353B48',
+        'login-gray': '#EEEEEE',
+        'gray-darker': '#090909',
+        gray: colors.trueGray,
       },
+    },
+    fontFamily: {
+      sans: [...defaultTheme.fontFamily.sans],
+      serif: ['New York Extra Large', defaultTheme.fontFamily.serif],
+      mono: defaultTheme.fontFamily.mono
     },
   },
   variants: {
