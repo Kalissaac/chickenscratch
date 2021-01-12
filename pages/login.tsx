@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
 import Router from 'next/router'
+import { Transition } from '@headlessui/react'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
@@ -22,6 +23,7 @@ export default function LoginPage (): JSX.Element {
   }, [magic])
 
   function returnToLogin (): void {
+    setActivity(false)
     setLoginStep({ stage: 'initial', email: '' })
   }
 
@@ -79,7 +81,7 @@ export default function LoginPage (): JSX.Element {
         <title>Login to Parchment</title>
       </Head>
 
-      {loginStep.stage === 'initial' &&
+      <Transition show={loginStep.stage === 'initial'}>
         <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
 
           <div>
@@ -107,9 +109,10 @@ export default function LoginPage (): JSX.Element {
             Don't have an account?<br />One will be created when you sign in.
           </div>
 
-        </div>}
+        </div>
+      </Transition>
 
-      {loginStep.stage === 'email' &&
+      <Transition show={loginStep.stage === 'email'}>
         <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
 
           <div>
@@ -130,9 +133,10 @@ export default function LoginPage (): JSX.Element {
             Wrong account?<button className='text-accent-1-700' onClick={returnToLogin}>Sign in with another email address </button>
           </div>
 
-        </div>}
+        </div>
+      </Transition>
 
-      {loginStep.stage === 'securitykey' &&
+      <Transition show={loginStep.stage === 'securitykey'}>
         <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
 
           <div>
@@ -153,7 +157,9 @@ export default function LoginPage (): JSX.Element {
             Wrong account?<button className='text-accent-1-700' onClick={returnToLogin}>Sign in with another email address </button>
           </div>
 
-        </div>}
+        </div>
+      </Transition>
+
       <Image src='/images/loginbg.jpg' layout='fill' className='object-cover' />
     </div>
   )
