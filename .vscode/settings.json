@@ -1,0 +1,4 @@
+{
+  "standard.engine": "ts-standard",
+  "css.validate": false
+}
