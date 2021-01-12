@@ -8,11 +8,15 @@
 
 html,
 body {
-  @apply dark:bg-gray-darker;
+  @apply bg-gray-50 dark:bg-gray-darker;
+}
+
+.login-field {
+  @apply p-4 shadow-lg rounded-lg w-full bg-white border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 transition-all outline-none;
 }
 
 .login-input {
-  @apply p-4 shadow-lg rounded-lg w-full md:w-3/4 focus:shadow-xl focus:border-accent-1-500 hover:border-gray-300 border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 dark:hover:border-gray-500 dark:focus:border-accent-1-600 border-2 transition-all outline-none;
+  @apply focus:shadow-xl focus:border-accent-1-500 hover:border-gray-300 dark:hover:border-gray-500 dark:focus:border-accent-1-600;
 }
 
 .login-btn {
