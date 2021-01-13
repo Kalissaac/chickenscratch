@@ -10,7 +10,8 @@ import { Transition } from '@headlessui/react'
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
-  const [magic, setMagic] = useState<Magic>()
+  // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
+  const [magic, setMagic] = useState<Magic>(null)
 
   useEffect(() => {
     magic === null &&
