@@ -13,7 +13,7 @@ export default async function login (req: NextApiRequest, res: NextApiResponse):
         ...metadata,
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 * 2 // one week
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET ?? ''
     )
     setTokenCookie(res, token)
     res.status(200).json({ done: true })

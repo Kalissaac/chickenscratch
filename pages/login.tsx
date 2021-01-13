@@ -43,8 +43,9 @@ export default function LoginPage (): JSX.Element {
     if (withSecurityKey === 'on') {
       try {
         setLoginStep({ stage: 'securitykey', email })
-        const didToken = await magic?.webauthn.login({ username: email })
-        await authenticateWithServer(didToken)
+        const webauthn = magic?.webauthn as WebAuthnExtension
+        const didToken = await webauthn.login({ username: email })
+        await authenticateWithServer(didToken ?? '')
       } catch (error) {
         setActivity(false)
         console.log(error)
