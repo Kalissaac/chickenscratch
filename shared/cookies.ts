@@ -25,3 +25,10 @@ export function removeTokenCookie (res: NextApiResponse): void {
 
   res.setHeader('Set-Cookie', cookie)
 }
+
+export interface jwtUser {
+  issuer: string
+  email: string
+  publicAddress: string
+  exp: Number
+}

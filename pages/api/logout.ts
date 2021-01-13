@@ -1,14 +1,7 @@
 import { magic } from '@shared/magic'
-import { removeTokenCookie } from '@shared/cookies'
+import { removeTokenCookie, jwtUser } from '@shared/cookies'
 import jwt from 'jsonwebtoken'
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-interface jwtUser {
-  issuer: string
-  email: string
-  publicAddress: string
-  exp: Number
-}
 
 export default async function logout (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   try {
