@@ -11,7 +11,7 @@ const links = [
 export default function Nav (): JSX.Element {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   return (
-    <nav className='bg-white dark:bg-gray-900 flex items-center justify-between p-8 px-16 shadow-lg sticky top-0'>
+    <nav className='bg-white dark:bg-gray-900 flex items-center justify-between p-8 px-16 shadow-lg sticky top-0 z-20'>
       <div className='flex'>
         <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4'>Parchment</a></Link>
         <ul className='flex self-center ml-12 gap-6'>
