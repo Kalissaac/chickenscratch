@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import Router from 'next/router'
 import useSWR from 'swr'
 
-const fetchUser = async (url) =>
+const fetchUser = (url) =>
   fetch(url)
     .then((r) => r.json())
     .then((data) => {

@@ -11,6 +11,14 @@ body {
   @apply bg-gray-50 dark:bg-gray-darker;
 }
 
+.basis {
+  @apply rounded-lg shadow-lg hover:shadow-xl focus:border-black focus-within:border-black border-transparent border-2 transition-all;
+}
+
+.login-wrapper {
+  @apply z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 2xl:px-24 overflow-hidden flex flex-col justify-between;
+}
+
 .login-field {
   @apply p-4 shadow-lg rounded-lg w-full bg-white border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 transition-all outline-none;
 }

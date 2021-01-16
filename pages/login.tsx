@@ -48,7 +48,7 @@ export default function LoginPage (): JSX.Element {
         const didToken = await webauthn.login({ username: email })
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
-        setActivity(false)
+        returnToLogin()
         console.log(error)
       }
     } else {
@@ -60,7 +60,7 @@ export default function LoginPage (): JSX.Element {
         })
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
-        setActivity(false) // re-enable login button - user may have requested to edit their email
+        returnToLogin()
         console.log(error)
       }
     }
@@ -77,6 +77,34 @@ export default function LoginPage (): JSX.Element {
     res.status === 200 && Router.push('/home')
   }
 
+  function SecondaryStepWrapper ({ stage, secondary, prompt }: { stage: string, secondary: string, prompt: string }): JSX.Element {
+    return (
+      <Transition show={loginStep.stage === stage}>
+        <div className='login-wrapper'>
+
+          <div>
+            <button className='text-gray-600 dark:text-gray-400 font-light mb-2 flex items-center' onClick={returnToLogin}><ion-icon name='chevron-back-outline' /> Return</button>
+            <h1 className='font-serif font-bold text-4xl md:text-5xl uppercase dark:text-gray-100'>Signing in...</h1>
+            <div className='mt-4 font-thin text-xl dark:text-gray-200'>
+              {secondary}<br />
+              <span className='font-mono font-normal text-lg'>{loginStep.email}</span>
+            </div>
+          </div>
+
+          <div className='flex flex-col items-center justify-center'>
+            <Image src='/images/puff.svg' width={100} height={100} className='lg:w-40' />
+            <div className='mt-4 font-light text-gray-600 dark:text-gray-400'>{prompt}</div>
+          </div>
+
+          <div className='text-accent-2 dark:text-gray-400 text-sm font-light mt-2'>
+            Wrong account?<br /><button className='text-accent-1-700 dark:text-accent-1-200' onClick={returnToLogin}>Sign in with another email address </button>
+          </div>
+
+        </div>
+      </Transition>
+    )
+  }
+
   return (
     <div style={{ backgroundColor: '#152532' }}>
       <Head>
@@ -84,7 +112,7 @@ export default function LoginPage (): JSX.Element {
       </Head>
 
       <Transition show={loginStep.stage === 'initial'}>
-        <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
+        <div className='login-wrapper'>
 
           <div>
             <button className='text-gray-600 font-light mb-2 flex items-center' style={{ visibility: 'hidden' }}><ion-icon name='chevron-back-outline' /> Return</button>
@@ -114,53 +142,9 @@ export default function LoginPage (): JSX.Element {
         </div>
       </Transition>
 
-      <Transition show={loginStep.stage === 'email'}>
-        <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
+      <SecondaryStepWrapper stage='email' secondary='Click the link sent to' prompt='Check your email!' />
 
-          <div>
-            <button className='text-gray-600 font-light mb-2 flex items-center' onClick={returnToLogin}><ion-icon name='chevron-back-outline' /> Return</button>
-            <h1 className='font-serif font-bold text-4xl md:text-5xl uppercase dark:text-gray-100'>Signing in...</h1>
-            <div className='mt-4 font-thin text-xl dark:text-gray-200'>
-              Click the link sent to<br />
-              <span className='font-mono font-normal text-lg'>{loginStep.email}</span>
-            </div>
-          </div>
-
-          <div className='flex flex-col items-center justify-center'>
-            <Image src='/images/puff.svg' width={100} height={100} />
-            <div className='mt-4 font-light text-gray-600'>Check your email!</div>
-          </div>
-
-          <div className='text-accent-2 dark:text-gray-400 text-sm font-light mt-2'>
-            Wrong account?<button className='text-accent-1-700' onClick={returnToLogin}>Sign in with another email address </button>
-          </div>
-
-        </div>
-      </Transition>
-
-      <Transition show={loginStep.stage === 'securitykey'}>
-        <div className='z-10 relative h-screen w-screen md:w-1/2 lg:w-1/3 bg-gray-100 dark:bg-gray-900 shadow-xl p-8 lg:p-20 overflow-hidden flex flex-col justify-between'>
-
-          <div>
-            <button className='text-gray-600 font-light mb-2 flex items-center' onClick={returnToLogin}><ion-icon name='chevron-back-outline' /> Return</button>
-            <h1 className='font-serif font-bold text-4xl md:text-5xl uppercase dark:text-gray-100'>Signing in...</h1>
-            <div className='mt-4 font-thin text-xl dark:text-gray-200'>
-              Plug in your security key to sign in with<br />
-              <span className='font-mono font-normal text-lg'>{loginStep.email}</span>
-            </div>
-          </div>
-
-          <div className='flex flex-col items-center justify-center'>
-            <Image src='/images/puff.svg' width={100} height={100} />
-            <div className='mt-4 font-light text-gray-600'>Plug in your security key</div>
-          </div>
-
-          <div className='text-accent-2 dark:text-gray-400 text-sm font-light mt-2'>
-            Wrong account?<button className='text-accent-1-700' onClick={returnToLogin}>Sign in with another email address </button>
-          </div>
-
-        </div>
-      </Transition>
+      <SecondaryStepWrapper stage='securitykey' secondary='Plug in your security key to sign in with' prompt='Plug in your security key' />
 
       <Image src='/images/loginbg.jpg' layout='fill' className='object-cover' />
     </div>
