@@ -2,6 +2,8 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '@styles/index.css'
 import { ThemeProvider } from 'next-themes'
+import { ToastProvider } from 'react-toast-notifications'
+import Toast from '@components/toast'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -22,7 +24,9 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
         <script noModule src='https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.js' />
       </Head>
 
-      <Component {...pageProps} />
+      <ToastProvider autoDismiss components={{ Toast: Toast }} placement='bottom-right'>
+        <Component {...pageProps} />
+      </ToastProvider>
     </ThemeProvider>
   )
 }

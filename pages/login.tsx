@@ -6,12 +6,14 @@ import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
 import Router from 'next/router'
 import { Transition } from '@headlessui/react'
+import { useToasts } from 'react-toast-notifications'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
   // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
   const [magic, setMagic] = useState<Magic>(null)
+  const { addToast } = useToasts()
 
   useEffect(() => {
     magic === null &&
@@ -49,7 +51,11 @@ export default function LoginPage (): JSX.Element {
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
         returnToLogin()
-        console.log(error)
+        console.log({ error })
+        switch (error.code) {
+          case -32603:
+            addToast('Email not found! Are you registered?', { appearance: 'error' })
+        }
       }
     } else {
       try {
@@ -61,7 +67,8 @@ export default function LoginPage (): JSX.Element {
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
         returnToLogin()
-        console.log(error)
+        console.log({ error })
+        addToast(error.message, { appearance: 'error' })
       }
     }
   }

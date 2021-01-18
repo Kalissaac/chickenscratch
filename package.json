@@ -19,6 +19,7 @@
     "next-themes": "0.0.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-toast-notifications": "^2.4.0",
     "swr": "^0.4.0"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.14.21",
     "@types/react": "^17.0.0",
+    "@types/react-toast-notifications": "^2.4.0",
     "autoprefixer": "10.0.2",
     "postcss": "8.1.7",
     "tailwindcss": "^2.0.2",
