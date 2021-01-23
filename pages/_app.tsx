@@ -1,19 +1,34 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import '@styles/index.css'
 import { ThemeProvider } from 'next-themes'
 import { ToastProvider } from 'react-toast-notifications'
 import Toast from '@components/toast'
 import NProgress from 'nprogress'
 import '@styles/nprogress.css'
+import { useEffect } from 'react'
 
 NProgress.configure({ showSpinner: false })
-Router.onRouteChangeStart = () => { NProgress.start() }
-Router.onRouteChangeComplete = () => { NProgress.done() }
-Router.onRouteChangeError = () => { NProgress.done() }
 
 function App ({ Component, pageProps }: AppProps): JSX.Element {
+  const router = useRouter()
+
+  useEffect(() => {
+    const startLoader = (): void => { NProgress.start() }
+    const stopLoader = (): void => { NProgress.done() }
+
+    router.events.on('routeChangeStart', startLoader)
+    router.events.on('routeChangeComplete', stopLoader)
+    router.events.on('routeChangeError', stopLoader)
+
+    return () => {
+      router.events.off('routeChangeStart', startLoader)
+      router.events.off('routeChangeComplete', stopLoader)
+      router.events.off('routeChangeError', stopLoader)
+    }
+  }, [])
+
   return (
     <ThemeProvider defaultTheme='system' attribute='class'>
       <Head>

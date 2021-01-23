@@ -64,8 +64,8 @@ export default function Nav ({ user }): JSX.Element {
   )
 }
 
-function DropdownItem ({ title, onClick, className }: { title: string, onClick?: MouseEvent, className?: string}): JSX.Element {
+function DropdownItem ({ title, onClick, className }: { title: string, onClick?: HTMLAnchorElement, className?: string}): JSX.Element {
   return (
-    <a onClick={onClick} className={`px-4 py-1 cursor-pointer hover:bg-gray-200 ${className}`}>{title}</a>
+    <a className={`px-4 py-1 cursor-pointer hover:bg-gray-200`}>{title}</a>
   )
 }
