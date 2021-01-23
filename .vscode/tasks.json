@@ -7,6 +7,16 @@
 			"problemMatcher": [],
 			"label": "npm: dev",
 			"detail": "next"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build",
+			"label": "npm: build",
+			"detail": "next build"
 		}
 	]
 }

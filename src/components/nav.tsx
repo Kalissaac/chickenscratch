@@ -11,7 +11,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user }): JSX.Element {
+export default function Nav ({ user }: { user: any }): JSX.Element {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
 

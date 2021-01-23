@@ -25,7 +25,7 @@ export default function SearchBar ({ style }: { style?: Object }): JSX.Element {
       </div>
       {results && results.length > 0 &&
         <div className='absolute rounded-b-md bg-white dark:bg-gray-900 py-2 px-6 -mt-1' style={{ minWidth: '95rem' }}>
-          {results?.map(result => (
+          {results?.map((result: any) => (
             <div>{result.item}</div>
           ))}
         </div>
