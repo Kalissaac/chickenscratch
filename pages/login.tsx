@@ -56,6 +56,9 @@ export default function LoginPage (): JSX.Element {
         switch (error.code) {
           case -32603:
             addToast('Email not found! Are you registered?', { appearance: 'error' })
+            break
+          default:
+            addToast('Unkown error occured!', { appearance: 'error' })
         }
       }
     } else {
@@ -69,7 +72,10 @@ export default function LoginPage (): JSX.Element {
       } catch (error) {
         returnToLogin()
         console.log({ error })
-        addToast(error.message, { appearance: 'error' })
+        switch (error.code) {
+          default:
+            addToast('Unkown error occured!', { appearance: 'error' })
+        }
       }
     }
   }
