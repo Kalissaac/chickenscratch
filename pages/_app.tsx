@@ -1,9 +1,12 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import Router from 'next/router'
 import '@styles/index.css'
 import { ThemeProvider } from 'next-themes'
 import { ToastProvider } from 'react-toast-notifications'
 import Toast from '@components/toast'
+import NProgress from 'nprogress'
+import '@styles/nprogress.css'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -13,6 +16,10 @@ declare global {
     }
   }
 }
+NProgress.configure({ showSpinner: false })
+Router.onRouteChangeStart = () => { NProgress.start() }
+Router.onRouteChangeComplete = () => { NProgress.done() }
+Router.onRouteChangeError = () => { NProgress.done() }
 
 function App ({ Component, pageProps }: AppProps): JSX.Element {
   return (

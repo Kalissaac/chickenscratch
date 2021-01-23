@@ -1,5 +1,6 @@
 import Card from '@components/card'
 import Footer from '@components/footer'
+import InitialLoader from '@components/loader'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
@@ -14,10 +15,13 @@ function Header ({ title, id }: { title: string, id: string }): JSX.Element {
 
 export default function HomePage (): JSX.Element {
   const user = useUser('/login')
+  if (!user) {
+    return <InitialLoader />
+  }
 
   return (
     <>
-      <Nav />
+      <Nav user={user} />
 
       {user !== null &&
         <div className='p-20 pt-5'>
