@@ -11,8 +11,12 @@ body {
   @apply bg-gray-50 dark:bg-gray-darker;
 }
 
+* > * {
+  @apply transition-all;
+}
+
 .basis {
-  @apply rounded-lg shadow-lg hover:shadow-xl focus:border-black focus-within:border-black border-transparent border-2 transition-all;
+  @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2 transition-all;
 }
 
 .login-wrapper {
@@ -29,6 +33,10 @@ body {
 
 .login-btn {
   @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 text-lg shadow-lg rounded-lg box-border transition-all;
+}
+
+.public-DraftEditorPlaceholder-root {
+  background-color: inherit !important;
 }
 
 /* Start purging... */

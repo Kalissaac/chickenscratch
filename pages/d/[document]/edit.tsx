@@ -13,8 +13,8 @@ export default function DocumentEditPage (): JSX.Element {
     <>
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <Titlebar setSidebarOpen={setSidebarOpen} />
-      <div className='p-32 px-56'>
-        <Dante className='bg-transparent' />
+      <div className='p-32 px-56 min-h-screen'>
+        <Dante className='bg-transparent min-h-full' />
       </div>
     </>
   )

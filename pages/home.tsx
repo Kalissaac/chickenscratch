@@ -20,11 +20,10 @@ export default function HomePage (): JSX.Element {
       <Nav />
 
       {user !== null &&
-        <div className='p-20'>
+        <div className='p-20 pt-5'>
           <div className='flex mb-12 gap-4'>
             <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 uppercase'><ion-icon name='add-outline' /> New Document</button>
             <SearchBar />
-            {/* <button className='bg-accent-1-500 flex justify-center items-center rounded-md w-12 text-gray-50'><ion-icon name='add-outline' /></button> */}
           </div>
 
           <div className='flex items-center mb-4'>
