@@ -8,14 +8,6 @@ import Toast from '@components/toast'
 import NProgress from 'nprogress'
 import '@styles/nprogress.css'
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      'ion-icon': { name: string }
-    }
-  }
-}
 NProgress.configure({ showSpinner: false })
 Router.onRouteChangeStart = () => { NProgress.start() }
 Router.onRouteChangeComplete = () => { NProgress.done() }
@@ -26,9 +18,7 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
     <ThemeProvider defaultTheme='system' attribute='class'>
       <Head>
         <title>Parchment</title>
-        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
-        <script type='module' src='https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.esm.js' />
-        <script noModule src='https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.js' />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width, height=device-height' />
       </Head>
 
       <ToastProvider autoDismiss components={{ Toast: Toast }} placement='bottom-right'>

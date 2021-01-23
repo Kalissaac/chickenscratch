@@ -7,6 +7,7 @@ import { WebAuthnExtension } from '@magic-ext/webauthn'
 import Router from 'next/router'
 import { Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
+import { ChevronLeft } from 'react-feather'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
@@ -90,7 +91,7 @@ export default function LoginPage (): JSX.Element {
         <div className='login-wrapper'>
 
           <div>
-            <button className='text-gray-600 dark:text-gray-400 font-light mb-2 flex items-center' onClick={returnToLogin}><ion-icon name='chevron-back-outline' /> Return</button>
+            <button className='text-gray-600 dark:text-gray-400 font-light mb-2 flex items-center' onClick={returnToLogin}><ChevronLeft /> Return</button>
             <h1 className='font-serif font-bold text-4xl md:text-5xl uppercase dark:text-gray-100'>Signing in...</h1>
             <div className='mt-4 font-thin text-xl dark:text-gray-200'>
               {secondary}<br />
@@ -122,7 +123,7 @@ export default function LoginPage (): JSX.Element {
         <div className='login-wrapper'>
 
           <div>
-            <button className='text-gray-600 font-light mb-2 flex items-center' style={{ visibility: 'hidden' }}><ion-icon name='chevron-back-outline' /> Return</button>
+            <button className='text-gray-600 font-light mb-2 flex items-center' style={{ visibility: 'hidden' }}><ChevronLeft /> Return</button>
             <h1 className='font-serif font-bold text-4xl md:text-5xl uppercase dark:text-gray-100'>Parchment</h1>
             <div className='mt-4 font-thin text-xl dark:text-gray-200'>
               Welcome back!<br />

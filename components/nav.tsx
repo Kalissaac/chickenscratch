@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from './search'
 import { Transition } from '@headlessui/react'
+import { MoreVertical, Plus } from 'react-feather'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -10,7 +11,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav (): JSX.Element {
+export default function Nav ({ user }): JSX.Element {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
 
@@ -22,10 +23,10 @@ export default function Nav (): JSX.Element {
     }
   }, [])
 
-  function handleScroll (event: any): void {
-    if (window.scrollY <= 50) {
+  function handleScroll (_: Event): void {
+    if (window.scrollY <= 60) {
       setScrolling(false)
-    } else if (window.scrollY > 50 && !scrolling) {
+    } else if (window.scrollY > 60 && !scrolling) {
       setScrolling(true)
     }
   }
@@ -44,21 +45,27 @@ export default function Nav (): JSX.Element {
         }
 
         <SearchBar style={{ visibility: scrolling ? 'visible' : 'hidden' }} />
-        <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-white h-full w-16 self-stretch' style={{ visibility: scrolling ? 'visible' : 'hidden' }}><ion-icon name='add-outline' /></button>
+        <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }}><Plus /></button>
       </div>
 
       <div className='ml-8'>
-        <button className='font-medium text-lg text-gray-800 hover:text-gray-500 dark:text-gray-50 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setDropdownOpen(!dropdownOpen)}>
-          Kian Sutarwala <ion-icon name={dropdownOpen ? 'chevron-up-outline' : 'chevron-down-outline'} />
+        <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setDropdownOpen(!dropdownOpen)}>
+          Kian Sutarwala <MoreVertical />
         </button>
         <Transition show={dropdownOpen}>
-          <div className='absolute rounded-lg bg-white right-16 w-36 p-2 mt-2 flex flex-col'>
-            <div>Profile</div>
-            <div>Sign Out</div>
+          <div className='absolute rounded-md shadow-xl bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-600 border-2 float-right w-36 py-2 mt-2 flex flex-col'>
+            <DropdownItem title='Profile' />
+            <DropdownItem title='Sign Out' />
           </div>
         </Transition>
       </div>
 
     </nav>
+  )
+}
+
+function DropdownItem ({ title, onClick, className }: { title: string, onClick?: MouseEvent, className?: string}): JSX.Element {
+  return (
+    <a onClick={onClick} className={`px-4 py-1 cursor-pointer hover:bg-gray-200 ${className}`}>{title}</a>
   )
 }
