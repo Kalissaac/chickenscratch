@@ -67,7 +67,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
                 </div>
                 <div className='h-full flex flex-col space-y-6 py-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
                   <header className='px-4 sm:px-6'>
-                    <h2 className='text-lg leading-7 font-medium text-gray-900 dark:text-gray-50'>
+                    <h2 className='text-lg leading-7 font-medium text-gray-900'>
                       Preferences
                     </h2>
                   </header>

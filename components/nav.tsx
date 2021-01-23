@@ -38,7 +38,7 @@ export default function Nav (): JSX.Element {
         {!scrolling &&
           <ul className='flex gap-6 whitespace-nowrap'>
             {links.map(({ href, label }) => (
-              <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:text-gray-50 dark:hover:text-gray-300 transition-all' style={{ scrollBehavior: 'smooth' }}>{label}</a></Link></li>
+              <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:hover:text-gray-300 transition-all' style={{ scrollBehavior: 'smooth' }}>{label}</a></Link></li>
             ))}
           </ul>
         }

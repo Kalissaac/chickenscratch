@@ -6,7 +6,7 @@ import { useUser } from '@shared/hooks'
 
 function Header ({ title, id }: { title: string, id: string }): JSX.Element {
   return (
-    <div className='text-xl dark:text-gray-50 uppercase font-normal mb-4' id={id}>
+    <div className='text-xl uppercase font-normal mb-4' id={id}>
       {title}
     </div>
   )
