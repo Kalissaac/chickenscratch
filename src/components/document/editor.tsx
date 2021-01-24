@@ -6,9 +6,9 @@ export default function DocumentEditor (): JSX.Element {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
 
   return (
-   <Editor
-     editorState={editorState}
-     onChange={setEditorState}
-   />
+    <Editor
+      editorState={editorState}
+      onChange={setEditorState}
+    />
   )
 }

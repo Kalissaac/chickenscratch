@@ -5,16 +5,6 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
   return (
     <div className='fixed inset-0 z-30 overflow-hidden pointer-events-none'>
       <div className='absolute inset-0 overflow-hidden'>
-        {/*
-        Background overlay, show/hide based on slide-over state.
-
-        Entering: 'ease-in-out duration-500'
-          From: 'opacity-0'
-          To: 'opacity-100'
-        Leaving: 'ease-in-out duration-500'
-          From: 'opacity-100'
-          To: 'opacity-0'
-        */}
         <Transition
           show={sidebarOpen}
           enter='ease-in-out duration-500'
@@ -29,16 +19,6 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           )}
         </Transition>
         <section className='absolute inset-y-0 right-0 pl-10 max-w-full flex pointer-events-auto'>
-          {/*
-            Slide-over panel, show/hide based on slide-over state.
-
-            Entering: 'transform transition ease-in-out duration-500 sm:duration-700'
-              From: 'translate-x-full'
-              To: 'translate-x-0'
-            Leaving: 'transform transition ease-in-out duration-500 sm:duration-700'
-              From: 'translate-x-0'
-              To: 'translate-x-full'
-          */}
           <Transition
             show={sidebarOpen}
             enter='transform transition ease-in-out duration-500 sm:duration-700'
@@ -50,24 +30,20 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           >
             {(ref) => (
               <div ref={ref} className='relative w-screen max-w-md'>
-                {/*
-                  Close button, show/hide based on slide-over state.
-
-                  Entering: 'ease-in-out duration-500'
-                    From: 'opacity-0'
-                    To: 'opacity-100'
-                  Leaving: 'ease-in-out duration-500'
-                    From: 'opacity-100'
-                    To: 'opacity-0'
-                */}
-                <div className='absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4'>
-                  <Transition.Child>
+                <Transition.Child
+                  enter='opacity transition ease-in-out duration-500'
+                  enterFrom='opacity-0'
+                  enterTo='opacity-100'
+                  leave='opacity transition ease-in-out duration-500'
+                  leaveFrom='opacity-100'
+                  leaveTo='opacity-0'
+                >
+                  <div className='absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4'>
                     <button aria-label='Close panel' onClick={() => setSidebarOpen(!sidebarOpen)} className='text-gray-800 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 text-3xl transition ease-in-out duration-150'>
-                      {/* Heroicon name: x */}
                       <IconX />
                     </button>
-                  </Transition.Child>
-                </div>
+                  </div>
+                </Transition.Child>
                 <div className='h-full flex flex-col space-y-6 py-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
                   <header className='px-4 sm:px-6'>
                     <h2 className='text-lg leading-7 font-medium'>
