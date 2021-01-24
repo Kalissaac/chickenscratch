@@ -26,9 +26,13 @@ export default function LoginPage (): JSX.Element {
     magic?.preload() // eslint-disable-line @typescript-eslint/no-floating-promises
   }, [magic])
 
+  useEffect(() => {
+    document.getElementById('email')?.setAttribute('value', loginStep.email)
+  }, [loginStep.email])
+
   function returnToLogin (): void {
     setActivity(false)
-    setLoginStep({ stage: 'initial', email: '' })
+    setLoginStep(currentState => ({ stage: 'initial', email: currentState.email }))
   }
 
   async function submitLogin (e: FormEvent): Promise<void> {
@@ -41,7 +45,8 @@ export default function LoginPage (): JSX.Element {
 
     if (!/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
       setActivity(false)
-      // display error here
+      addToast('Please enter a valid email!', { appearance: 'error' })
+      return
     }
 
     if (withSecurityKey === 'on') {
@@ -64,7 +69,7 @@ export default function LoginPage (): JSX.Element {
     } else {
       try {
         setLoginStep({ stage: 'email', email })
-        const didToken = await magic?.auth.loginWithMagicLink({
+        const didToken = await magic.auth.loginWithMagicLink({
           email,
           showUI: false
         })
@@ -139,7 +144,7 @@ export default function LoginPage (): JSX.Element {
 
           <div>
             <form action='/api/auth/callback/credentials' method='post' onSubmit={submitLogin}>
-              <input type='email' name='email' placeholder='Email' className='my-3 login-field login-input' required />
+              <input type='email' name='email' id='email' placeholder='Email' className='my-3 login-field login-input' required />
               <br />
               <div className='my-3 login-field flex justify-between'>Use a Security Key <input type='checkbox' name='securitykey' /></div>
               <button type='submit' className={`login-btn mt-4 ${activity ? 'cursor-wait hover:bg-accent-1-500 pointer-events-none' : ''}`}>
