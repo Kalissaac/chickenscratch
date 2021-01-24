@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react'
-import { X } from 'react-feather'
+import { X as IconX } from 'react-feather'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
   return (
@@ -64,13 +64,13 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
                   <Transition.Child>
                     <button aria-label='Close panel' onClick={() => setSidebarOpen(!sidebarOpen)} className='text-gray-800 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 text-3xl transition ease-in-out duration-150'>
                       {/* Heroicon name: x */}
-                      <X />
+                      <IconX />
                     </button>
                   </Transition.Child>
                 </div>
                 <div className='h-full flex flex-col space-y-6 py-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
                   <header className='px-4 sm:px-6'>
-                    <h2 className='text-lg leading-7 font-medium text-gray-900'>
+                    <h2 className='text-lg leading-7 font-medium'>
                       Preferences
                     </h2>
                   </header>
