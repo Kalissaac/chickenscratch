@@ -30,5 +30,6 @@ export interface jwtUser {
   issuer: string
   email: string
   publicAddress: string
-  exp: Number
+  iat: number
+  exp: number
 }

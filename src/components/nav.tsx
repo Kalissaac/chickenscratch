@@ -2,7 +2,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from './search'
 import { Transition } from '@headlessui/react'
-import { MoreVertical, Plus } from 'react-feather'
+import { MoreVertical, Plus, X as IconX } from 'react-feather'
+import type { jwtUser } from '@shared/cookies'
+import { Magic } from 'magic-sdk'
+import { WebAuthnExtension } from '@magic-ext/webauthn'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -11,7 +14,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user }: { user: any }): JSX.Element {
+export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
 
@@ -32,40 +35,116 @@ export default function Nav ({ user }: { user: any }): JSX.Element {
   }
 
   return (
-    <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 flex items-center justify-between p-6 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(24px)' }}>
-      <div className='flex items-center w-full'>
-        <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
+    <>
+      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 flex items-center justify-between p-6 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(24px)' }}>
+        <div className='flex items-center w-full'>
+          <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
-        {!scrolling &&
-          <ul className='flex gap-6 whitespace-nowrap'>
-            {links.map(({ href, label }) => (
-              <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:hover:text-gray-300 transition-all' style={{ scrollBehavior: 'smooth' }}>{label}</a></Link></li>
-            ))}
-          </ul>
-        }
+          {!scrolling &&
+            <ul className='flex gap-6 whitespace-nowrap'>
+              {links.map(({ href, label }) => (
+                <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:hover:text-gray-300 transition-all' style={{ scrollBehavior: 'smooth' }}>{label}</a></Link></li>
+              ))}
+            </ul>
+          }
 
-        <SearchBar style={{ visibility: scrolling ? 'visible' : 'hidden' }} />
-        <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }}><Plus /></button>
-      </div>
+          <SearchBar style={{ visibility: scrolling ? 'visible' : 'hidden' }} />
+          <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }}><Plus /></button>
+        </div>
 
-      <div className='ml-8'>
-        <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setDropdownOpen(!dropdownOpen)}>
-          Kian Sutarwala <MoreVertical />
-        </button>
-        <Transition show={dropdownOpen}>
-          <div className='absolute rounded-md shadow-xl bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-600 border-2 float-right w-36 py-2 mt-2 flex flex-col'>
-            <DropdownItem title='Profile' />
-            <DropdownItem title='Sign Out' />
-          </div>
-        </Transition>
-      </div>
+        <div className='ml-8'>
+          <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setDropdownOpen(!dropdownOpen)}>
+            Kian Sutarwala <MoreVertical />
+          </button>
+        </div>
 
-    </nav>
+      </nav>
+      <ProfileSidebar setSidebarOpen={setDropdownOpen} sidebarOpen={dropdownOpen} user={user} />
+    </>
   )
 }
 
 function DropdownItem ({ title, onClick, className }: { title: string, onClick?: HTMLAnchorElement, className?: string}): JSX.Element {
   return (
     <a className={`px-4 py-1 cursor-pointer hover:bg-gray-200`}>{title}</a>
+  )
+}
+
+function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: jwtUser }): JSX.Element {
+  // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
+  const [magic, setMagic] = useState<Magic>(null)
+
+  useEffect(() => {
+    magic === null &&
+      setMagic(
+        new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY ?? '', {
+          extensions: [new WebAuthnExtension()]
+        })
+      )
+    magic?.preload() // eslint-disable-line @typescript-eslint/no-floating-promises
+  }, [magic])
+
+  return (
+    <div className='fixed inset-0 z-30 overflow-hidden pointer-events-none'>
+      <div className='absolute inset-0 overflow-hidden'>
+        <Transition
+          show={sidebarOpen}
+          enter='ease-in-out duration-500'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in-out duration-500'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'
+        >
+          {(ref) => (
+            <div ref={ref} className='absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity pointer-events-auto' style={{ backdropFilter: 'blur(0px)' }} onClick={() => setSidebarOpen(!sidebarOpen)} />
+          )}
+        </Transition>
+        <section className='absolute inset-y-0 right-0 pl-10 max-w-full flex pointer-events-auto'>
+          <Transition
+            show={sidebarOpen}
+            enter='transform transition ease-in-out duration-500 sm:duration-700'
+            enterFrom='translate-x-full'
+            enterTo='translate-x-0'
+            leave='transform transition ease-in-out duration-500 sm:duration-700'
+            leaveFrom='translate-x-0'
+            leaveTo='translate-x-full'
+          >
+            {(ref) => (
+              <div ref={ref} className='relative w-screen max-w-md'>
+                <Transition.Child
+                  enter='opacity transition ease-in-out duration-500'
+                  enterFrom='opacity-0'
+                  enterTo='opacity-100'
+                  leave='opacity transition ease-in-out duration-500'
+                  leaveFrom='opacity-100'
+                  leaveTo='opacity-0'
+                >
+                  <div className='absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4'>
+                    <button aria-label='Close panel' onClick={() => setSidebarOpen(!sidebarOpen)} className='text-gray-800 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 text-3xl transition ease-in-out duration-150'>
+                      <IconX />
+                    </button>
+                  </div>
+                </Transition.Child>
+                <div className='h-full flex flex-col space-y-6 py-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
+                  <header className='px-4 sm:px-6'>
+                    <h2 className='text-lg leading-7 font-medium'>
+                      Profile
+                    </h2>
+                  </header>
+                  <div className='relative flex-1 px-4 sm:px-6'>
+                    <div className='absolute inset-0 px-4 sm:px-6'>
+                      <div className='h-full border-2 border-dashed border-gray-200 p-4'>
+                        <pre>{user.email}</pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Transition>
+        </section>
+      </div>
+    </div>
   )
 }
