@@ -1,8 +1,8 @@
-import Dante from 'Dante2'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Titlebar from '@components/document/titlebar'
 import Sidebar from '@components/document/sidebar'
+import Editor from '@components/document/editor'
 
 export default function DocumentEditPage (): JSX.Element {
   const router = useRouter()
@@ -14,7 +14,7 @@ export default function DocumentEditPage (): JSX.Element {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <Titlebar setSidebarOpen={setSidebarOpen} />
       <div className='p-32 px-56 min-h-screen'>
-        <Dante className='bg-transparent min-h-full' />
+        <Editor />
       </div>
     </>
   )
