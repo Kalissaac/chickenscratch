@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { ChevronLeft, Info } from 'react-feather'
+import { ChevronLeft, Info } from '@kalissaac/react-feather'
 
 export default function DocumentTitlebar ({ setSidebarOpen }: { setSidebarOpen: Function }): JSX.Element {
   const router = useRouter()

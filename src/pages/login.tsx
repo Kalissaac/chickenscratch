@@ -7,7 +7,7 @@ import { WebAuthnExtension } from '@magic-ext/webauthn'
 import Router from 'next/router'
 import { Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
-import { ChevronLeft } from 'react-feather'
+import { ChevronLeft } from '@kalissaac/react-feather'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)

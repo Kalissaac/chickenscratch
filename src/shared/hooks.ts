@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import Router from 'next/router'
 import useSWR from 'swr'
+import { jwtUser } from './cookies'
 
 const fetchUser = (url: string) =>
   fetch(url)
@@ -9,9 +10,9 @@ const fetchUser = (url: string) =>
       return { user: data?.user || null }
     })
 
-export function useUser (redirectTo: string, redirectIfFound?: boolean) {
+export function useUser (redirectTo: string, redirectIfFound?: boolean): jwtUser | null {
   const { data, error } = useSWR('/api/user', fetchUser)
-  const user = data?.user
+  const user = data?.user as jwtUser
   const finished = Boolean(data)
   const hasUser = Boolean(user)
 
@@ -26,5 +27,5 @@ export function useUser (redirectTo: string, redirectIfFound?: boolean) {
       Router.push(redirectTo)
     }
   }, [redirectTo, redirectIfFound, finished, hasUser])
-  return error ? null : user
+  return error as Error ? null : user
 }

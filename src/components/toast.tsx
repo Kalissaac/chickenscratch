@@ -1,4 +1,4 @@
-import { AlertCircle } from 'react-feather'
+import { AlertCircle } from '@kalissaac/react-feather'
 import { ToastProps } from 'react-toast-notifications'
 
 export default function Toast ({ appearance, children }: ToastProps): JSX.Element {

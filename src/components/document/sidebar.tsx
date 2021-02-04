@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react'
-import { X as IconX } from 'react-feather'
+import { X as IconX } from '@kalissaac/react-feather'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
   return (

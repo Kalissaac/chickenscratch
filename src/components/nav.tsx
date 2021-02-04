@@ -2,10 +2,11 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from './search'
 import { Transition } from '@headlessui/react'
-import { MoreVertical, Plus, X as IconX } from 'react-feather'
+import { Edit, Edit2, Edit3, MoreVertical, PenTool, Plus, X as IconX } from '@kalissaac/react-feather'
 import type { jwtUser } from '@shared/cookies'
 import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
+import Image from 'next/image'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -15,7 +16,7 @@ const links = [
 ]
 
 export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
 
   useEffect(() => {
@@ -53,20 +54,14 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
         </div>
 
         <div className='ml-8'>
-          <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setDropdownOpen(!dropdownOpen)}>
-            Kian Sutarwala <MoreVertical />
+          <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {user.email} <MoreVertical />
           </button>
         </div>
 
       </nav>
-      <ProfileSidebar setSidebarOpen={setDropdownOpen} sidebarOpen={dropdownOpen} user={user} />
+      <ProfileSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} user={user} />
     </>
-  )
-}
-
-function DropdownItem ({ title, onClick, className }: { title: string, onClick?: HTMLAnchorElement, className?: string}): JSX.Element {
-  return (
-    <a className={`px-4 py-1 cursor-pointer hover:bg-gray-200`}>{title}</a>
   )
 }
 
@@ -133,9 +128,15 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen
                     </h2>
                   </header>
                   <div className='relative flex-1 px-4 sm:px-6'>
-                    <div className='absolute inset-0 px-4 sm:px-6'>
-                      <div className='h-full border-2 border-dashed border-gray-200 p-4'>
-                        <pre>{user.email}</pre>
+                    <div className='absolute inset-0 px-4 sm:px-6 h-full'>
+                      <div className='flex items-center'>
+                        <div className='w-16 h-16 relative'>
+                          <Image src='/images/user.jpg' layout='fill' objectFit='cover' className='rounded-full' />
+                        </div>
+                        <div className='ml-5'>
+                          <div className='font-semibold text-lg'>Russ Hanneman <button><Edit2 width='0.9em' height='0.9em' /></button></div>
+                          <div className='font-mono'>{user.email}</div>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -4,7 +4,7 @@ import InitialLoader from '@components/loader'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
-import { Plus } from 'react-feather'
+import { Plus } from '@kalissaac/react-feather'
 
 function Header ({ title, id }: { title: string, id: string }): JSX.Element {
   return (
