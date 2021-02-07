@@ -13,7 +13,7 @@ export default function SearchBar ({ style }: { style?: Object }): JSX.Element {
       <div className='flex items-center px-6' style={style}>
         <SearchIcon />
         <input
-          type='text' placeholder='What are you looking for?' className='w-full ml-4 py-4 outline-none dark:bg-gray-800 dark:text-gray-100'
+          type='text' placeholder='What are you looking for?' className='w-full ml-4 py-4 outline-none dark:bg-gray-800 dark:text-gray-100 focus:outline-none'
           onChange={async (e) => {
             const { value } = e.currentTarget
             // Dynamically load fuse.js

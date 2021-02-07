@@ -38,7 +38,7 @@ export default function HomePage (): JSX.Element {
     <>
       <Nav user={user} />
 
-      <div className='p-20 pt-5'>
+      <div className='p-20 pt-6'>
         <div className='flex mb-12 gap-4' id='homesearch'>
           <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 text-base uppercase' onClick={createDocument}><Plus /> New Document</button>
           <SearchBar />
