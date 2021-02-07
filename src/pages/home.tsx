@@ -5,6 +5,7 @@ import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
 import { Plus } from '@kalissaac/react-feather'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 function Header ({ title, id }: { title: string, id: string }): JSX.Element {
@@ -17,11 +18,16 @@ function Header ({ title, id }: { title: string, id: string }): JSX.Element {
 
 export default function HomePage (): JSX.Element {
   const user = useUser('/login')
+  const [activeTab, setActiveTab] = useState('recentEdit')
   if (!user) {
     return <InitialLoader />
   }
 
   const router = useRouter()
+
+  const activeTabClasses = 'font-medium'
+  const inactiveTabClasses = 'text-gray-500 hover:text-gray-700'
+
   async function createDocument (): Promise<void> {
     const response = await fetch('/api/document/create')
     const data = await response.json()
@@ -39,13 +45,18 @@ export default function HomePage (): JSX.Element {
         </div>
 
         <div className='flex items-center mb-4'>
-          <button className='text-xl uppercase font-medium'>Recently edited</button>
-          <button className='text-xl text-gray-500 hover:text-gray-700 uppercase font-normal ml-5 transition-all'>Invitations</button>
+          <button className={`text-xl uppercase transition-all ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')}>Recently edited</button>
+          <button className={`text-xl uppercase ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')}>Invitations</button>
         </div>
-        <div className='flex justify-between'>
-          {Array(4).fill({}).map(() => (
+        <div className='flex justify-between -ml-2 -mr-2'>
+          {activeTab === 'recentEdit' && Array(4).fill({}).map(() => (
             <Card key={Math.random() * 100}>
               <div>hi</div>
+            </Card>
+          ))}
+          {activeTab === 'invitations' && Array(5).fill({}).map(() => (
+            <Card key={Math.random() * 100}>
+              <div>bye</div>
             </Card>
           ))}
         </div>
