@@ -5,6 +5,7 @@ import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
 import { Plus } from '@kalissaac/react-feather'
+import { useRouter } from 'next/router'
 
 function Header ({ title, id }: { title: string, id: string }): JSX.Element {
   return (
@@ -20,13 +21,20 @@ export default function HomePage (): JSX.Element {
     return <InitialLoader />
   }
 
+  const router = useRouter()
+  async function createDocument (): Promise<void> {
+    const response = await fetch('/api/document/create')
+    const data = await response.json()
+    await router.push(`/d/${data.id as string}/edit`)
+  }
+
   return (
     <>
       <Nav user={user} />
 
       <div className='p-20 pt-5'>
         <div className='flex mb-12 gap-4'>
-          <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 text-base uppercase'><Plus /> New Document</button>
+          <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 text-base uppercase' onClick={createDocument}><Plus /> New Document</button>
           <SearchBar />
         </div>
 

@@ -7,6 +7,7 @@ import type { jwtUser } from '@shared/cookies'
 import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -18,6 +19,7 @@ const links = [
 export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
@@ -35,6 +37,12 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
     }
   }
 
+  async function createDocument (): Promise<void> {
+    const response = await fetch('/api/document/create')
+    const data = await response.json()
+    await router.push(`/d/${data.id as string}/edit`)
+  }
+
   return (
     <>
       <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 flex items-center justify-between p-6 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(24px)' }}>
@@ -50,7 +58,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
           }
 
           <SearchBar style={{ visibility: scrolling ? 'visible' : 'hidden' }} />
-          <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }}><Plus /></button>
+          <button className='bg-accent-1-500 flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={createDocument}><Plus /></button>
         </div>
 
         <div className='ml-8'>
@@ -67,17 +75,17 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
 
 function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: jwtUser }): JSX.Element {
   // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
-  const [magic, setMagic] = useState<Magic>(null)
+  // const [magic, setMagic] = useState<Magic>(null)
 
-  useEffect(() => {
-    magic === null &&
-      setMagic(
-        new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY ?? '', {
-          extensions: [new WebAuthnExtension()]
-        })
-      )
-    magic?.preload() // eslint-disable-line @typescript-eslint/no-floating-promises
-  }, [magic])
+  // useEffect(() => {
+  //   magic === null &&
+  //     setMagic(
+  //       new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY ?? '', {
+  //         extensions: [new WebAuthnExtension()]
+  //       })
+  //     )
+  //   magic?.preload() // eslint-disable-line @typescript-eslint/no-floating-promises
+  // }, [magic])
 
   return (
     <div className='fixed inset-0 z-30 overflow-hidden pointer-events-none'>
@@ -115,7 +123,7 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen
                   leaveFrom='opacity-100'
                   leaveTo='opacity-0'
                 >
-                  <div className='absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4'>
+                  <div className='absolute top-0 left-0 -ml-8 pt-6 pr-2 flex sm:-ml-10 sm:pr-4'>
                     <button aria-label='Close panel' onClick={() => setSidebarOpen(!sidebarOpen)} className='text-gray-100 hover:text-gray-400 text-3xl transition ease-in-out duration-150'>
                       <IconX />
                     </button>
@@ -133,7 +141,8 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen
                         <div className='w-16 h-16 relative'>
                           <Image src='/images/user.jpg' layout='fill' objectFit='cover' className='rounded-full' />
                         </div>
-                        <div className='ml-5'>
+                        <div className='ml-5 flex-grow'>
+                          {/* <input id='username' type='text' className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all' placeholder='Enter your name' /> */}
                           <div className='font-semibold text-lg'>Russ Hanneman <button><Edit2 width='0.9em' height='0.9em' /></button></div>
                           <div className='font-mono'>{user.email}</div>
                         </div>
