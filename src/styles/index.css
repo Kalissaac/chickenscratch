@@ -11,12 +11,12 @@ body {
   @apply bg-gray-50 dark:bg-gray-darker text-gray-darker dark:text-gray-50 min-h-screen;
 }
 
-* > * {
-  @apply transition-all;
+body * {
+  @apply focus:outline-black;
 }
 
 .basis {
-  @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2 transition-all;
+  @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2;
 }
 
 .login-wrapper {
@@ -32,7 +32,7 @@ body {
 }
 
 .login-btn {
-  @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 text-lg shadow-lg rounded-lg box-border transition-all;
+  @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 text-lg shadow-lg rounded-lg box-border transition-colors;
 }
 
 .public-DraftEditorPlaceholder-root {
