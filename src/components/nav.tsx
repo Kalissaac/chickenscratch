@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import SearchBar from './search'
+import SearchBar from '@components/search'
 import { Transition } from '@headlessui/react'
-import { Edit, Edit2, Edit3, MoreVertical, PenTool, Plus, X as IconX } from '@kalissaac/react-feather'
+import { Edit2, MoreVertical, Plus, X as IconX } from '@kalissaac/react-feather'
 import type { jwtUser } from '@shared/cookies'
 import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
@@ -22,20 +22,21 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
   const router = useRouter()
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
+    const intersection = new IntersectionObserver(([entry], observer) => {
+      entry.isIntersecting ? setScrolling(false) : setScrolling(true)
+    }, {
+      threshold: [0.1, 1.0]
+    })
+
+    const homeSearch = document.getElementById('homesearch') as Element
+    if (homeSearch !== null) {
+      intersection.observe(homeSearch)
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      intersection.disconnect()
     }
   }, [])
-
-  function handleScroll (_: Event): void {
-    if (window.scrollY <= 60) {
-      setScrolling(false)
-    } else if (window.scrollY > 60 && !scrolling) {
-      setScrolling(true)
-    }
-  }
 
   async function createDocument (): Promise<void> {
     const response = await fetch('/api/document/create')
