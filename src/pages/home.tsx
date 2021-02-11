@@ -38,9 +38,9 @@ export default function HomePage (): JSX.Element {
     <>
       <Nav user={user} />
 
-      <div className='p-20 pt-6'>
+      <div className='p-20 pt-4'>
         <div className='flex mb-12 gap-4' id='homesearch'>
-          <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 text-base uppercase' onClick={createDocument}><Plus /> New Document</button>
+          <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={createDocument}><Plus size='1.25em' /> New Document</button>
           <SearchBar />
         </div>
 
@@ -51,12 +51,12 @@ export default function HomePage (): JSX.Element {
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
           {activeTab === 'recentEdit' && Array(4).fill({}).map(() => (
             <Card key={Math.random() * 100}>
-              <div>hi</div>
+              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores rerum necessitatibus ullam vitae adipisci iste fugit at impedit.</div>
             </Card>
           ))}
           {activeTab === 'invitations' && Array(5).fill({}).map(() => (
             <Card key={Math.random() * 100}>
-              <div>bye</div>
+              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem dolorem error incidunt eum pariatur perspiciatis minima ipsam et qui maiores inventore asperiores est quasi esse ex, repellat numquam nulla repudiandae?</div>
             </Card>
           ))}
         </div>

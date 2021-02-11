@@ -4,12 +4,13 @@ import { ReactNode } from 'react'
 export default function Card ({ children }: { children?: ReactNode }): JSX.Element {
   const router = useRouter()
   return (
-    <div className='rounded-xl shadow-lg w-1/5 mx-2 bg-white dark:bg-gray-900 p-4 box-border cursor-pointer' onClick={async () => await router.push(`/d/${Math.floor(Math.random() * 10000)}/edit`)}>
-      <div className='header p-4'>
+    <div className='rounded-xl shadow-lg w-1/5 mx-2 bg-white dark:bg-gray-900 box-border overflow-hidden cursor-pointer transform transition-transform hover:scale-105'
+      onClick={async () => await router.push(`/d/${Math.floor(Math.random() * 10000)}/edit`)}>
+      <div className='header p-6 py-4 bg-gradient-to-r from-yellow-600 to-red-500'>
         <div className='font-light'>subtitle</div>
         <h2>Title</h2>
       </div>
-      <div className='content p-4'>
+      <div className='content p-6'>
         {children}
       </div>
     </div>
