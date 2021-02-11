@@ -26,6 +26,7 @@ module.exports = {
         },
         'accent-2': '#353B48',
         'gray-darker': '#090909',
+        'gray-lighter': '#F2F2F2',
         gray: colors.trueGray
       }
     },

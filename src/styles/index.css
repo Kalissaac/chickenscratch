@@ -8,7 +8,7 @@
 
 html,
 body {
-  @apply bg-gray-50 dark:bg-gray-darker text-gray-darker dark:text-gray-50 min-h-screen;
+  @apply bg-gray-lighter dark:bg-gray-darker text-gray-darker dark:text-gray-50 min-h-screen;
 }
 
 body * {
