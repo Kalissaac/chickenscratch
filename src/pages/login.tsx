@@ -63,7 +63,7 @@ export default function LoginPage (): JSX.Element {
             addToast('Email not found! Are you registered?', { appearance: 'error' })
             break
           default:
-            addToast('Unkown error occured!', { appearance: 'error' })
+            addToast('Unknown error occured!', { appearance: 'error' })
         }
       }
     } else {
@@ -79,7 +79,7 @@ export default function LoginPage (): JSX.Element {
         console.log({ error })
         switch (error.code) {
           default:
-            addToast('Unkown error occured!', { appearance: 'error' })
+            addToast('Unknown error occured!', { appearance: 'error' })
         }
       }
     }
@@ -93,6 +93,7 @@ export default function LoginPage (): JSX.Element {
         Authorization: 'Bearer ' + didToken
       }
     })
+    console.log(await res.json())
     res.status === 200 && Router.push('/home')
   }
 

@@ -4,21 +4,16 @@ import InitialLoader from '@components/loader'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
-import { ChevronRight, FileText, Plus } from '@kalissaac/react-feather'
+import { FileText, Info, Plus } from '@kalissaac/react-feather'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-
-function Header ({ title, id }: { title: string, id: string }): JSX.Element {
-  return (
-    <div className='text-xl uppercase font-normal mb-4' id={id}>
-      {title}
-    </div>
-  )
-}
+import { createDocument } from '@shared/db'
+import DocumentPreview from '@components/document/preview'
 
 export default function HomePage (): JSX.Element {
   const user = useUser('/login')
   const [activeTab, setActiveTab] = useState('recentEdit')
+  const [activeDocumentPreview, setActiveDocumentPreview] = useState<string | null>(null)
   if (!user) {
     return <InitialLoader />
   }
@@ -28,17 +23,12 @@ export default function HomePage (): JSX.Element {
   const activeTabClasses = 'font-medium border-gray-darker'
   const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 border-transparent'
 
-  async function createDocument (): Promise<void> {
-    const response = await fetch('/api/document/create')
-    const data = await response.json()
-    await router.push(`/d/${data.id as string}/edit`)
-  }
-
   return (
     <>
       <Nav user={user} />
+      <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
-      <div className='p-20 pt-4'>
+      <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 gap-4' id='homesearch'>
           <button className='bg-accent-1-500 focus:border-gray-darker focus:outline-none basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={createDocument}><Plus size='1.25em' aria-label='Plus Icon' /> New Document</button>
           <SearchBar />
@@ -51,12 +41,12 @@ export default function HomePage (): JSX.Element {
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
           {activeTab === 'recentEdit' && Array(4).fill({}).map(() => (
             <Card key={Math.random() * 100}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores rerum necessitatibus ullam vitae adipisci iste fugit at impedit.</div>
+              <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam officia, quae labore totam possimus laudantium dolorem consequuntur dolore iste architecto quasi doloremque nobis sequi repudiandae est laborum velit dicta quisquam.</div>
             </Card>
           ))}
           {activeTab === 'invitations' && Array(5).fill({}).map(() => (
             <Card key={Math.random() * 100}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem dolorem error incidunt eum pariatur perspiciatis minima ipsam et qui maiores inventore asperiores est quasi esse ex, repellat numquam nulla repudiandae?</div>
+              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quod similique saepe voluptas quis quas harum quisquam. Ea voluptatum provident minima libero eaque. Sit consequatur deleniti, nihil magnam est tempora, fugiat officia, possimus aspernatur nesciunt fugit et dolorum id? Molestias suscipit aut quasi sit temporibus sint asperiores enim reiciendis quidem.</div>
             </Card>
           ))}
         </div>
@@ -64,65 +54,59 @@ export default function HomePage (): JSX.Element {
         <div className="flex flex-col">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800" id='files'>
+                  <thead className="bg-gray-50 dark:bg-gray-900">
+                    <tr className=' text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+                      <th scope="col" className="px-6 py-3">
                         Name
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Title
+                      <th scope="col" className="px-6 py-3">
+                        Type
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
+                      <th scope="col" className="px-6 py-3">
+                        Last Modified
                       </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Role
+                      <th scope="col" className="px-6 py-3">
+                        Tags
                       </th>
                       <th scope="col" className="relative px-6 py-3">
                         <span className="sr-only">Edit</span>
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 flex justify-center items-center">
-                            <FileText className='w-1/2 h-1/2' />
+                  <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
+                    {Array(10).fill({}).map(() => (
+                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push(`/d/${Math.floor(Math.random() * 10000)}/edit`)} tabIndex={0}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center text-sm font-medium">
+                            <FileText className='mr-4 text-base' />
+                            Jane Cooper
                           </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">
-                              Jane Cooper
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">Regional Paradigm Technician</div>
-                        <div className="text-sm text-gray-500">Optimization</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                          Active
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        Admin
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right font-medium">
-                        <a href="#" className="float-right"><ChevronRight /></a>
-                      </td>
-                    </tr>
-
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm">Regional Paradigm Technician</div>
+                          <div className="text-sm text-gray-500">Optimization</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          Admin
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
+                            Active
+                          </span>
+                        </td>
+                        <td className="p-4 whitespace-nowrap text-right font-medium" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview('bobby') }} tabIndex={0}>
+                          <Info className='float-right mr-8' />
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-
 
         <div className='py-96' />
       </div>
