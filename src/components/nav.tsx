@@ -46,7 +46,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
 
   return (
     <>
-      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-90 dark:bg-opacity-95 flex items-center justify-between p-8 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(4px)' }}>
+      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 dark:bg-opacity-95 flex items-center justify-between p-8 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(6px)' }} aria-label='Navigation Bar'>
         <div className='flex items-center w-full'>
           <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
@@ -59,7 +59,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
           }
 
           {scrolling &&
-              <SearchBar />
+            <SearchBar />
           }
           {/* Button is out here to set navbar height so it's consistent in both states */}
           <button className='bg-accent-1-500 shadow-lg flex justify-center items-center rounded-md text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={createDocument}><Plus /></button>
@@ -67,7 +67,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
 
         <div className='ml-8'>
           <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setSidebarOpen(!sidebarOpen)}>
-            {user.email} <MoreVertical />
+            {user.email} <MoreVertical aria-label='View More Icon' />
           </button>
         </div>
 
@@ -78,7 +78,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
 }
 
 function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: jwtUser }): JSX.Element {
-  // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
+  /* // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null */
   // const [magic, setMagic] = useState<Magic>(null)
 
   // useEffect(() => {

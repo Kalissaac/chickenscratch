@@ -24,7 +24,7 @@ body * {
 }
 
 .login-field {
-  @apply p-4 shadow-lg rounded-lg w-full bg-white border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 border-2 transition-all outline-none;
+  @apply p-4 shadow-lg rounded-lg w-full bg-white border-white dark:text-gray-300 dark:bg-gray-900 dark:border-gray-700 focus:outline-none border-2 transition-all outline-none;
 }
 
 .login-input {

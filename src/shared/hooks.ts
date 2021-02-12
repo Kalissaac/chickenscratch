@@ -24,7 +24,7 @@ export function useUser (redirectTo: string, redirectIfFound?: boolean): jwtUser
       // If redirectIfFound is also set, redirect if the user was found
       (redirectIfFound && hasUser)
     ) {
-      Router.push(redirectTo)
+      Router.push(redirectTo).catch(console.error)
     }
   }, [redirectTo, redirectIfFound, finished, hasUser])
   return error as Error ? null : user

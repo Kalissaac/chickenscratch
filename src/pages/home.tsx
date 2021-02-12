@@ -25,8 +25,8 @@ export default function HomePage (): JSX.Element {
 
   const router = useRouter()
 
-  const activeTabClasses = 'font-medium'
-  const inactiveTabClasses = 'text-gray-500 hover:text-gray-700'
+  const activeTabClasses = 'font-medium border-gray-darker'
+  const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 border-transparent'
 
   async function createDocument (): Promise<void> {
     const response = await fetch('/api/document/create')
@@ -40,13 +40,13 @@ export default function HomePage (): JSX.Element {
 
       <div className='p-20 pt-4'>
         <div className='flex mb-12 gap-4' id='homesearch'>
-          <button className='bg-accent-1-500 basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={createDocument}><Plus size='1.25em' /> New Document</button>
+          <button className='bg-accent-1-500 focus:border-gray-darker focus:outline-none basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={createDocument}><Plus size='1.25em' aria-label='Plus Icon' /> New Document</button>
           <SearchBar />
         </div>
 
         <div className='flex items-center mb-4'>
-          <button className={`text-xl uppercase transition-all ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')}>Recently edited</button>
-          <button className={`text-xl uppercase ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')}>Invitations</button>
+          <button className={`text-xl uppercase border-b-2 transition-all ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')} id='recent'>Recently edited</button>
+          <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
         </div>
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
           {activeTab === 'recentEdit' && Array(4).fill({}).map(() => (

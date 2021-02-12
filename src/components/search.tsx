@@ -11,7 +11,7 @@ export default function SearchBar ({ style }: { style?: Object }): JSX.Element {
   return (
     <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400' style={style}>
       <div className='flex items-center px-6' style={style}>
-        <SearchIcon size='1.25em' />
+        <SearchIcon size='1.25em' aria-label='Search Icon' />
         <input
           type='text' placeholder='What are you looking for?' className='w-full ml-4 py-4 outline-none font-light dark:bg-gray-800 dark:text-gray-100 focus:outline-none'
           onChange={async (e) => {
