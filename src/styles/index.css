@@ -16,7 +16,7 @@ body * {
 }
 
 .basis {
-  @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2;
+  @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2 transition-all;
 }
 
 .login-wrapper {
@@ -35,12 +35,17 @@ body * {
   @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 text-lg shadow-lg rounded-lg box-border transition-colors;
 }
 
-.public-DraftEditorPlaceholder-root {
-  background-color: inherit !important;
-}
-
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
 
 /* Your own custom utilities */
+
+html {
+  scroll-padding-top: 8rem; /* height of sticky header */
+  scroll-behavior: smooth !important;
+}
+
+.public-DraftEditorPlaceholder-root {
+  background-color: inherit !important;
+}
