@@ -9,6 +9,7 @@ export default function DocumentEditor (): JSX.Element {
     <Editor
       editorState={editorState}
       onChange={setEditorState}
+      placeholder='Write your heart out...'
     />
   )
 }
