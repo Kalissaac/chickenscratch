@@ -1,7 +1,13 @@
-import { MongoClient } from 'mongodb'
+import Router from 'next/router'
 
-const client = new MongoClient('')
+export async function createDocument (): Promise<void> {
+  const response = await fetch('/api/document/create')
+  const data = await response.json()
+  await Router.push(`/d/${data.id as string}/edit`)
+}
 
-export function useDB (): MongoClient {
-  return client
+export async function getDocument (): Promise<void> {
+  const response = await fetch('/api/document/create')
+  const data = await response.json()
+  await Router.push(`/d/${data.id as string}/edit`)
 }
