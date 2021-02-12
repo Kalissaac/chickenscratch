@@ -5,7 +5,7 @@ module.exports = {
   purge: {
     enabled: process.env.NODE_ENV === 'production',
     content: [
-      './{components,pages}/**/*.{js,ts,jsx,tsx}'
+      './src/{components,pages}/**/*.{js,ts,jsx,tsx}'
     ]
   },
   darkMode: 'class', // 'media' or 'class'
