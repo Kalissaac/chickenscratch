@@ -19,7 +19,7 @@ export default function DocumentPreview ({ activeDocument, setActiveDocument }: 
       </header>
       <div className='relative flex-1 px-4 sm:px-6'>
         <div className='absolute inset-0 px-4 sm:px-6'>
-          <div className='h-full border-2 border-dashed border-gray-200'>{activeDocument}</div>
+          <div className='h-full border-2 border-dashed border-gray-200'>{JSON.stringify(activeDocument)}</div>
         </div>
       </div>
     </Slideover>

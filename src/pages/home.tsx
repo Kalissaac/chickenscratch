@@ -7,17 +7,24 @@ import { useUser } from '@shared/hooks'
 import { FileText, Info, Plus } from '@kalissaac/react-feather'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { createDocument } from '@shared/db'
 import DocumentPreview from '@components/document/preview'
+import { GetServerSideProps } from 'next'
+import { connectToDatabase } from '@shared/mongo'
+import { verifyTokenCookie } from '@shared/cookies'
+import type User from '@interfaces/user'
+import type File from '@interfaces/file'
 
-export default function HomePage (): JSX.Element {
-  const user = useUser('/login')
+export default function HomePage (props): JSX.Element {
+  const userToken = useUser('/login')
   const [activeTab, setActiveTab] = useState('recentEdit')
-  const [activeDocumentPreview, setActiveDocumentPreview] = useState<string | null>(null)
-  if (!user) {
+  const [activeDocumentPreview, setActiveDocumentPreview] = useState<any | null>(null)
+  if (!userToken) {
     return <InitialLoader />
   }
 
+  const user: User = JSON.parse(props.userData)
+  console.log(user)
+  const userFiles: File[] = props.userFiles.map((f: string) => JSON.parse(f))
   const router = useRouter()
 
   const activeTabClasses = 'font-medium border-gray-darker'
@@ -76,12 +83,12 @@ export default function HomePage (): JSX.Element {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
-                    {Array(10).fill({}).map(() => (
-                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push(`/d/${Math.floor(Math.random() * 10000)}/edit`)} tabIndex={0}>
+                    {userFiles.map(file => (
+                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center text-sm font-medium">
                             <FileText className='mr-4 text-base' />
-                            Jane Cooper
+                            {file.title}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -96,7 +103,7 @@ export default function HomePage (): JSX.Element {
                             Active
                           </span>
                         </td>
-                        <td className="p-4 whitespace-nowrap text-right font-medium" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview('bobby') }} tabIndex={0}>
+                        <td className="p-4 whitespace-nowrap text-right font-medium" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
                           <Info className='float-right mr-8' />
                         </td>
                       </tr>
@@ -114,4 +121,25 @@ export default function HomePage (): JSX.Element {
       <Footer />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const user = verifyTokenCookie(req.cookies.token)
+  const { client } = await connectToDatabase()
+  try {
+    const userData: User = await client.db('data').collection('users').findOne({ _id: user.publicAddress })
+    const userFiles: File[] = await client.db('data').collection('documents').find({ collaborators: user.email }).toArray()
+    return {
+      props: {
+        userData: JSON.stringify(userData),
+        recentDocuments: [],
+        documentInvitations: [],
+        userFiles: userFiles.map(f => JSON.stringify(f))
+      }
+    }
+  } catch (error) {
+    return {
+      notFound: true
+    }
+  }
 }

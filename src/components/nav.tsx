@@ -2,10 +2,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from '@components/search'
 import { Edit2, MoreVertical, Plus } from '@kalissaac/react-feather'
-import type { jwtUser } from '@shared/cookies'
 import Image from 'next/image'
 import { createDocument } from '@shared/db'
 import Slideover from '@components/slideover'
+import type User from '@interfaces/user'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -14,7 +14,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
+export default function Nav ({ user }: { user: User }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
 
@@ -58,7 +58,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
 
         <div className='ml-8'>
           <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setSidebarOpen(!sidebarOpen)}>
-            {user.email} <MoreVertical aria-label='View More Icon' />
+            {user.name} <MoreVertical aria-label='View More Icon' />
           </button>
         </div>
 
@@ -68,7 +68,7 @@ export default function Nav ({ user }: { user: jwtUser }): JSX.Element {
   )
 }
 
-function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: jwtUser }): JSX.Element {
+function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: User }): JSX.Element {
   return (
     <Slideover setSlideoverOpen={setSidebarOpen} slideoverOpen={sidebarOpen}>
       <header className='px-4 sm:px-6'>
@@ -84,8 +84,9 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen
             </div>
             <div className='ml-5 flex-grow'>
               {/* <input id='username' type='text' className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all' placeholder='Enter your name' /> */}
-              <div className='font-semibold text-lg'>Russ Hanneman <button><Edit2 width='0.9em' height='0.9em' /></button></div>
+              <div className='font-semibold text-lg'>{user.name} <button><Edit2 width='0.9em' height='0.9em' /></button></div>
               <div className='font-mono'>{user.email}</div>
+              <div className='font-mono'>{user._id}</div>
             </div>
           </div>
         </div>

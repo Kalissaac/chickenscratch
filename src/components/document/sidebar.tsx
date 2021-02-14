@@ -1,6 +1,6 @@
 import Slideover from '@components/slideover'
 
-export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
+export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, activeDocument }: { setSidebarOpen: Function, sidebarOpen: boolean, activeDocument: any }): JSX.Element {
   return (
     <Slideover slideoverOpen={sidebarOpen} setSlideoverOpen={setSidebarOpen}>
       <header className='px-4 sm:px-6'>

@@ -1,5 +1,6 @@
 import { serialize } from 'cookie'
 import type { NextApiResponse } from 'next'
+import jwt from 'jsonwebtoken'
 
 const TOKEN_NAME = 'token'
 const MAX_AGE = 60 * 60 * 24 * 7 // 1 week
@@ -24,6 +25,10 @@ export function removeTokenCookie (res: NextApiResponse): void {
   })
 
   res.setHeader('Set-Cookie', cookie)
+}
+
+export function verifyTokenCookie (token: string): jwtUser {
+  return jwt.verify(token, process.env.JWT_SECRET ?? '') as jwtUser
 }
 
 export interface jwtUser {
