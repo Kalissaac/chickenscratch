@@ -27,8 +27,8 @@ export default function HomePage (props): JSX.Element {
   const userFiles: File[] = props.userFiles.map((f: string) => JSON.parse(f))
   const router = useRouter()
 
-  const activeTabClasses = 'font-medium border-gray-darker'
-  const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 border-transparent'
+  const activeTabClasses = 'font-medium border-gray-darker dark:border-gray-lighter'
+  const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500 border-transparent'
 
   return (
     <>

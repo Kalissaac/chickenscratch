@@ -14,7 +14,7 @@ export default function DocumentEditPage (props): JSX.Element {
   return (
     <>
       <Head>
-        <title>{activeDocument.title} | Parchment</title>
+        <title>{activeDocument.title !== '' ? activeDocument.title : 'Untitled Document'} | Parchment</title>
       </Head>
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />
       <Titlebar setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />
