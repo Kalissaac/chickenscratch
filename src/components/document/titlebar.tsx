@@ -6,12 +6,12 @@ export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { 
   const router = useRouter()
 
   useEffect(() => {
-    const input = document.getElementById('doctitle') as HTMLInputElement
-    if (input !== null) {
-      input.setAttribute('value', activeDocument.title as string)
-      input.size = Math.max(input?.value.length, 10)
+    const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
+    if (docTitle !== null) {
+      docTitle.setAttribute('value', activeDocument.title as string)
+      docTitle.size = Math.max(docTitle.value.length || docTitle.placeholder.length, 10)
     }
-  }, [activeDocument.id])
+  }, [activeDocument.title])
 
   return (
     <div className='p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 opacity-80' style={{ backdropFilter: 'blur(24px)' }}>
