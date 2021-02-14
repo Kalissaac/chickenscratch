@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import SearchBar from '@components/search'
 import { Edit2, MoreVertical, Plus } from '@kalissaac/react-feather'
 import Image from 'next/image'
-import { createDocument } from '@shared/db'
 import Slideover from '@components/slideover'
+import { useRouter } from 'next/router'
 import type User from '@interfaces/user'
 
 const links = [
@@ -17,6 +17,7 @@ const links = [
 export default function Nav ({ user }: { user: User }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const intersection = new IntersectionObserver(([entry], observer) => {
@@ -25,10 +26,8 @@ export default function Nav ({ user }: { user: User }): JSX.Element {
       threshold: [0.1, 1.0]
     })
 
-    const homeSearch = document.getElementById('homesearch') as Element
-    if (homeSearch !== null) {
-      intersection.observe(homeSearch)
-    }
+    const homeSearch = document.getElementById('homesearch') as Element | null
+    if (homeSearch) intersection.observe(homeSearch)
 
     return () => {
       intersection.disconnect()
@@ -53,7 +52,7 @@ export default function Nav ({ user }: { user: User }): JSX.Element {
             <SearchBar />
           }
           {/* Button is out here to set navbar height so it's consistent in both states */}
-          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={createDocument}><Plus /></button>
+          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/api/document/create')}><Plus /></button>
         </div>
 
         <div className='ml-8'>

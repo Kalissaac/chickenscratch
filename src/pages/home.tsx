@@ -37,7 +37,7 @@ export default function HomePage (props): JSX.Element {
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 gap-4' id='homesearch'>
-          <button className='bg-accent-1-500 focus:border-gray-darker focus:outline-none basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={createDocument}><Plus size='1.25em' aria-label='Plus Icon' /> New Document</button>
+          <button className='bg-accent-1-500 focus:border-gray-darker focus:outline-none basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/api/document/create')}><Plus size='1.25em' aria-label='Plus Icon' /> New Document</button>
           <SearchBar />
         </div>
 
