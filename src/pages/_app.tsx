@@ -8,6 +8,7 @@ import Toast from '@components/toast'
 import NProgress from 'nprogress'
 import '@styles/nprogress.css'
 import { useEffect } from 'react'
+import { SWRConfig } from 'swr'
 
 NProgress.configure({ showSpinner: false })
 
@@ -29,6 +30,17 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
     }
   }, [])
 
+  const fetcher = async (url: RequestInfo): Promise<any> => {
+    const res = await fetch(url)
+    // If the status code is not in the range 200-299,
+    // we still try to parse and throw it.
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching the data.')
+    }
+    // eslint-disable-next-line @typescript-eslint/return-await
+    return res.json()
+  }
+
   return (
     <ThemeProvider defaultTheme='system' attribute='class'>
       <Head>
@@ -41,9 +53,11 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
         <link rel='manifest' href='/site.webmanifest' /> */}
       </Head>
 
-      <ToastProvider autoDismiss components={{ Toast: Toast }} placement='bottom-right'>
-        <Component {...pageProps} />
-      </ToastProvider>
+      <SWRConfig value={{ fetcher }}>
+        <ToastProvider autoDismiss components={{ Toast: Toast }} placement='bottom-right'>
+          <Component {...pageProps} />
+        </ToastProvider>
+      </SWRConfig>
     </ThemeProvider>
   )
 }

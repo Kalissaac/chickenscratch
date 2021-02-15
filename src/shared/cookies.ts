@@ -28,7 +28,7 @@ export function removeTokenCookie (res: NextApiResponse): void {
 }
 
 export function verifyTokenCookie (token: string): jwtUser {
-  return jwt.verify(token, process.env.JWT_SECRET ?? '') as jwtUser
+  return jwt.verify(token ?? '', process.env.JWT_SECRET ?? '') as jwtUser
 }
 
 export interface jwtUser {
