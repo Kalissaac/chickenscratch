@@ -1,23 +1,29 @@
-import jwt from 'jsonwebtoken'
 import { setTokenCookie, verifyTokenCookie } from '@shared/cookies'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '@shared/mongo'
-import User from '@interfaces/user'
+import type User from '@interfaces/user'
+import SignJWT from 'jose/jwt/sign'
+
+const JWT_SECRET = process.env.JWT_SECRET ?? ''
+if (!JWT_SECRET) throw new Error('No JWT secret environment variable found')
 
 export default async function GetUser (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   try {
     if (req.cookies.token === '') throw new Error('No user token cookie available')
-    if (!process.env.JWT_SECRET) throw new Error('No JWT secret environment variable found')
 
-    const { issuer, publicAddress, email } = verifyTokenCookie(req.cookies.token)
-    const newToken = jwt.sign({
-      issuer,
-      publicAddress,
-      email,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 // one week
-    },
-    process.env.JWT_SECRET)
-    setTokenCookie(res, newToken)
+    const { iss, publicAddress, email, iat } = await verifyTokenCookie(req.cookies.token)
+    if ((Date.now() / 1000) - iat > 3600) { // if token was created more than an hour ago, refresh it
+      const newToken = await new SignJWT({
+        publicAddress,
+        email
+      })
+        .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+        .setIssuedAt()
+        .setExpirationTime('1 week')
+        .setIssuer(iss)
+        .sign(Buffer.from(JWT_SECRET))
+      setTokenCookie(res, newToken)
+    }
 
     const { client } = await connectToDatabase()
     const user: User = await client.db('data').collection('users').findOne({ _id: publicAddress })

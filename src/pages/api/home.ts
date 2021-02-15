@@ -7,7 +7,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     if (req.cookies.token === '') throw new Error('NOAUTH: No user token cookie available')
     if (!process.env.JWT_SECRET) throw new Error('INTERNAL: No JWT secret environment variable found')
 
-    const { email } = verifyTokenCookie(req.cookies.token)
+    const { email } = await verifyTokenCookie(req.cookies.token)
 
     const { client } = await connectToDatabase()
     const allFiles: File[] = await client.db('data').collection('documents').find({ collaborators: email }).toArray()

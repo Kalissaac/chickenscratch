@@ -2,17 +2,8 @@ import { MongoClient, Db } from 'mongodb'
 
 const { MONGODB_URI, MONGODB_DB } = process.env
 
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  )
-}
-
-if (!MONGODB_DB) {
-  throw new Error(
-    'Please define the MONGODB_DB environment variable inside .env.local'
-  )
-}
+if (!MONGODB_URI) throw new Error('MONGODB_URI environment variable not found!')
+if (!MONGODB_DB) throw new Error('MONGODB_DB environment variable not found!')
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

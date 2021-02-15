@@ -1,9 +1,11 @@
 import { serialize } from 'cookie'
 import type { NextApiResponse } from 'next'
-import jwt from 'jsonwebtoken'
+import jwtVerify from 'jose/jwt/verify'
 
 const TOKEN_NAME = 'token'
 const MAX_AGE = 60 * 60 * 24 * 7 // 1 week
+
+if (!process.env.JWT_SECRET) throw new Error('MONGODB_URI environment variable not found!')
 
 export function setTokenCookie (res: NextApiResponse, token: string): void {
   const cookie = serialize(TOKEN_NAME, token, {
@@ -27,12 +29,17 @@ export function removeTokenCookie (res: NextApiResponse): void {
   res.setHeader('Set-Cookie', cookie)
 }
 
-export function verifyTokenCookie (token: string): jwtUser {
-  return jwt.verify(token ?? '', process.env.JWT_SECRET ?? '') as jwtUser
+export async function verifyTokenCookie (token: string): Promise<jwtUser> {
+  try {
+    const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET ?? ''))
+    return result.payload as jwtUser
+  } catch (error) {
+    throw new Error(error)
+  }
 }
 
 export interface jwtUser {
-  issuer: string
+  iss: string
   email: string
   publicAddress: string
   iat: number

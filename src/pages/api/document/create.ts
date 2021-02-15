@@ -4,8 +4,7 @@ import { connectToDatabase } from '@shared/mongo'
 
 export default async function CreateDocument (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   try {
-    const user = verifyTokenCookie(req.cookies.token)
-    if (user === '') throw new Error('Not authenticated')
+    const user = await verifyTokenCookie(req.cookies.token)
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('documents').insertOne({
       title: '',
