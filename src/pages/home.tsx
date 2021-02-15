@@ -1,6 +1,7 @@
 import Card from '@components/card'
 import Footer from '@components/footer'
 import InitialLoader from '@components/loader'
+import ErrorPage from '@components/error'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
@@ -8,24 +9,24 @@ import { FileText, Info, Plus } from '@kalissaac/react-feather'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import DocumentPreview from '@components/document/preview'
-import { GetServerSideProps } from 'next'
-import { connectToDatabase } from '@shared/mongo'
-import { verifyTokenCookie } from '@shared/cookies'
-import type User from '@interfaces/user'
 import type File from '@interfaces/file'
+import useSWR from 'swr'
 
-export default function HomePage (props): JSX.Element {
-  const userToken = useUser('/login')
+export default function HomePage (): JSX.Element {
+  const { user, loading: userLoading, error: userError } = useUser()
   const [activeTab, setActiveTab] = useState('recentEdit')
   const [activeDocumentPreview, setActiveDocumentPreview] = useState<any | null>(null)
-  if (!userToken) {
+  const { data: pageData, error: dataError } = useSWR('/api/home')
+  const router = useRouter()
+
+  if (userLoading) {
     return <InitialLoader />
   }
+  if (userError) {
+    return <ErrorPage error={userError} />
+  }
 
-  const user: User = JSON.parse(props.userData)
-  console.log(user)
-  const userFiles: File[] = props.userFiles.map((f: string) => JSON.parse(f))
-  const router = useRouter()
+  const dataLoading = !pageData && !dataError
 
   const activeTabClasses = 'font-medium border-gray-darker dark:border-gray-lighter'
   const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500 border-transparent'
@@ -46,15 +47,14 @@ export default function HomePage (props): JSX.Element {
           <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
         </div>
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
-          {activeTab === 'recentEdit' && Array(4).fill({}).map(() => (
-            <Card key={Math.random() * 100}>
-              <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam officia, quae labore totam possimus laudantium dolorem consequuntur dolore iste architecto quasi doloremque nobis sequi repudiandae est laborum velit dicta quisquam.</div>
-            </Card>
+          {dataLoading &&
+            <div>shits loading dawg chill tf out</div>
+          }
+          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: File) => (
+            <Card key={file._id} file={file} />
           ))}
-          {activeTab === 'invitations' && Array(5).fill({}).map(() => (
-            <Card key={Math.random() * 100}>
-              <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta quod similique saepe voluptas quis quas harum quisquam. Ea voluptatum provident minima libero eaque. Sit consequatur deleniti, nihil magnam est tempora, fugiat officia, possimus aspernatur nesciunt fugit et dolorum id? Molestias suscipit aut quasi sit temporibus sint asperiores enim reiciendis quidem.</div>
-            </Card>
+          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: File) => (
+            <Card key={file._id} file={file} />
           ))}
         </div>
 
@@ -83,8 +83,11 @@ export default function HomePage (props): JSX.Element {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
-                    {userFiles.map(file => (
-                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
+                    {dataLoading &&
+                      <div>shits loading dawg chill tf out</div>
+                    }
+                    {pageData?.allFiles.map((file: File) => (
+                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center text-sm font-medium">
                             <FileText className='mr-4 text-base' />
@@ -121,25 +124,4 @@ export default function HomePage (props): JSX.Element {
       <Footer />
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const user = verifyTokenCookie(req.cookies.token)
-  const { client } = await connectToDatabase()
-  try {
-    const userData: User = await client.db('data').collection('users').findOne({ _id: user.publicAddress })
-    const userFiles: File[] = await client.db('data').collection('documents').find({ collaborators: user.email }).toArray()
-    return {
-      props: {
-        userData: JSON.stringify(userData),
-        recentDocuments: [],
-        documentInvitations: [],
-        userFiles: userFiles.map(f => JSON.stringify(f))
-      }
-    }
-  } catch (error) {
-    return {
-      notFound: true
-    }
-  }
 }
