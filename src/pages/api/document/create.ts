@@ -15,6 +15,7 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
     res.redirect(`/d/${newFileRef.insertedId as string}/edit`)
     res.end()
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 }

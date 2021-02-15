@@ -5,7 +5,7 @@ import { connectToDatabase } from '@shared/mongo'
 export default async function GetHomepageData (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
   try {
-    if (req.cookies.token === '') {
+    if (!req.cookies.token) {
       error.name = 'USER_NOT_AUTHENTICATED'
       error.message = 'No authentication token provided'
       throw error
@@ -17,7 +17,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     }
 
     const { email } = await verifyTokenCookie(req.cookies.token)
-    if (req.cookies.token === '') {
+    if (!email) {
       error.name = 'USER_NOT_AUTHENTICATED'
       error.message = 'User email could not be decoded from JWT'
       throw error
@@ -41,6 +41,6 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     res.status(200).json({ allFiles, recentFiles })
   } catch (error) {
     console.error(error)
-    res.status(401).json({ user: null, message: error.name })
+    res.status(500).json({ user: null, message: error.name })
   }
 }

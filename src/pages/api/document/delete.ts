@@ -15,6 +15,7 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
     if (deletionResult.ok !== 1) throw new Error('Database could not delete document!')
     res.status(200).json({ success: true })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 }

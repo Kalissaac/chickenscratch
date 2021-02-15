@@ -35,7 +35,10 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
     // If the status code is not in the range 200-299,
     // we still try to parse and throw it.
     if (!res.ok) {
-      throw new Error('An error occurred while fetching the data.')
+      const error = new Error()
+      error.name = 'DATA_FETCHING_FAIL'
+      error.message = await res.json()
+      throw error
     }
     // eslint-disable-next-line @typescript-eslint/return-await
     return res.json()

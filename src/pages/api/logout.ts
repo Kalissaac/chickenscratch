@@ -12,6 +12,7 @@ export default async function logout (req: NextApiRequest, res: NextApiResponse)
     res.redirect('/login')
     res.end()
   } catch (error) {
+    console.error(error)
     res.status(401).json({ message: 'User is not logged in' })
   }
 }

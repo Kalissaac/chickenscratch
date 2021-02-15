@@ -42,6 +42,6 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
     res.status(200).json({ user })
   } catch (error) {
     console.error(error)
-    res.status(401).json({ user: null, message: error.name })
+    res.status(500).json({ user: null, message: error.name })
   }
 }

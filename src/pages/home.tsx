@@ -1,7 +1,6 @@
 import Card from '@components/card'
 import Footer from '@components/footer'
 import InitialLoader from '@components/loader'
-import ErrorPage from '@components/error'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { useUser } from '@shared/hooks'
@@ -23,7 +22,10 @@ export default function HomePage (): JSX.Element {
     return <InitialLoader />
   }
   if (userError) {
-    return <ErrorPage error={userError} />
+    throw userError
+  }
+  if (dataError) {
+    throw dataError
   }
 
   const dataLoading = !pageData && !dataError
@@ -48,7 +50,7 @@ export default function HomePage (): JSX.Element {
         </div>
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
           {dataLoading &&
-            <div>shits loading dawg chill tf out</div>
+            <div>loading cards</div>
           }
           {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: File) => (
             <Card key={file._id} file={file} />
@@ -84,7 +86,7 @@ export default function HomePage (): JSX.Element {
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
                     {dataLoading &&
-                      <div>shits loading dawg chill tf out</div>
+                      <div>loading files</div>
                     }
                     {pageData?.allFiles.map((file: File) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>

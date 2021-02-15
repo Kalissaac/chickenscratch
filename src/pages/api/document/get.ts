@@ -13,6 +13,7 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
     if (!requestedDocument.collaborators.includes(user.email)) throw new Error('User not authorized or document doesn\'t exist!')
     res.status(200).json({ document: requestedDocument })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 }

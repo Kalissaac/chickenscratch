@@ -7,7 +7,7 @@ export function useUser (): { user: User, loading: boolean, error: Error } {
   const { data, error } = useSWR('/api/user')
 
   useEffect(() => {
-    if (error) Router.push('/login').catch(console.error)
+    if (error?.name === 'USER_NOT_AUTHENTICATED') Router.push('/login').catch(console.error)
   }, [error])
 
   return {

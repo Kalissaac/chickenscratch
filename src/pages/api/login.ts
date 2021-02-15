@@ -20,6 +20,7 @@ export default async function login (req: NextApiRequest, res: NextApiResponse):
     setTokenCookie(res, token)
     res.status(200).json({ done: true })
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: error.message })
   }
 }
