@@ -16,7 +16,7 @@ export default async function login (req: NextApiRequest, res: NextApiResponse):
       .setIssuedAt()
       .setExpirationTime('1 week')
       .setIssuer(metadata.issuer ?? '')
-      .sign(Buffer.from(process.env.JWT_SECRET ?? ''))
+      .sign(Buffer.from(process.env.JWT_SECRET ?? '', 'base64'))
     setTokenCookie(res, token)
     res.status(200).json({ done: true })
   } catch (error) {

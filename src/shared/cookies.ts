@@ -31,7 +31,7 @@ export function removeTokenCookie (res: NextApiResponse): void {
 
 export async function verifyTokenCookie (token: string): Promise<jwtUser> {
   try {
-    const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET ?? ''))
+    const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET ?? '', 'base64'))
     return result.payload as jwtUser
   } catch (error) {
     throw new Error(error)
