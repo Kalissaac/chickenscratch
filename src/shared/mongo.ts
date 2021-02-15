@@ -41,6 +41,8 @@ export async function connectToDatabase (): Promise<{ client: MongoClient, db: D
         client,
         db: client.db(MONGODB_DB)
       }
+    }).catch(e => {
+      throw new Error(e)
     })
   }
   cached.conn = await cached.promise
