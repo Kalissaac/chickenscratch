@@ -32,16 +32,16 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
 
   const fetcher = async (url: RequestInfo): Promise<any> => {
     const res = await fetch(url)
+    const data = await res.json()
     // If the status code is not in the range 200-299,
     // we still try to parse and throw it.
     if (!res.ok) {
-      const error = new Error()
-      error.name = 'DATA_FETCHING_FAIL'
-      error.message = await res.json()
+      const error = new Error(data)
+      error.name = data.message ?? 'UNKNOWN_ERROR'
       throw error
     }
-    // eslint-disable-next-line @typescript-eslint/return-await
-    return res.json()
+
+    return data
   }
 
   return (

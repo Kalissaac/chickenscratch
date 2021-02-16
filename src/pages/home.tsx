@@ -14,17 +14,21 @@ import useSWR from 'swr'
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
   const [activeTab, setActiveTab] = useState('recentEdit')
-  const [activeDocumentPreview, setActiveDocumentPreview] = useState<any | null>(null)
-  const { data: pageData, error: dataError } = useSWR('/api/home')
+  const [activeDocumentPreview, setActiveDocumentPreview] = useState<File | null>(null)
+  const { data: pageData, error: dataError } = useSWR(user ? '/api/home' : null)
   const router = useRouter()
 
   if (userLoading) {
     return <InitialLoader />
   }
   if (userError) {
+    if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
+    if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
     throw userError
   }
   if (dataError) {
+    if (dataError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
+    if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
     throw dataError
   }
 
@@ -35,8 +39,10 @@ export default function HomePage (): JSX.Element {
 
   return (
     <>
-      <Nav user={user} />
-      <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
+      <Nav user={user} allFiles={pageData?.allFiles} />
+      {activeDocumentPreview &&
+        <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
+      }
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 space-x-4' id='homesearch'>
@@ -86,7 +92,7 @@ export default function HomePage (): JSX.Element {
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
                     {dataLoading &&
-                      <div>loading files</div>
+                      <tr><td>loading files</td></tr>
                     }
                     {pageData?.allFiles.map((file: File) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
@@ -108,7 +114,7 @@ export default function HomePage (): JSX.Element {
                             Active
                           </span>
                         </td>
-                        <td className="p-4 whitespace-nowrap text-right font-medium" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
+                        <td className="p-4 whitespace-nowrap text-right font-medium focus:bg-gray-100 dark:focus:bg-gray-800 focus:outline-none" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
                           <Info className='float-right mr-8' />
                         </td>
                       </tr>
