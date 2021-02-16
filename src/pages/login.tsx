@@ -4,7 +4,7 @@ import type { FormEvent } from 'react'
 import Head from 'next/head'
 import { Magic } from 'magic-sdk'
 import { WebAuthnExtension } from '@magic-ext/webauthn'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import { Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
 import { ChevronLeft } from '@kalissaac/react-feather'
@@ -12,9 +12,9 @@ import { ChevronLeft } from '@kalissaac/react-feather'
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
-  // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
-  const [magic, setMagic] = useState<Magic>(null)
+  const [magic, setMagic] = useState<Magic | null>(null)
   const { addToast } = useToasts()
+  const router = useRouter()
 
   useEffect(() => {
     magic === null &&
@@ -23,7 +23,7 @@ export default function LoginPage (): JSX.Element {
           extensions: [new WebAuthnExtension()]
         })
       )
-    magic?.preload() // eslint-disable-line @typescript-eslint/no-floating-promises
+    magic?.preload().catch(console.error)
   }, [magic])
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function LoginPage (): JSX.Element {
     if (withSecurityKey === 'on') {
       try {
         setLoginStep({ stage: 'securitykey', email })
-        const webauthn = magic.webauthn as WebAuthnExtension
+        const webauthn = magic?.webauthn as WebAuthnExtension
         const didToken = await webauthn.login({ username: email })
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
@@ -69,7 +69,7 @@ export default function LoginPage (): JSX.Element {
     } else {
       try {
         setLoginStep({ stage: 'email', email })
-        const didToken = await magic.auth.loginWithMagicLink({
+        const didToken = await magic?.auth.loginWithMagicLink({
           email,
           showUI: false
         })
@@ -93,8 +93,7 @@ export default function LoginPage (): JSX.Element {
         Authorization: 'Bearer ' + didToken
       }
     })
-    console.log(await res.json())
-    res.status === 200 && Router.push('/home')
+    res.status === 200 && router.push('/home')
   }
 
   function SecondaryStepWrapper ({ stage, secondary, prompt }: { stage: string, secondary: string, prompt: string }): JSX.Element {
@@ -166,7 +165,7 @@ export default function LoginPage (): JSX.Element {
 
       <SecondaryStepWrapper stage='securitykey' secondary='Plug in your security key to sign in with' prompt='Plug in your security key' />
 
-      <Image src='/images/loginbg.jpg' layout='fill' className='object-cover' />
+      <Image src='/images/loginbg.jpg' layout='fill' className='object-cover hidden md:visible' />
     </div>
   )
 }
