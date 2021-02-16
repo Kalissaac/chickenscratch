@@ -11,9 +11,9 @@ body {
   @apply bg-gray-lighter dark:bg-gray-darker text-gray-darker dark:text-gray-50 min-h-screen;
 }
 
-body * {
-  @apply focus:outline-black;
-}
+/* body * {
+  @apply focus:outline-black dark:focus:outline-white;
+} */
 
 .basis {
   @apply rounded-lg shadow-lg hover:shadow-xl focus:shadow-xl focus-within:shadow-xl border-transparent border-2 transition-all;

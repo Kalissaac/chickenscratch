@@ -16,6 +16,6 @@ export default function ErrorPage ({ statusCode }): JSX.Element {
 }
 
 ErrorPage.getInitialProps = ({ res, err }) => {
-  const statusCode = res?.statusCode ?? err?.statusCode ?? 404
+  const statusCode = res?.statusCode ?? err?.name ?? 418
   return { statusCode }
 }

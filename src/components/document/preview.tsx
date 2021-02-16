@@ -1,7 +1,8 @@
 import Slideover from '@components/slideover'
 import { useEffect, useState } from 'react'
+import type File from '@interfaces/file'
 
-export default function DocumentPreview ({ activeDocument, setActiveDocument }: { activeDocument: string | null, setActiveDocument: Function }): JSX.Element {
+export default function DocumentPreview ({ activeDocument, setActiveDocument }: { activeDocument: File, setActiveDocument: Function }): JSX.Element {
   const [slideoverOpen, setSlideoverOpen] = useState(false)
   useEffect(() => {
     setSlideoverOpen(activeDocument !== null)

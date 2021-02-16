@@ -41,6 +41,6 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     res.status(200).json({ allFiles, recentFiles })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ user: null, message: error.name })
+    res.status(500).json({ message: error.name })
   }
 }

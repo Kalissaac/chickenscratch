@@ -10,7 +10,7 @@ if (!JWT_SECRET) throw new Error('No JWT secret environment variable found')
 export default async function GetUser (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
   try {
-    if (req.cookies.token === '') {
+    if (!req.cookies.token) {
       error.name = 'USER_NOT_AUTHENTICATED'
       error.message = 'No authentication token provided'
       throw error
@@ -42,6 +42,6 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
     res.status(200).json({ user })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ user: null, message: error.name })
+    res.status(500).json({ message: error.name })
   }
 }
