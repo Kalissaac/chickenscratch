@@ -1,15 +1,18 @@
 import { useState } from 'react'
-import { Search as SearchIcon } from '@kalissaac/react-feather'
+import { Search as SearchIcon, FileText } from '@kalissaac/react-feather'
 import Fuse from 'fuse.js'
+import type File from '@interfaces/file'
+import Link from 'next/link'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
-const names = ['Applebee\'s', 'Baja Fresh', 'Bob Evans', 'Chili\'s', 'Brann\'s Steakhouse and Grille', 'Champps Americana', 'Carraba\'s', 'Cattlemens Steakhouse', 'Chick-fil-A', 'Cheeseburger in Paradise', 'California Pizza Kitchen', 'Country Cookin', 'Denny\'s', 'IHOP', 'East Side Mario\'s', 'Einstein Bros Bagels', 'Famous Dave\'s', 'Friendly\'s', 'Golden Corral', 'Hoss\'s Family Steak & Sea House', 'Lone Star Steakhouse', 'LongHorn Steakhouse', 'Max & Erma\'s', 'P.F. Chang\'s', 'On The Border', 'Outback Steakhouse', 'Red Robin', 'Perkins Restaurant & Bakery', 'Red Hot & Blue', 'Red Lobster', 'Ruby Tuesday', 'Shoney\'s', 'Starbucks', 'Tim Hortons', 'The Salt Lick', 'The Olive Garden', 'Texas Roadhouse', 'Uno Pizzeria & Grill', 'T.G.I. Fridays', 'Village Inn']
+dayjs.extend(relativeTime)
 
-export default function SearchBar ({ style }: { style?: Object }): JSX.Element {
-  // @ts-expect-error 2345 TypeScript doesn't like it when we initialize states with null
-  const [results, setResults] = useState<Fuse.FuseResult>(null)
+export default function SearchBar ({ files, style }: { files: File[], style?: Object }): JSX.Element {
+  const [results, setResults] = useState<Array<Fuse.FuseResult<File>> | null>(null)
 
   return (
-    <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400' style={style}>
+    <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400 relative' style={style}>
       <div className='flex items-center px-6' style={style}>
         <SearchIcon size='1.25em' aria-label='Search Icon' />
         <input
@@ -17,18 +20,28 @@ export default function SearchBar ({ style }: { style?: Object }): JSX.Element {
           onChange={async (e) => {
             const { value } = e.currentTarget
             // Dynamically load fuse.js
-            const fuse = new Fuse(names)
+            const fuse = new Fuse(files, {
+              keys: ['title', 'body']
+            })
 
             setResults(fuse.search(value))
           }}
         />
       </div>
       {results && results.length > 0 &&
-        <div className='absolute rounded-b-md bg-white dark:bg-gray-900 py-2 px-6 -mt-1' style={{ minWidth: '95rem' }}>
-          {results?.map((result: any) => (
-            <div>{result.item}</div>
+        <ol className='absolute rounded-b-md bg-white dark:bg-gray-900 text-gray-darker py-2 z-10 shadow-2xl -ring-offset-8 top-full left-0 right-0'>
+          {results.map(({ item: file }) => (
+            <li key={file._id}>
+              <Link href={`/d/${file._id}/edit`}>
+                <a className='w-full h-full bg-white hover:bg-gray-50 p-4 px-6 flex items-center'>
+                  <FileText size='1.25em' aria-label='File Icon' />
+                  <span className='ml-5'>{file.title}</span>
+                  <span className='ml-auto text-gray-500'>{dayjs().to(dayjs(file.lastModified))}</span>
+                </a>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ol>
       }
     </div>
   )

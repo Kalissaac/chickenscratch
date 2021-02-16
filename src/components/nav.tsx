@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Slideover from '@components/slideover'
 import { useRouter } from 'next/router'
 import type User from '@interfaces/user'
+import File from '@interfaces/file'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -14,7 +15,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user }: { user: User }): JSX.Element {
+export default function Nav ({ user, allFiles }: { user: User, allFiles: File[] }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
   const router = useRouter()
@@ -41,7 +42,7 @@ export default function Nav ({ user }: { user: User }): JSX.Element {
           <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
           {!scrolling &&
-            <ul className='flex gap-6 whitespace-nowrap'>
+            <ul className='flex space-x-6 whitespace-nowrap'>
               {links.map(({ href, label }) => (
                 <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:hover:text-gray-300 transition-all'>{label}</a></Link></li>
               ))}
@@ -49,15 +50,15 @@ export default function Nav ({ user }: { user: User }): JSX.Element {
           }
 
           {scrolling &&
-            <SearchBar />
+            <SearchBar files={allFiles} />
           }
           {/* Button is out here to set navbar height so it's consistent in both states */}
           <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/api/document/create')}><Plus /></button>
         </div>
 
         <div className='ml-8'>
-          <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex gap-1 items-center transition-all whitespace-nowrap' onClick={() => setSidebarOpen(!sidebarOpen)}>
-            {user.name} <MoreVertical aria-label='View More Icon' />
+          <button className='font-medium text-lg text-gray-800 dark:text-gray-50 hover:text-gray-500 dark:hover:text-gray-300 flex items-center transition-all whitespace-nowrap' onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {user.name} <MoreVertical className='ml-1' aria-label='View More Icon' />
           </button>
         </div>
 

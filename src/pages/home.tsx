@@ -39,9 +39,9 @@ export default function HomePage (): JSX.Element {
       <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
       <div className='lg:p-20 lg:pt-4'>
-        <div className='flex mb-12 gap-4' id='homesearch'>
-          <button className='bg-accent-1-500 focus:border-gray-darker focus:outline-none basis flex justify-center items-center gap-1 px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/api/document/create')}><Plus size='1.25em' aria-label='Plus Icon' /> New Document</button>
-          <SearchBar />
+        <div className='flex mb-12 space-x-4' id='homesearch'>
+          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/api/document/create')}><Plus size='1.25em' className='mr-1' aria-label='Plus Icon' /> New Document</button>
+          <SearchBar files={pageData?.allFiles} />
         </div>
 
         <div className='flex items-center mb-4'>
