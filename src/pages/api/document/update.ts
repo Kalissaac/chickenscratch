@@ -35,7 +35,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       throw error
     }
 
-    const updateRequest = await client.db('data').collection('documents').updateOne({ _id: ObjectId.createFromHexString(documentID) }, { $set: { body: requestBody.updatedBody } })
+    const updateRequest = await client.db('data').collection('documents').updateOne({ _id: ObjectId.createFromHexString(documentID) }, { $set: { ...requestBody.document, lastModified: new Date() } })
     if (updateRequest.result.ok !== 1) throw new Error('Database could not update document!')
 
     res.status(200).json({ success: true })

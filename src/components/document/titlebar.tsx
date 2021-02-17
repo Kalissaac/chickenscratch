@@ -8,7 +8,7 @@ export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { 
 
   useEffect(() => {
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
-    if (docTitle && activeDocument) {
+    if (docTitle && activeDocument && activeDocument.title !== 'Untitled Document') {
       docTitle.setAttribute('value', activeDocument.title as string)
       docTitle.size = Math.max(docTitle.value.length || docTitle.placeholder.length, 10)
     }

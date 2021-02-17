@@ -11,11 +11,15 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Fi
   const router = useRouter()
 
   useUnload((e?: BeforeUnloadEvent) => {
+    const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
     fetch('/api/document/update', {
       method: 'POST',
       body: JSON.stringify({
         id: activeDocument._id,
-        updatedBody: editorState.getCurrentContent().getPlainText()
+        document: {
+          title: docTitle?.value || activeDocument.title || 'Untitled Document', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+          body: editorState.getCurrentContent().getPlainText()
+        }
       })
     }).then(async r => {
       if (!r.ok) {

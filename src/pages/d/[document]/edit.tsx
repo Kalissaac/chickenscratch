@@ -32,7 +32,7 @@ export default function DocumentEditPage (): JSX.Element {
     <>
       <Head>
         {activeDocument &&
-         <title>{activeDocument.title || 'Untitled Document'} | Parchment</title>
+         <title>{activeDocument.title} | Parchment</title>
         }
       </Head>
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />

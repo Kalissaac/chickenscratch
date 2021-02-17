@@ -5,5 +5,5 @@ export default interface File {
   body: string
   collaborators: string[]
   tags: string[]
-  due: string
+  due?: string
 }

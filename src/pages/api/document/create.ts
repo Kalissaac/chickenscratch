@@ -7,8 +7,9 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
     const user = await verifyTokenCookie(req.cookies.token)
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('documents').insertOne({
-      title: '',
+      title: 'Untitled Document',
       body: '',
+      created: new Date(),
       lastModified: new Date(),
       collaborators: [user.email],
       tags: []
