@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { ChevronLeft, Info } from '@kalissaac/react-feather'
+import { SkeletonLine } from '@components/skeleton'
 
 export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { setSidebarOpen: Function, activeDocument: any }): JSX.Element {
   const router = useRouter()
@@ -18,11 +19,11 @@ export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { 
       <button className='self-stretch flex justify-center items-center' onClick={() => router.back()}><ChevronLeft /></button>
       {activeDocument
         ? <input id='doctitle' type='text' className='text-center font-serif outline-none bg-transparent focus:outline-none focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 transition-all' placeholder='Untitled Document' onChange={(e) => { e.currentTarget.size = Math.max(e.currentTarget.value.length, 10) }} />
-        : <div className="animate-pulse h-5 w-1/4 bg-gray-300 dark:bg-gray-600 rounded" />
+        : <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
       }
       {activeDocument
         ? <button className='self-stretch flex justify-center items-center' onClick={() => setSidebarOpen(true)}><Info /></button>
-        : <div className="self-stretch animate-pulse h-5 w-5 bg-gray-300 dark:bg-gray-600 rounded-full" />
+        : <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full' />
       }
     </div>
   )

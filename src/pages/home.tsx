@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import DocumentPreview from '@components/document/preview'
 import type File from '@interfaces/file'
 import useSWR from 'swr'
+import { SkeletonLine } from '@components/skeleton'
 
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
@@ -89,8 +90,30 @@ export default function HomePage (): JSX.Element {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
-                    {dataLoading &&
-                      <tr><td>loading files</td></tr>
+                    {dataLoading && Array(5).fill(0).map(() => (
+                      <tr className='focus:outline-none animate-pulse'>
+                        <td className="px-6 py-4 my-1 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <SkeletonLine className='mr-4' />
+                            <SkeletonLine width='3/4' />
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 my-1 whitespace-nowrap">
+                          <SkeletonLine width='2/4' />
+                        </td>
+                        <td className="px-6 py-4 my-1 whitespace-nowrap">
+                          <SkeletonLine width='1/4' />
+                        </td>
+                        <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
+                          {Array(3).fill(0).map(() => (
+                            <SkeletonLine width='1/3' />
+                          ))}
+                        </td>
+                        <td className="p-4 whitespace-nowrap">
+                          <SkeletonLine className='mr-8 float-right rounded-full' />
+                        </td>
+                      </tr>
+                    ))
                     }
                     {pageData?.allFiles.map((file: File) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>

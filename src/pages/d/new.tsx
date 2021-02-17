@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { DocumentSkeleton } from '@components/skeleton'
+import { DocumentSkeleton, SkeletonLine } from '@components/skeleton'
 import { ChevronLeft } from '@kalissaac/react-feather'
 
 export default function DocumentEditPage (): JSX.Element {
@@ -22,10 +22,10 @@ export default function DocumentEditPage (): JSX.Element {
 
   return (
     <>
-      <div className='p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 opacity-80 skeleton-loader' style={{ backdropFilter: 'blur(24px)' }}>
+      <div className='p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 opacity-80' style={{ backdropFilter: 'blur(24px)' }}>
         <button className='self-stretch flex justify-center items-center' onClick={() => router.back()}><ChevronLeft /></button>
-        <div className='animate-pulse h-5 my-4 w-1/4 bg-gray-300 dark:bg-gray-600 rounded' />
-        <div className='self-center animate-pulse h-5 w-5 bg-gray-300 dark:bg-gray-600 rounded-full' />
+        <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
+        <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full' />
       </div>
       <div className='p-32 px-56'>
         <DocumentSkeleton />
