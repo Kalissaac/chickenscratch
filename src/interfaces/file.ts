@@ -4,5 +4,6 @@ export default interface File {
   lastModified: string
   body: string
   collaborators: string[]
+  tags: string[]
   due: string
 }

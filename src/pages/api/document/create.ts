@@ -10,7 +10,8 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
       title: '',
       body: '',
       lastModified: new Date(),
-      collaborators: [user.email]
+      collaborators: [user.email],
+      tags: []
     })
     res.status(200).json({ document: { _id: newFileRef.insertedId } })
   } catch (error) {

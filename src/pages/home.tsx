@@ -10,7 +10,11 @@ import { useRouter } from 'next/router'
 import DocumentPreview from '@components/document/preview'
 import type File from '@interfaces/file'
 import useSWR from 'swr'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { SkeletonLine } from '@components/skeleton'
+
+dayjs.extend(relativeTime)
 
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
@@ -123,17 +127,21 @@ export default function HomePage (): JSX.Element {
                             {file.title}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm">Regional Paradigm Technician</div>
-                          <div className="text-sm text-gray-500">Optimization</div>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          Document
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          Admin
+                          {dayjs().to(dayjs(file.lastModified))}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
-                            Active
-                          </span>
+                          {file.tags.length > 0
+                            ? file.tags.map(tag => (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
+                                {tag}
+                              </span>
+                            ))
+                            : <span className="text-sm text-gray-500">No tags</span>
+                          }
                         </td>
                         <td className="p-4 whitespace-nowrap text-right font-medium focus:bg-gray-100 dark:focus:bg-gray-800 focus:outline-none" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
                           <Info className='float-right mr-8' />
