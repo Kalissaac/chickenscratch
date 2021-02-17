@@ -40,9 +40,7 @@ export default function HomePage (): JSX.Element {
   return (
     <>
       <Nav user={user} allFiles={pageData?.allFiles} />
-      {activeDocumentPreview &&
         <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
-      }
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 space-x-4' id='homesearch'>
