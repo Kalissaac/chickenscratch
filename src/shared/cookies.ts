@@ -5,7 +5,7 @@ import jwtVerify from 'jose/jwt/verify'
 const TOKEN_NAME = 'token'
 const MAX_AGE = 60 * 60 * 24 * 7 // 1 week
 
-if (!process.env.JWT_SECRET) throw new Error('MONGODB_URI environment variable not found!')
+if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable not found!')
 
 export function setTokenCookie (res: NextApiResponse, token: string): void {
   const cookie = serialize(TOKEN_NAME, token, {
@@ -30,11 +30,23 @@ export function removeTokenCookie (res: NextApiResponse): void {
 }
 
 export async function verifyTokenCookie (token: string): Promise<jwtUser> {
+  if (!token) {
+    const error = new Error()
+    error.name = 'USER_NOT_AUTHENTICATED'
+    error.message = 'No authentication token provided'
+    throw error
+  }
   try {
     const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET ?? '', 'base64'))
     return result.payload as jwtUser
-  } catch (error) {
-    throw new Error(error)
+  } catch (originalError) {
+    if (originalError.name === 'JWSSignatureVerificationFailed') {
+      const error = new Error()
+      error.name = 'USER_NOT_AUTHENTICATED'
+      error.message = 'JWT signature verification failed'
+      throw error
+    }
+    throw originalError
   }
 }
 
