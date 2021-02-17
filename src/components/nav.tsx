@@ -53,7 +53,7 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: File[] 
             <SearchBar files={allFiles} />
           }
           {/* Button is out here to set navbar height so it's consistent in both states */}
-          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/api/document/create')}><Plus /></button>
+          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/d/new')}><Plus /></button>
         </div>
 
         <div className='ml-8'>

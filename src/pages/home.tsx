@@ -40,11 +40,11 @@ export default function HomePage (): JSX.Element {
   return (
     <>
       <Nav user={user} allFiles={pageData?.allFiles} />
-        <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
+      <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 space-x-4' id='homesearch'>
-          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/api/document/create')}><Plus size='1.25em' className='mr-1' aria-label='Plus Icon' /> New Document</button>
+          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Plus Icon' /> New Document</button>
           <SearchBar files={pageData?.allFiles} />
         </div>
 
@@ -123,8 +123,6 @@ export default function HomePage (): JSX.Element {
             </div>
           </div>
         </div>
-
-        <div className='py-96' />
       </div>
 
       <Footer />
