@@ -19,7 +19,7 @@ export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { 
     <div className='sticky top-0 z-10 p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 bg-opacity-80' style={{ backdropFilter: 'blur(8px)' }}>
       <button className='self-stretch flex justify-center items-center ml-4' onClick={() => router.back()}><ChevronLeft /></button>
       {activeDocument
-        ? <input id='doctitle' type='text' className='text-center font-serif outline-none bg-transparent focus:outline-none focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 transition-all' placeholder='Untitled Document' onChange={(e) => { e.currentTarget.size = Math.max(e.currentTarget.value.length, 10) }} />
+        ? <input id='doctitle' type='text' className='text-center font-serif outline-none bg-transparent focus:outline-none focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 transition-all' placeholder='Untitled Document' onChange={(e) => { document.title = e.currentTarget.value + ' | Parchment'; e.currentTarget.size = Math.max(e.currentTarget.value.length, 10) }} />
         : <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
       }
       {activeDocument
