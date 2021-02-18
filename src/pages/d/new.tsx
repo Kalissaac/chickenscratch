@@ -23,9 +23,9 @@ export default function DocumentEditPage (): JSX.Element {
   return (
     <>
       <div className='p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 opacity-80' style={{ backdropFilter: 'blur(24px)' }}>
-        <button className='self-stretch flex justify-center items-center' onClick={() => router.back()}><ChevronLeft /></button>
+        <button className='self-stretch flex justify-center items-center ml-4' onClick={() => router.back()}><ChevronLeft /></button>
         <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
-        <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full' />
+        <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full mr-4' />
       </div>
       <div className='p-32 px-56'>
         <DocumentSkeleton />
