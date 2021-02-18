@@ -75,27 +75,27 @@ export default function HomePage (): JSX.Element {
               <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800" id='files'>
                   <thead className="bg-gray-50 dark:bg-gray-900">
-                    <tr className=' text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+                    <tr className='text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
                       <th scope="col" className="px-6 py-3">
                         Name
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 w-1/6">
                         Type
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 w-1/6">
                         Last Modified
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 w-1/6">
                         Tags
                       </th>
-                      <th scope="col" className="relative px-6 py-3">
+                      <th scope="col" className="relative px-6 py-3" style={{ width: '5%' }}>
                         <span className="sr-only">Edit</span>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
                     {dataLoading && Array(5).fill(0).map(() => (
-                      <tr className='focus:outline-none animate-pulse'>
+                      <tr key={Date.now()} className='focus:outline-none animate-pulse'>
                         <td className="px-6 py-4 my-1 whitespace-nowrap">
                           <div className="flex items-center">
                             <SkeletonLine className='mr-4' />
@@ -110,7 +110,7 @@ export default function HomePage (): JSX.Element {
                         </td>
                         <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
                           {Array(3).fill(0).map(() => (
-                            <SkeletonLine width='1/3' />
+                            <SkeletonLine key={Date.now()} width='1/3' />
                           ))}
                         </td>
                         <td className="p-4 whitespace-nowrap">
