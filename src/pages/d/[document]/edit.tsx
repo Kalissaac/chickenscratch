@@ -8,7 +8,7 @@ import { useUser } from '@shared/hooks'
 import { useRouter } from 'next/router'
 import InitialLoader from '@components/loader'
 import { DocumentSkeleton } from '@components/skeleton'
-import File from '@interfaces/file'
+import type File from '@interfaces/file'
 
 export default function DocumentEditPage (): JSX.Element {
   const router = useRouter()
@@ -37,7 +37,7 @@ export default function DocumentEditPage (): JSX.Element {
       </Head>
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />
       <Titlebar setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />
-      <div className='p-32 px-56'>
+      <div className='p-32 pt-16 px-96'>
         {activeDocument &&
           <Editor activeDocument={activeDocument} />
         }

@@ -8,7 +8,12 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('documents').insertOne({
       title: 'Untitled Document',
-      body: '',
+      body: [{
+        type: 'paragraph',
+        children: [{
+          text: ''
+        }]
+      }],
       created: new Date(),
       lastModified: new Date(),
       collaborators: [user.email],

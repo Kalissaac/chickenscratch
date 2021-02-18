@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Slideover from '@components/slideover'
 import { NextRouter, useRouter } from 'next/router'
 import type User from '@interfaces/user'
-import File from '@interfaces/file'
+import type File from '@interfaces/file'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -81,7 +81,7 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user, router }: { setSid
         <div className='absolute inset-0 px-4 sm:px-6 h-full'>
           <div className='flex items-center'>
             <div className='w-16 h-16 relative'>
-              <Image src='/images/user.jpg' layout='fill' objectFit='cover' className='rounded-full' />
+              <Image src='/images/user.jpg' alt='Profile picture' layout='fill' objectFit='cover' className='rounded-full' />
             </div>
             <div className='ml-5 flex-grow'>
               {/* <input id='username' type='text' className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all' placeholder='Enter your name' /> */}
