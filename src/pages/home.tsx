@@ -49,7 +49,7 @@ export default function HomePage (): JSX.Element {
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 space-x-4' id='homesearch'>
-          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Plus Icon' /> New Document</button>
+          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
           <SearchBar files={pageData?.allFiles} />
         </div>
 
@@ -123,7 +123,7 @@ export default function HomePage (): JSX.Element {
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center text-sm font-medium">
-                            <FileText className='mr-4 text-base' />
+                            <FileText className='mr-4 text-base' aria-label='Document Icon' />
                             {file.title}
                           </div>
                         </td>
@@ -144,7 +144,7 @@ export default function HomePage (): JSX.Element {
                           }
                         </td>
                         <td className="p-4 whitespace-nowrap text-right font-medium focus:bg-gray-100 dark:focus:bg-gray-800 focus:outline-none" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
-                          <Info className='float-right mr-8' />
+                          <Info className='float-right mr-8' aria-label='Information Icon' />
                         </td>
                       </tr>
                     ))}

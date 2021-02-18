@@ -4,7 +4,7 @@ import SearchBar from '@components/search'
 import { Edit2, MoreVertical, Plus } from '@kalissaac/react-feather'
 import Image from 'next/image'
 import Slideover from '@components/slideover'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import type User from '@interfaces/user'
 import File from '@interfaces/file'
 
@@ -53,7 +53,7 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: File[] 
             <SearchBar files={allFiles} />
           }
           {/* Button is out here to set navbar height so it's consistent in both states */}
-          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/d/new')}><Plus /></button>
+          <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' style={{ visibility: scrolling ? 'visible' : 'hidden' }} onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' /></button>
         </div>
 
         <div className='ml-8'>
@@ -63,18 +63,19 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: File[] 
         </div>
 
       </nav>
-      <ProfileSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} user={user} />
+      <ProfileSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} user={user} router={router} />
     </>
   )
 }
 
-function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen: Function, sidebarOpen: boolean, user: User }): JSX.Element {
+function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user, router }: { setSidebarOpen: Function, sidebarOpen: boolean, user: User, router: NextRouter }): JSX.Element {
   return (
     <Slideover setSlideoverOpen={setSidebarOpen} slideoverOpen={sidebarOpen}>
-      <header className='px-4 sm:px-6'>
+      <header className='px-4 sm:px-6 flex items-center justify-between'>
         <h2 className='text-lg leading-7 font-medium'>
           Profile
         </h2>
+        <button className='text-red-500 hover:text-red-600' onClick={() => { router.push('/api/logout').catch(() => { alert('Error logging out user') }) }}>Sign Out</button>
       </header>
       <div className='relative flex-1 px-4 sm:px-6'>
         <div className='absolute inset-0 px-4 sm:px-6 h-full'>
@@ -86,7 +87,6 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user }: { setSidebarOpen
               {/* <input id='username' type='text' className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all' placeholder='Enter your name' /> */}
               <div className='font-semibold text-lg'>{user.name} <button><Edit2 width='0.9em' height='0.9em' /></button></div>
               <div className='font-mono'>{user.email}</div>
-              <div className='font-mono'>{user._id}</div>
             </div>
           </div>
         </div>

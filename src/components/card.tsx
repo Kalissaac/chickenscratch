@@ -13,7 +13,7 @@ export default function Card ({ file }: { file: File }): JSX.Element {
           <div className='font-extralight text-xs'>{dayjs().to(dayjs(file.lastModified))} &#8226; {file.body.split(' ').length} {file.body.split(' ').length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</div>
           <h2 className='text-lg whitespace-nowrap overflow-ellipsis overflow-hidden'>{file.title}</h2>
         </div>
-        <div className='p-4 text-sm break-words' style={{ minHeight: '6rem' }}>
+        <div className='p-4 text-sm whitespace-pre-wrap break-words overflow-hidden overflow-ellipsis' style={{ minHeight: '6rem', maxHeight: '10rem' }}>
           {file.body}
         </div>
       </a>
