@@ -34,9 +34,11 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
     const user: User = await client.db('data').collection('users').findOne({ _id: publicAddress })
 
     if (!user) {
-      error.name = 'USER_NOT_FOUND'
-      error.message = 'MongoDB failed to locate user with id: ' + publicAddress
-      throw error
+      res.redirect('/onboarding')
+      return
+      // error.name = 'USER_NOT_FOUND'
+      // error.message = 'MongoDB failed to locate user with id: ' + publicAddress
+      // throw error
     }
 
     res.status(200).json({ user })
