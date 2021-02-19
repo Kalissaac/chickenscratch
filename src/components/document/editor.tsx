@@ -232,7 +232,7 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Pa
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
-        className='prose'
+        className='prose min-h-screen dark:text-gray-50'
       />
     </Slate>
   )

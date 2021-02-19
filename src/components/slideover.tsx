@@ -45,7 +45,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }
                     </button>
                   </div>
                 </Transition.Child>
-                <div className='h-full flex flex-col space-y-6 py-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
+                <div className='h-full flex flex-col space-y-6 py-6 px-4 sm:px-6 bg-white dark:bg-gray-900 space-y-4 shadow-xl overflow-y-scroll'>
                   {children}
                 </div>
               </div>

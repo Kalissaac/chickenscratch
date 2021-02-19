@@ -49,7 +49,7 @@ export default function HomePage (): JSX.Element {
 
       <div className='lg:p-20 lg:pt-4'>
         <div className='flex mb-12 space-x-4' id='homesearch'>
-          <button className='bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none basis flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
+          <button className='basis bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
           <SearchBar files={pageData?.allFiles} />
         </div>
 
