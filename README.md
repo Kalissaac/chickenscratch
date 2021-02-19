@@ -18,8 +18,8 @@ Or, for other platforms or in development, here's what your environment variable
 --------------------------
 MONGODB_URI=
 MONGODB_DB=data
-NEXT_PUBLICMAGIC_PUBLISHABLE_KEY=
+NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY=
 MAGIC_SECRET_KEY=
-NEXT_PUBLICSERVER_URL=<Your full server URL> or http://localhost:3000
+NEXT_PUBLIC_SERVER_URL=<Your full server URL> or http://localhost:3000
 JWT_SECRET=
 ```
