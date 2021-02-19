@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { Search as SearchIcon, FileText } from '@kalissaac/react-feather'
 import Fuse from 'fuse.js'
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
 
-export default function SearchBar ({ files, style }: { files: File[], style?: Object }): JSX.Element {
-  const [results, setResults] = useState<Array<Fuse.FuseResult<File>> | null>(null)
+export default function SearchBar ({ files, style }: { files: ParchmentDocument[], style?: Object }): JSX.Element {
+  const [results, setResults] = useState<Array<Fuse.FuseResult<ParchmentDocument>> | null>(null)
 
   return (
     <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400 relative' style={style}>

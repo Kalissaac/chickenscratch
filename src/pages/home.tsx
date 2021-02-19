@@ -8,7 +8,7 @@ import { FileText, Info, Plus } from '@kalissaac/react-feather'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import DocumentPreview from '@components/document/preview'
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 import useSWR from 'swr'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -19,7 +19,7 @@ dayjs.extend(relativeTime)
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
   const [activeTab, setActiveTab] = useState('recentEdit')
-  const [activeDocumentPreview, setActiveDocumentPreview] = useState<File | null>(null)
+  const [activeDocumentPreview, setActiveDocumentPreview] = useState<ParchmentDocument | null>(null)
   const { data: pageData, error: dataError } = useSWR(user ? '/api/home' : null)
   const router = useRouter()
 
@@ -61,10 +61,10 @@ export default function HomePage (): JSX.Element {
           {dataLoading &&
             <div>loading cards</div>
           }
-          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: File) => (
+          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => (
             <Card key={file._id} file={file} />
           ))}
-          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: File) => (
+          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => (
             <Card key={file._id} file={file} />
           ))}
         </div>
@@ -119,7 +119,7 @@ export default function HomePage (): JSX.Element {
                       </tr>
                     ))
                     }
-                    {pageData?.allFiles.map((file: File) => (
+                    {pageData?.allFiles.map((file: ParchmentDocument) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center text-sm font-medium">

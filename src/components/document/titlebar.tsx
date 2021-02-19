@@ -2,9 +2,9 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { ChevronLeft, Info } from '@kalissaac/react-feather'
 import { SkeletonLine } from '@components/skeleton'
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 
-export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { setSidebarOpen: Function, activeDocument: File }): JSX.Element {
+export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { setSidebarOpen: Function, activeDocument: ParchmentDocument }): JSX.Element {
   const router = useRouter()
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
+import type ParchmentDocument from '@interfaces/document'
 
 export default async function GetHomepageData (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
@@ -24,7 +25,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     }
 
     const { client } = await connectToDatabase()
-    const allFiles: File[] = await client.db('data').collection('documents')
+    const allFiles: ParchmentDocument[] = await client.db('data').collection('documents')
       .find({ collaborators: email })
       .collation({ locale: 'en' })
       .sort({ title: 1 })
@@ -35,7 +36,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
       throw error
     }
 
-    const recentFiles: File[] = await client.db('data').collection('documents')
+    const recentFiles: ParchmentDocument[] = await client.db('data').collection('documents')
       .find({ collaborators: email })
       .sort({ lastModified: -1 })
       .limit(5)

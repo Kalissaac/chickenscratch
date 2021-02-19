@@ -1,4 +1,4 @@
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 import { useUnload } from '@shared/hooks'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
@@ -162,7 +162,7 @@ const Element = ({ attributes, children, element }): JSX.Element => {
   }
 }
 
-export default function DocumentEditor ({ activeDocument }: { activeDocument: File }): JSX.Element {
+export default function DocumentEditor ({ activeDocument }: { activeDocument: ParchmentDocument }): JSX.Element {
   const editor = useMemo(() => withShortcuts(withReact(withHistory(createEditor()))), [])
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState<Node[]>(activeDocument.body)

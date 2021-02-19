@@ -1,4 +1,4 @@
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
@@ -10,7 +10,7 @@ const serialize = (nodes: Node[]): any => {
   return nodes.map(n => Node.string(n)).join('\n')
 }
 
-export default function Card ({ file }: { file: File }): JSX.Element {
+export default function Card ({ file }: { file: ParchmentDocument }): JSX.Element {
   const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
   return (
     <Link href={`/d/${file._id}/edit`}>

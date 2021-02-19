@@ -1,6 +1,6 @@
 import type { Node } from 'slate'
 
-export default interface File {
+export default interface ParchmentDocument {
   _id: string
   title: string
   lastModified: string

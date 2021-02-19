@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Slideover from '@components/slideover'
 import { NextRouter, useRouter } from 'next/router'
 import type User from '@interfaces/user'
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -15,7 +15,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user, allFiles }: { user: User, allFiles: File[] }): JSX.Element {
+export default function Nav ({ user, allFiles }: { user: User, allFiles: ParchmentDocument[] }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
   const router = useRouter()

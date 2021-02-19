@@ -8,14 +8,14 @@ import { useUser } from '@shared/hooks'
 import { useRouter } from 'next/router'
 import InitialLoader from '@components/loader'
 import { DocumentSkeleton } from '@components/skeleton'
-import type File from '@interfaces/file'
+import type ParchmentDocument from '@interfaces/document'
 
 export default function DocumentEditPage (): JSX.Element {
   const router = useRouter()
   const { user, error: userError } = useUser()
   const { data: pageData, error: dataError } = useSWR(user ? `/api/document/get?id=${router.query.document as string}` : null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const activeDocument: File = pageData?.document
+  const activeDocument: ParchmentDocument = pageData?.document
 
   if (userError) {
     if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />

@@ -1,6 +1,7 @@
 import Slideover from '@components/slideover'
+import type ParchmentDocument from '@interfaces/document'
 
-export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, activeDocument }: { setSidebarOpen: Function, sidebarOpen: boolean, activeDocument: any }): JSX.Element {
+export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, activeDocument }: { setSidebarOpen: Function, sidebarOpen: boolean, activeDocument: ParchmentDocument }): JSX.Element {
   return (
     <Slideover slideoverOpen={sidebarOpen} setSlideoverOpen={setSidebarOpen}>
       <header className='px-4 sm:px-6'>
