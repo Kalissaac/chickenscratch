@@ -2,7 +2,7 @@ import { setTokenCookie, signToken, verifyTokenCookie } from '@shared/cookies'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '@shared/mongo'
 import type User from '@interfaces/user'
-import SignJWT from 'jose/jwt/sign'
+import { responseHandler } from '@shared/error'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? ''
 if (!JWT_SECRET) throw new Error('No JWT secret environment variable found')
@@ -24,18 +24,13 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
 
     const { client } = await connectToDatabase()
     const user: User = await client.db('data').collection('users').findOne({ _id: publicAddress })
-
     if (!user) {
       res.redirect('/onboarding')
       return
-      // error.name = 'USER_NOT_FOUND'
-      // error.message = 'MongoDB failed to locate user with id: ' + publicAddress
-      // throw error
     }
 
-    res.status(200).json({ user })
+    res.json({ user })
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: error.name })
+    responseHandler(error, res)
   }
 }

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
 import type ParchmentDocument from '@interfaces/document'
+import { responseHandler } from '@shared/error'
 
 export default async function UpdateDocument (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
@@ -16,7 +17,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
     const user = await verifyTokenCookie(req.cookies.token)
     if (!user) {
       error.name = 'USER_NOT_AUTHENTICATED'
-      error.message = 'User email could not be decoded from JWT'
+      error.message = 'User data could not be decoded from JWT'
       throw error
     }
 
@@ -31,16 +32,8 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
     const updateRequest = await client.db('data').collection('users').updateOne({ _id: user.publicAddress }, { $set: { ...requestBody.user, lastModified: new Date() } })
     if (updateRequest.result.ok !== 1) throw new Error('Database could not update document!')
 
-    res.status(200).json({ success: true })
+    res.json({ success: true })
   } catch (error) {
-    console.error(error)
-    switch (error.name) {
-      case 'NO_ID_SPECIFIED':
-        res.status(404).json({ error: error.name })
-        break
-      default:
-        res.status(500).json({ error: error.name })
-        break
-    }
+    responseHandler(error, res)
   }
 }
