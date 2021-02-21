@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import InitialLoader from '@components/loader'
 import { DocumentSkeleton } from '@components/skeleton'
 import type ParchmentDocument from '@interfaces/document'
+import NotFoundPage from 'pages/404'
 
 export default function DocumentEditPage (): JSX.Element {
   const router = useRouter()
@@ -25,6 +26,7 @@ export default function DocumentEditPage (): JSX.Element {
   if (dataError) {
     if (dataError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
     if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
+    if (dataError.name === 'FILE_NOT_FOUND') return <NotFoundPage />
     throw dataError
   }
 

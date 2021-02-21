@@ -36,8 +36,8 @@ function App ({ Component, pageProps }: AppProps): JSX.Element {
     // If the status code is not in the range 200-299,
     // we still try to parse and throw it.
     if (!res.ok) {
-      const error = new Error(data)
-      error.name = data.message ?? 'UNKNOWN_ERROR'
+      const error = new Error(JSON.stringify(data))
+      error.name = data.error ?? 'UNKNOWN_ERROR'
       throw error
     }
 

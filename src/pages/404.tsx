@@ -1,9 +1,13 @@
 import { Home } from '@kalissaac/react-feather'
+import Head from 'next/head'
 import Link from 'next/link'
 
 export default function NotFoundPage (): JSX.Element {
   return (
     <>
+      <Head>
+        <title>Not Found | Parchment</title>
+      </Head>
       <div className='flex flex-col justify-center items-center h-screen'>
         <h1 className='font-bold font-serif text-4xl mb-4'>Oh snap!</h1>
         <h3 className='font-medium text-lg mb-8'>We couldn't find the page you requested.</h3>
