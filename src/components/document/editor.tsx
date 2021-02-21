@@ -1,4 +1,4 @@
-import type ParchmentDocument from '@interfaces/document'
+import ParchmentDocument, { compareDocuments } from '@interfaces/document'
 import { useUnload } from '@shared/hooks'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
@@ -171,21 +171,24 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Pa
 
   useUnload((e?: BeforeUnloadEvent) => {
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
+    const updatedDocument = {
+      ...activeDocument,
+      title: docTitle?.value || 'Untitled Document', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+      body: value
+    }
+    if (compareDocuments(activeDocument, updatedDocument)) return
     fetch('/api/document/update', {
       method: 'POST',
       body: JSON.stringify({
         id: activeDocument._id,
-        document: {
-          title: docTitle?.value || 'Untitled Document', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-          body: value
-        }
+        document: updatedDocument
       })
     }).then(async r => {
       if (!r.ok) {
         const data = await r.json()
         throw new Error(data.error)
       }
-      mutate(`/api/document/get?id=${activeDocument._id}`, { ...activeDocument, body: value }).catch(err => {
+      mutate(`/api/document/get?id=${activeDocument._id}`, updatedDocument).catch(err => {
         throw err
       })
     }).catch(err => {
