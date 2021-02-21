@@ -12,7 +12,7 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
   const [results, setResults] = useState<Array<Fuse.FuseResult<ParchmentDocument>> | null>(null)
 
   return (
-    <div className='bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400 relative' style={style}>
+    <div className={`bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-200 basis h-full flex-grow focus-within:border-gray-400 relative ${results && results.length > 0 ? 'rounded-b-none' : ''}`} style={style}>
       <div className='flex items-center px-6' style={style}>
         <SearchIcon size='1.25em' aria-label='Search Icon' />
         <input
@@ -21,16 +21,19 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
             const { value } = e.currentTarget
             // Dynamically load fuse.js
             const fuse = new Fuse(files, {
-              keys: ['title', 'body'],
+              keys: ['title', 'body.children.text'],
               includeMatches: true
             })
 
             setResults(fuse.search(value))
           }}
+          onBlur={() => {
+            setResults(null)
+          }}
         />
       </div>
       {results && results.length > 0 &&
-        <ol className='absolute rounded-b-lg bg-white dark:bg-gray-800 text-gray-darker dark:text-gray-lighter border-2 border-t-0 border-gray-400 py-2 z-10 shadow-2xl top-full left-0 right-0'>
+        <ol className='absolute rounded-b-lg bg-white dark:bg-gray-800 text-gray-darker dark:text-gray-lighter border-2 border-t-0 border-gray-400 py-2 z-10 shadow-2xl top-full -left-0.5 -right-0.5'>
           {results.map(({ item: file, matches }) => (
             <li key={file._id}>
               <Link href={`/d/${file._id}/edit`}>
