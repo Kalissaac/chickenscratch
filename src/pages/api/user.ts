@@ -1,4 +1,4 @@
-import { setTokenCookie, verifyTokenCookie } from '@shared/cookies'
+import { setTokenCookie, signToken, verifyTokenCookie } from '@shared/cookies'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '@shared/mongo'
 import type User from '@interfaces/user'
@@ -18,15 +18,7 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
 
     const { iss, publicAddress, email, iat } = await verifyTokenCookie(req.cookies.token)
     if ((Date.now() / 1000) - iat > 3600) { // if token was created more than an hour ago, refresh it
-      const newToken = await new SignJWT({
-        publicAddress,
-        email
-      })
-        .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
-        .setIssuedAt()
-        .setExpirationTime('1 week')
-        .setIssuer(iss)
-        .sign(Buffer.from(JWT_SECRET, 'base64'))
+      const newToken = await signToken({ publicAddress, email, issuer: iss })
       setTokenCookie(res, newToken)
     }
 

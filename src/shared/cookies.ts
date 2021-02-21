@@ -1,11 +1,26 @@
 import { serialize } from 'cookie'
 import type { NextApiResponse } from 'next'
 import jwtVerify from 'jose/jwt/verify'
+import SignJWT from 'jose/jwt/sign'
 
 const TOKEN_NAME = 'token'
 const MAX_AGE = 60 * 60 * 24 * 7 // 1 week
 
-if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable not found!')
+export async function signToken (metadata: any): Promise<string> {
+  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable not found!')
+
+  const token = await new SignJWT({
+    email: metadata.email,
+    publicAddress: metadata.publicAddress
+  })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setIssuedAt()
+    .setExpirationTime('1 week')
+    .setIssuer(metadata.issuer ?? '')
+    .sign(Buffer.from(process.env.JWT_SECRET, 'base64'))
+
+  return token
+}
 
 export function setTokenCookie (res: NextApiResponse, token: string): void {
   const cookie = serialize(TOKEN_NAME, token, {
@@ -30,6 +45,7 @@ export function removeTokenCookie (res: NextApiResponse): void {
 }
 
 export async function verifyTokenCookie (token: string): Promise<jwtUser> {
+  if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable not found!')
   if (!token) {
     const error = new Error()
     error.name = 'USER_NOT_AUTHENTICATED'
@@ -37,7 +53,7 @@ export async function verifyTokenCookie (token: string): Promise<jwtUser> {
     throw error
   }
   try {
-    const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET ?? '', 'base64'))
+    const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET, 'base64'))
     return result.payload as jwtUser
   } catch (originalError) {
     if (originalError.name === 'JWSSignatureVerificationFailed') {
