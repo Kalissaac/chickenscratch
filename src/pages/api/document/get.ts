@@ -23,7 +23,7 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
     }
 
     const { client } = await connectToDatabase()
-    if ((new TextEncoder().encode(documentID)).length !== 12) {
+    if (Buffer.byteLength(documentID, 'utf-8') !== 24) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'Unable to create ObjectId from ID: ' + documentID
       throw error
