@@ -19,12 +19,12 @@ export default function DocumentEditPage (): JSX.Element {
 
   if (userError) {
     if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
-    if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
+    if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw userError
   }
   if (dataError) {
     if (dataError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
-    if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
+    if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw dataError
   }
 

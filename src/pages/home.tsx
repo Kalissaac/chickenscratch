@@ -28,12 +28,12 @@ export default function HomePage (): JSX.Element {
   }
   if (userError) {
     if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
-    if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
+    if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw userError
   }
   if (dataError) {
     if (dataError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
-    if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message={'Reconnecting...'} />
+    if (dataError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw dataError
   }
 
@@ -62,10 +62,10 @@ export default function HomePage (): JSX.Element {
             <div>loading cards</div>
           }
           {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => (
-            <Card key={file._id} file={file} />
+            <Card file={file} />
           ))}
           {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => (
-            <Card key={file._id} file={file} />
+            <Card file={file} />
           ))}
         </div>
 
