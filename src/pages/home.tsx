@@ -13,8 +13,13 @@ import useSWR from 'swr'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { SkeletonLine } from '@components/skeleton'
+import { Node } from 'slate'
 
 dayjs.extend(relativeTime)
+
+const serialize = (nodes: Node[]): string => {
+  return nodes.map(n => Node.string(n)).join('\n')
+}
 
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
@@ -58,15 +63,49 @@ export default function HomePage (): JSX.Element {
           <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
         </div>
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
-          {dataLoading &&
-            <div>loading cards</div>
-          }
-          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => (
-            <Card file={file} />
+          {dataLoading && Array(4).fill(0).map(() => (
+            <Card
+              title={<SkeletonLine width='2/4' className='animate-pulse h-5 my-1' />}
+              subtitle={<SkeletonLine width='3/4' className='bg-gray-400 animate-pulse' />}
+              background='bg-gray-600 dark:bg-gray-800'
+            >
+              <div className='space-y-3'>
+                <SkeletonLine width='2/6' className='animate-pulse' />
+                <SkeletonLine width='5/6' className='animate-pulse' />
+                <SkeletonLine width='4/6' className='animate-pulse' />
+                <SkeletonLine width='5/6' className='animate-pulse' />
+                <SkeletonLine width='3/6' className='animate-pulse' />
+              </div>
+            </Card>
           ))}
-          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => (
-            <Card file={file} />
-          ))}
+          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
+            const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
+            return (
+              <Card
+                title={file.title}
+                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.split(' ').length} {serializedBody.split(' ').length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</>}
+                background='bg-gradient-to-r from-yellow-600 to-red-500'
+                href={`/d/${file._id}/edit`}
+                key={file._id}
+              >
+                {serializedBody}
+              </Card>
+            )
+          })}
+          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
+            const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
+            return (
+              <Card
+                title={file.title}
+                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.split(' ').length} {serializedBody.split(' ').length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</>}
+                background='bg-gradient-to-r from-yellow-600 to-red-500'
+                href={`/d/${file._id}/edit`}
+                key={file._id}
+              >
+                {serializedBody}
+              </Card>
+            )
+          })}
         </div>
 
         <div className="flex flex-col">
@@ -117,8 +156,7 @@ export default function HomePage (): JSX.Element {
                           <SkeletonLine className='mr-8 float-right rounded-full' />
                         </td>
                       </tr>
-                    ))
-                    }
+                    ))}
                     {pageData?.allFiles.map((file: ParchmentDocument) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
