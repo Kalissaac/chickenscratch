@@ -16,7 +16,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }
           leaveTo='opacity-0'
         >
           {(ref) => (
-            <div ref={ref} className='absolute inset-0 bg-gray-900 bg-opacity-20 transition-opacity pointer-events-auto' style={{ backdropFilter: 'blur(4px)' }} onClick={() => setSlideoverOpen(!slideoverOpen)} />
+            <div ref={ref} className='absolute inset-0 bg-gray-900 bg-opacity-20 transition-opacity pointer-events-auto' style={{ backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} onClick={() => setSlideoverOpen(!slideoverOpen)} />
           )}
         </Transition>
         <section className='absolute inset-y-0 right-0 pl-10 max-w-full flex pointer-events-auto'>

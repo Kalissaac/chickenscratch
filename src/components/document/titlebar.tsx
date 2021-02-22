@@ -16,7 +16,7 @@ export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { 
   }, [activeDocument?.title])
 
   return (
-    <div className='sticky top-0 z-10 p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 bg-opacity-80' style={{ backdropFilter: 'blur(8px)' }}>
+    <div className='sticky top-0 z-10 p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 bg-opacity-80' style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}>
       <button className='self-stretch flex justify-center items-center ml-4' aria-label='Back button' onClick={() => router.back()}><ChevronLeft aria-label='Left arrow' /></button>
       {activeDocument
         ? <input id='doctitle' type='text' className='text-center font-serif outline-none bg-transparent focus:outline-none focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 transition-all' placeholder='Untitled Document' onChange={({ currentTarget: input }) => { document.title = input.value + ' | Parchment'; input.size = Math.max(input.value.length, 10) }} />

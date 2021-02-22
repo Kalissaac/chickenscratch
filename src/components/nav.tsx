@@ -37,7 +37,7 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: Parchme
 
   return (
     <>
-      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 dark:bg-opacity-95 flex items-center justify-between p-8 px-20 top-0 z-20 transition-all`} style={{ backdropFilter: 'blur(6px)' }} aria-label='Navigation Bar'>
+      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} bg-opacity-95 dark:bg-opacity-95 flex items-center justify-between p-8 px-20 top-0 z-20 transition-colors`} style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} aria-label='Navigation Bar'>
         <div className='flex items-center w-full'>
           <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
