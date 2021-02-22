@@ -26,7 +26,7 @@ export class APIError extends Error {
 export function responseHandler (error: Error, res: NextApiResponse): void {
   switch (error.name) {
     case ErrorType.NotAuthenticated:
-      res.status(401).redirect('/login')
+      res.status(401).json({ error: error.name })
       break
     case ErrorType.NotFound:
       res.status(404).json({ error: error.name })
