@@ -13,8 +13,8 @@ import NotFoundPage from 'pages/404'
 
 export default function DocumentViewPage (): JSX.Element {
   const router = useRouter()
-  const { user, error: userError } = useUser()
-  const { data: pageData, error: dataError } = useSWR(user ? `/api/document/get?id=${router.query.document as string}` : null)
+  const { user, error: userError } = useUser(false)
+  const { data: pageData, error: dataError } = useSWR(`/api/document/get?id=${router.query.document as string}`)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const activeDocument: ParchmentDocument = pageData?.document
 

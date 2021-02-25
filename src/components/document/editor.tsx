@@ -189,7 +189,10 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
       method: 'POST',
       body: JSON.stringify({
         id: activeDocument._id,
-        document: updatedDocument
+        document: {
+          title: updatedDocument.title,
+          body: updatedDocument.body
+        }
       })
     }).then(async r => {
       if (!r.ok) {
