@@ -15,6 +15,13 @@ import { Slate, Editable, withReact, ReactEditor } from 'slate-react'
 import type { Node } from 'slate'
 import { withHistory } from 'slate-history'
 
+enum EditorModes {
+  Editing,
+  Viewing,
+  Commenting,
+  Suggesting
+}
+
 const SHORTCUTS = {
   '*': 'list-item',
   '-': 'list-item',
@@ -162,7 +169,7 @@ const Element = ({ attributes, children, element }): JSX.Element => {
   }
 }
 
-export default function DocumentEditor ({ activeDocument }: { activeDocument: ParchmentDocument }): JSX.Element {
+export default function DocumentEditor ({ activeDocument, mode }: { activeDocument: ParchmentDocument, mode: EditorModes }): JSX.Element {
   const editor = useMemo(() => withShortcuts(withReact(withHistory(createEditor()))), [])
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState<Node[]>(activeDocument.body)
@@ -170,6 +177,7 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Pa
   const router = useRouter()
 
   useUnload((e?: BeforeUnloadEvent) => {
+    if (mode !== EditorModes.Editing) return
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
     const updatedDocument = {
       ...activeDocument,
@@ -207,6 +215,7 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Pa
       onChange={value => {
         setValue(value)
 
+        if (mode !== EditorModes.Editing) return
         if ((Date.now() - lastUpdate) > 5000) { // If database was last updated more than 5 seconds ago
           const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
           fetch('/api/document/update', {
@@ -235,7 +244,8 @@ export default function DocumentEditor ({ activeDocument }: { activeDocument: Pa
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
-        className='prose min-h-screen dark:text-gray-50'
+        className='prose dark:prose-light min-h-screen'
+        readOnly={mode !== EditorModes.Editing}
       />
     </Slate>
   )

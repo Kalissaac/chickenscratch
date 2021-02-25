@@ -41,7 +41,7 @@ export default function DocumentEditPage (): JSX.Element {
       <Titlebar setSidebarOpen={setSidebarOpen} activeDocument={activeDocument} />
       <div className='p-32 pt-16 px-6 sm:px-32 md:px-64 lg:px-72 xl:px-96'>
         {activeDocument &&
-          <Editor activeDocument={activeDocument} />
+          <Editor activeDocument={activeDocument} mode={0} />
         }
         {!activeDocument &&
           <DocumentSkeleton />
