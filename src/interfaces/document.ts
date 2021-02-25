@@ -1,13 +1,26 @@
 import type { Node } from 'slate'
 
+enum CollaboratorRole {
+  Viewer = 'viewer',
+  Editor = 'editor',
+  Commentor = 'commentor',
+  Suggestor = 'suggestor',
+  Owner = 'owner'
+}
+
 export default interface ParchmentDocument {
   _id: string
   title: string
+  created: string
   lastModified: string
   body: Node[]
-  collaborators: string[]
+  collaborators: Array<{
+    user: string
+    role: CollaboratorRole
+  }>
   tags: string[]
   due?: string
+  public?: boolean
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {

@@ -34,7 +34,7 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
       error.message = 'MongoDB failed to locate document with ID: ' + documentID
       throw error
     }
-    if (requestedDocument.collaborators[0] !== user.email) {
+    if (requestedDocument.collaborators[0].user !== user.email) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'User not authorized to delete document with ID: ' + documentID
       throw error

@@ -24,7 +24,10 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
       }],
       created: new Date(),
       lastModified: new Date(),
-      collaborators: [user.email],
+      collaborators: [{
+        user: user.email,
+        role: 'owner'
+      }],
       tags: []
     })
     if (newFileRef.result.ok !== 1) {

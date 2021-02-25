@@ -34,7 +34,7 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       error.message = 'MongoDB failed to locate document with ID: ' + documentID
       throw error
     }
-    if (!requestedDocument.collaborators.includes(user.email)) {
+    if (!requestedDocument.collaborators.some(e => e.user === user.email)) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'User not authorized to access document with ID: ' + documentID
       throw error
