@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
-import type ParchmentDocument from '@interfaces/document'
 import { ObjectId } from 'mongodb'
 import { responseHandler } from '@shared/error'
 
@@ -28,19 +27,8 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
       error.message = 'Unable to create ObjectId from ID: ' + documentID
       throw error
     }
-    const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({ _id: ObjectId.createFromHexString(documentID) })
-    if (!requestedDocument) {
-      error.name = 'FILE_NOT_FOUND'
-      error.message = 'MongoDB failed to locate document with ID: ' + documentID
-      throw error
-    }
-    if (requestedDocument.collaborators[0].user !== user.email) {
-      error.name = 'FILE_NOT_FOUND'
-      error.message = 'User not authorized to delete document with ID: ' + documentID
-      throw error
-    }
 
-    const deletionResult = await client.db('data').collection('documents').findOneAndDelete({ _id: ObjectId.createFromHexString(documentID) })
+    const deletionResult = await client.db('data').collection('documents').findOneAndDelete({ _id: ObjectId.createFromHexString(documentID), collaborators: { $elemMatch: { user: user.email, role: 'owner' } } })
     if (deletionResult.ok !== 1) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not delete document with ID: ' + documentID

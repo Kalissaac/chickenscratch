@@ -28,15 +28,10 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       error.message = 'Unable to create ObjectId from ID: ' + documentID
       throw error
     }
-    const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({ _id: ObjectId.createFromHexString(documentID) })
+    const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({ _id: ObjectId.createFromHexString(documentID), collaborators: { $elemMatch: { user: user.email } } })
     if (!requestedDocument) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate document with ID: ' + documentID
-      throw error
-    }
-    if (!requestedDocument.collaborators.some(e => e.user === user.email)) {
-      error.name = 'FILE_NOT_FOUND'
-      error.message = 'User not authorized to access document with ID: ' + documentID
       throw error
     }
 

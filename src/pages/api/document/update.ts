@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
-import type ParchmentDocument from '@interfaces/document'
 import { ObjectId } from 'mongodb'
 import { responseHandler } from '@shared/error'
 
@@ -29,20 +28,17 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       error.message = 'Unable to create ObjectId from ID: ' + documentID
       throw error
     }
-    const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({ _id: ObjectId.createFromHexString(documentID) })
-    if (!requestedDocument) {
-      error.name = 'FILE_NOT_FOUND'
-      error.message = 'MongoDB failed to locate document with ID: ' + documentID
-      throw error
-    }
-    if (!requestedDocument.collaborators.some(e => e.user === user.email)) {
-      error.name = 'FILE_NOT_FOUND'
-      error.message = 'User not authorized to access document with ID: ' + documentID
-      throw error
-    }
 
-    const updateRequest = await client.db('data').collection('documents').updateOne({ _id: ObjectId.createFromHexString(documentID) }, { $set: { ...requestBody.document, lastModified: new Date() } })
-    if (updateRequest.result.ok !== 1) throw new Error('Database could not update document!')
+    const updateRequest = await client.db('data').collection('documents').updateOne({
+      _id: ObjectId.createFromHexString(documentID),
+      collaborators: { $elemMatch: { user: user.email, role: { $in: ['editor', 'owner'] } } }
+    },
+    { $set: { ...requestBody.document, lastModified: new Date() } })
+    if (updateRequest.result.ok !== 1) {
+      error.name = 'UNKNOWN_ERROR'
+      error.message = 'MongoDB could not update document with ID: ' + documentID
+      throw error
+    }
 
     res.json({ success: true })
   } catch (error) {
