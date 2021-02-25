@@ -18,8 +18,8 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, activeDo
           <div className=''>
             Collaborators:
             <ol className='space-y-2'>
-              {activeDocument.collaborators.map(email => (
-                <li><button className='flex items-center hover:text-gray-300'>{email} <X className='ml-1' /></button></li>
+              {activeDocument.collaborators.map(collaborator => (
+                <li><button className='flex items-center hover:text-gray-300'>{collaborator.user} ({collaborator.role}) <X className='ml-1' /></button></li>
               ))}
               <li><button className='flex items-center hover:text-gray-300'><Plus className='mr-1' /> Add collaborator</button></li>
             </ol>
