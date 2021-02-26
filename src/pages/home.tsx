@@ -63,11 +63,12 @@ export default function HomePage (): JSX.Element {
           <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
         </div>
         <div className='flex justify-between -ml-2 -mr-2 mb-12'>
-          {dataLoading && Array(4).fill(0).map(() => (
+          {dataLoading && Array(4).fill(0).map((_, i) => (
             <Card
               title={<SkeletonLine width='2/4' className='animate-pulse h-5 my-1' />}
               subtitle={<SkeletonLine width='3/4' className='bg-gray-400 animate-pulse' />}
               background='bg-gray-600 dark:bg-gray-800'
+              key={i}
             >
               <div className='space-y-3'>
                 <SkeletonLine width='2/6' className='animate-pulse' />
@@ -133,8 +134,8 @@ export default function HomePage (): JSX.Element {
                     </tr>
                   </thead>
                   <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
-                    {dataLoading && Array(5).fill(0).map(() => (
-                      <tr key={Date.now()} className='focus:outline-none animate-pulse'>
+                    {dataLoading && Array(5).fill(0).map((_, i) => (
+                      <tr key={i} className='focus:outline-none animate-pulse'>
                         <td className="px-6 py-4 my-1 whitespace-nowrap">
                           <div className="flex items-center">
                             <SkeletonLine className='mr-4' />
@@ -148,8 +149,8 @@ export default function HomePage (): JSX.Element {
                           <SkeletonLine width='1/4' />
                         </td>
                         <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
-                          {Array(3).fill(0).map(() => (
-                            <SkeletonLine key={Date.now()} width='1/3' />
+                          {Array(3).fill(0).map((_, j) => (
+                            <SkeletonLine key={`${i}-${j}`} width='1/3' />
                           ))}
                         </td>
                         <td className="p-4 whitespace-nowrap">
