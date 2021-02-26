@@ -253,3 +253,20 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
     </Slate>
   )
 }
+
+export function EditorWrapper ({ mode }: { mode: EditorModes }): JSX.Element {
+  const router = useRouter()
+  const { data: pageData } = useSWR(`/api/document/get?id=${router.query.document as string}`)
+  const activeDocument: ParchmentDocument = pageData?.document
+
+  return (
+    <div className='p-32 pt-16 px-6 sm:px-32 md:px-64 lg:px-72 xl:px-96'>
+      {activeDocument &&
+        <DocumentEditor activeDocument={activeDocument} mode={mode} />
+      }
+      {!activeDocument &&
+        <DocumentSkeleton />
+      }
+    </div>
+  )
+}

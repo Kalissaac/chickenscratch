@@ -3,9 +3,12 @@ import { useEffect } from 'react'
 import { ChevronLeft, Info } from '@kalissaac/react-feather'
 import { SkeletonLine } from '@components/skeleton'
 import type ParchmentDocument from '@interfaces/document'
+import useSWR from 'swr'
 
-export default function DocumentTitlebar ({ setSidebarOpen, activeDocument }: { setSidebarOpen: Function, activeDocument: ParchmentDocument }): JSX.Element {
+export default function DocumentTitlebar ({ setSidebarOpen }: { setSidebarOpen: Function }): JSX.Element {
   const router = useRouter()
+  const { data: pageData } = useSWR(`/api/document/get?id=${router.query.document as string}`)
+  const activeDocument: ParchmentDocument = pageData?.document
 
   useEffect(() => {
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
