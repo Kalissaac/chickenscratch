@@ -49,7 +49,7 @@ export default function HomePage (): JSX.Element {
 
   return (
     <>
-      <Nav user={user} allFiles={pageData?.allFiles} />
+      <Nav files={pageData?.allFiles} />
       <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
       <div className='lg:p-20 lg:pt-4'>

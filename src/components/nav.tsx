@@ -4,9 +4,9 @@ import SearchBar from '@components/search'
 import { Edit2, MoreVertical, Plus } from '@kalissaac/react-feather'
 import Image from 'next/image'
 import Slideover from '@components/slideover'
-import { NextRouter, useRouter } from 'next/router'
-import type User from '@interfaces/user'
+import { useRouter } from 'next/router'
 import type ParchmentDocument from '@interfaces/document'
+import { useUser } from '@shared/hooks'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -15,10 +15,11 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ user, allFiles }: { user: User, allFiles: ParchmentDocument[] }): JSX.Element {
+export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
   const router = useRouter()
+  const { user } = useUser()
 
   useEffect(() => {
     const intersection = new IntersectionObserver(([entry], observer) => {
@@ -51,7 +52,7 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: Parchme
 
           {scrolling &&
             <>
-              <SearchBar files={allFiles} />
+              <SearchBar files={files} />
               <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' /></button>
             </>
           }
@@ -66,12 +67,15 @@ export default function Nav ({ user, allFiles }: { user: User, allFiles: Parchme
         </div>
 
       </nav>
-      <ProfileSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} user={user} router={router} />
+      <ProfileSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
     </>
   )
 }
 
-function ProfileSidebar ({ setSidebarOpen, sidebarOpen, user, router }: { setSidebarOpen: Function, sidebarOpen: boolean, user: User, router: NextRouter }): JSX.Element {
+function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
+  const { user } = useUser()
+  const router = useRouter()
+
   return (
     <Slideover setSlideoverOpen={setSidebarOpen} slideoverOpen={sidebarOpen}>
       <header className='flex items-center justify-between'>
