@@ -22,14 +22,14 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
             Collaborators:
             <ol className='space-y-2'>
               {activeDocument.collaborators.map(collaborator => (
-                <li><button className='flex items-center hover:text-gray-300'>{collaborator.user} ({collaborator.role}) <X className='ml-1' /></button></li>
+                <li key={collaborator.user}><button className='flex items-center hover:text-gray-300'>{collaborator.user} ({collaborator.role}) <X className='ml-1' /></button></li>
               ))}
               <li><button className='flex items-center hover:text-gray-300'><Plus className='mr-1' /> Add collaborator</button></li>
             </ol>
             <h3 className='uppercase font-medium mt-4'>Tags:</h3>
             <ol className='space-y-2'>
               {activeDocument.tags.map(tag => (
-                <li><button className='flex items-center hover:text-gray-300'>{tag} <X className='ml-1' /></button></li>
+                <li key={tag}><button className='flex items-center hover:text-gray-300'>{tag} <X className='ml-1' /></button></li>
               ))}
               <li><button className='flex items-center hover:text-gray-300'><Plus className='mr-1' /> Add tag</button></li>
             </ol>
