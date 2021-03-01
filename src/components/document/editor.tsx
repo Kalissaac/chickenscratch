@@ -10,7 +10,8 @@ import { withHistory } from 'slate-history'
 import { DocumentSkeleton } from '@components/skeleton'
 import withShortcuts from '@components/document/editor/withShortcuts'
 import Element from '@components/document/editor/element'
-import withNoDoubleSpaces from './editor/withNoDoubleSpaces'
+import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
+import DocumentStatusBar from '@components/document/editor/statusbar'
 
 enum EditorModes {
   Editing,
@@ -33,7 +34,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
   [])
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState<Node[]>(activeDocument.body)
-  const [lastUpdate, setLastUpdate] = useState(Date.now())
+  const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getUTCMilliseconds())
   const router = useRouter()
 
   useUnload((e?: BeforeUnloadEvent) => {
@@ -110,6 +111,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
         className='prose dark:prose-light min-h-screen'
         readOnly={mode !== EditorModes.Editing}
       />
+      <DocumentStatusBar lastUpdate={lastUpdate} />
     </Slate>
   )
 }
