@@ -17,7 +17,7 @@ export function useUser (redirectIfNotFound = true): { user: User, loading: bool
   }
 }
 
-export const useUnload = (fn: Function, router: NextRouter): void => {
+export const useUnload = (fn: (e?: BeforeUnloadEvent) => void, router: NextRouter): void => {
   const cb = useRef(fn) // init with fn, so that type checkers won't assume that current might be undefined
 
   useEffect(() => {

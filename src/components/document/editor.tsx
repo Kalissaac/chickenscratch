@@ -37,8 +37,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
   const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getTime())
   const router = useRouter()
 
-  useUnload((e?: BeforeUnloadEvent) => {
-    if (mode !== EditorModes.Editing) return
+  async function saveDocument (mutateDocument = false): Promise<void> {
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
     const updatedDocument = {
       ...activeDocument,
@@ -46,7 +45,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
       body: value
     }
     if (compareDocuments(activeDocument, updatedDocument)) return
-    fetch('/api/document/update', {
+    const res = await fetch('/api/document/update', {
       method: 'POST',
       body: JSON.stringify({
         id: activeDocument._id,
@@ -55,15 +54,19 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
           body: updatedDocument.body
         }
       })
-    }).then(async r => {
-      if (!r.ok) {
-        const data = await r.json()
+    })
+
+    if (!res.ok) {
+      const data = await res.json()
         throw new Error(data.error)
       }
-      mutate(`/api/document/get?id=${activeDocument._id}`, updatedDocument).catch(err => {
-        throw err
-      })
-    }).catch(err => {
+    if (mutateDocument) mutate(`/api/document/get?id=${activeDocument._id}`, updatedDocument).catch(console.error)
+    setLastUpdate(Date.now())
+  }
+
+  useUnload(e => {
+    if (mode !== EditorModes.Editing) return
+    saveDocument(true).catch(err => {
       if (e) {
         e.preventDefault()
         e.returnValue = 'Document not saved!'
@@ -81,25 +84,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
 
         if (mode !== EditorModes.Editing) return
         if ((Date.now() - lastUpdate) > 5000) { // If database was last updated more than 5 seconds ago
-          const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
-          fetch('/api/document/update', {
-            method: 'POST',
-            body: JSON.stringify({
-              id: activeDocument._id,
-              document: {
-                title: docTitle?.value || 'Untitled Document', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-                body: value
-              }
-            })
-          }).then(async r => {
-            if (!r.ok) {
-              const data = await r.json()
-              throw new Error(data.error)
-            }
-            setLastUpdate(Date.now())
-          }).catch(err => {
-            console.error(err)
-          })
+          saveDocument().catch(console.error)
         }
       }}
     >
