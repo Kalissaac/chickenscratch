@@ -28,8 +28,13 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
       throw error
     }
 
-    const deletionResult = await client.db('data').collection('documents').findOneAndDelete({ _id: ObjectId.createFromHexString(documentID), collaborators: { $elemMatch: { user: user.email, role: 'owner' } } })
-    if (deletionResult.ok !== 1) {
+    const deletionResult = await client.db('data').collection('documents').updateOne({
+      _id: ObjectId.createFromHexString(documentID),
+      collaborators: { $elemMatch: { user: user.email, role: 'owner' } },
+      deleted: { $exists: false }
+    },
+    { $set: { deleted: new Date() } })
+    if (deletionResult.result.ok !== 1) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not delete document with ID: ' + documentID
       throw error

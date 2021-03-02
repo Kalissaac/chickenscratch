@@ -21,6 +21,7 @@ export default interface ParchmentDocument {
   tags: string[]
   due?: string
   public?: boolean
+  deleted?: string
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {
