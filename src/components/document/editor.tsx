@@ -34,7 +34,7 @@ export default function DocumentEditor ({ activeDocument, mode }: { activeDocume
   [])
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState<Node[]>(activeDocument.body)
-  const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getUTCMilliseconds())
+  const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getTime())
   const router = useRouter()
 
   useUnload((e?: BeforeUnloadEvent) => {
