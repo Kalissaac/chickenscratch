@@ -34,9 +34,11 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [activeDocument, setActiveDocument] = useState(cloudDocument)
   const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getTime())
+  const [updateLock, setUpdateLock] = useState(false)
   const router = useRouter()
 
   async function saveDocument (mutateDocument = false): Promise<void> {
+    setUpdateLock(true)
     const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
     setActiveDocument((prevDocument) => {
       return {
@@ -44,7 +46,7 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
         title: docTitle?.value || 'Untitled Document' // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
       }
     })
-    if (compareDocuments(cloudDocument, activeDocument)) return
+    if (compareDocuments(cloudDocument, activeDocument)) return setUpdateLock(false)
     const res = await fetch('/api/document/update', {
       method: 'POST',
       body: JSON.stringify({
@@ -58,10 +60,12 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
 
     if (!res.ok) {
       const data = await res.json()
+      setUpdateLock(false)
       throw new Error(data.error)
     }
     if (mutateDocument) mutate(`/api/document/get?id=${activeDocument._id}`, activeDocument).catch(console.error)
     setLastUpdate(Date.now())
+    setUpdateLock(false)
   }
 
   useUnload(e => {
@@ -88,7 +92,7 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
         })
 
         if (mode !== EditorModes.Editing) return
-        if ((Date.now() - lastUpdate) > 5000) { // If database was last updated more than 5 seconds ago
+        if (!updateLock && (Date.now() - lastUpdate) > 5000) { // If database was last updated more than 5 seconds ago
           saveDocument().catch(console.error)
         }
       }}
@@ -101,7 +105,7 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
         className='prose dark:prose-light min-h-screen'
         readOnly={mode !== EditorModes.Editing}
       />
-      <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} />
+      <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} />
     </Slate>
   )
 }
