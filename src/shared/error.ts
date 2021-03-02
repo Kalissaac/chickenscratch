@@ -6,6 +6,7 @@ export enum ErrorType {
   NotFound = 'FILE_NOT_FOUND',
   NoID = 'NO_ID_SPECIFIED',
   NoBody = 'NO_BODY',
+  UserNotFound = 'USER_NOT_FOUND',
   Unknown = 'UNKNOWN_ERROR'
 }
 
@@ -29,6 +30,7 @@ export function responseHandler (error: Error, res: NextApiResponse): void {
       res.status(401).json({ error: error.name })
       break
     case ErrorType.NotFound:
+    case ErrorType.UserNotFound:
       res.status(404).json({ error: error.name })
       break
     case ErrorType.NoID:

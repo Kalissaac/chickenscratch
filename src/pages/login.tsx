@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
 import { ChevronLeft } from '@kalissaac/react-feather'
+import { useUser } from '@shared/hooks'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
@@ -15,6 +16,11 @@ export default function LoginPage (): JSX.Element {
   const [magic, setMagic] = useState<Magic | null>(null)
   const { addToast } = useToasts()
   const router = useRouter()
+  const { user } = useUser(false)
+
+  useEffect(() => {
+    if (user) router.push('/home').catch(console.error)
+  }, [user])
 
   useEffect(() => {
     magic === null &&
@@ -93,7 +99,11 @@ export default function LoginPage (): JSX.Element {
         Authorization: 'Bearer ' + didToken
       }
     })
-    res.status === 200 && router.push('/home')
+    if (res.ok) {
+      router.push('/home').catch(console.error)
+    } else {
+      addToast('Unknown error occured!', { appearance: 'error' })
+    }
   }
 
   function SecondaryStepWrapper ({ stage, secondary, prompt }: { stage: string, secondary: string, prompt: string }): JSX.Element {

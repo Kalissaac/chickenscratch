@@ -7,6 +7,7 @@ export function useUser (redirectIfNotFound = true): { user: User, loading: bool
   const { data, error } = useSWR('/api/user')
 
   useEffect(() => {
+    if (redirectIfNotFound && error?.name === 'USER_NOT_FOUND') Router.push('/onboarding').catch(console.error)
     if (redirectIfNotFound && error?.name === 'USER_NOT_AUTHENTICATED') Router.push('/login').catch(console.error)
   }, [error])
 
