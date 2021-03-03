@@ -30,7 +30,7 @@ export default function HomePage (): JSX.Element {
     return <InitialLoader />
   }
   if (userError) {
-    if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
+    if (userError.name === 'USER_NOT_AUTHENTICATED' || userError.name === 'USER_NOT_FOUND') return <InitialLoader />
     if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw userError
   }
@@ -77,9 +77,10 @@ export default function HomePage (): JSX.Element {
               </div>
             </Card>
           ))}
-          {activeTab === 'recentEdit' && pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
-            const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
-            return (
+          {activeTab === 'recentEdit' && pageData?.recentFiles.length > 0
+            ? pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
+              const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
+              return (
               <Card
                 title={file.title}
                 subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</>}
@@ -89,8 +90,16 @@ export default function HomePage (): JSX.Element {
               >
                 {serializedBody}
               </Card>
-            )
-          })}
+              )
+            })
+            : <Card
+              title='No recent documents'
+              background='bg-gray-600 dark:bg-gray-800'
+              href='/d/new'
+              >
+              Click to create a new document
+            </Card>
+          }
           {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
             const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
             return (
@@ -156,7 +165,8 @@ export default function HomePage (): JSX.Element {
                         </td>
                       </tr>
                     ))}
-                    {pageData?.allFiles.map((file: ParchmentDocument) => (
+                    {pageData?.allFiles.length > 0
+                      ? pageData?.allFiles.map((file: ParchmentDocument) => (
                       <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center text-sm font-medium">
@@ -184,7 +194,19 @@ export default function HomePage (): JSX.Element {
                           <Info className='float-right mr-8' aria-label='Information Icon' />
                         </td>
                       </tr>
-                    ))}
+                      ))
+                      : <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push('/d/new')} tabIndex={0}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center text-sm font-medium">
+                          <FileText className='mr-4 text-base' aria-label='Document Icon' />
+                          Create a new document
+                        </div>
+                      </td>
+                      <td />
+                      <td />
+                      <td />
+                      <td />
+                    </tr>}
                   </tbody>
                 </table>
               </div>

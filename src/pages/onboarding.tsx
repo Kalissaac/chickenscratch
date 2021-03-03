@@ -1,3 +1,4 @@
+import { useUser } from '@shared/hooks'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
 import { useToasts } from 'react-toast-notifications'
@@ -9,6 +10,11 @@ export default function OnboardingPage (): JSX.Element {
   }, [])
   const { addToast } = useToasts()
   const router = useRouter()
+  const { user } = useUser()
+
+  useEffect(() => {
+    if (user) router.push('/home').catch(console.error)
+  }, [user])
 
   async function submitLogin (e: FormEvent): Promise<void> {
     e.preventDefault()
