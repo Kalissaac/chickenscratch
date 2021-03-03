@@ -6,7 +6,7 @@ import { ReactNode } from 'react'
 dayjs.extend(relativeTime)
 
 export default function Card ({ title, subtitle = '', background, children, href }: { title: ReactNode, subtitle?: ReactNode, background?: string, children: ReactNode, href?: string }): JSX.Element {
-  const parentClasses = 'rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl flex-1 min-w-0 mx-2 bg-white dark:bg-gray-900 box-border overflow-hidden duration-200 hover:scale-105 focus:scale-105 bg-clip-border border-2 border-transparent focus:border-gray-darker dark:focus:border-gray-lighter focus:outline-none'
+  const parentClasses = 'rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl transition-shadow flex-1 min-w-0 mx-2 bg-white dark:bg-gray-900 box-border overflow-hidden bg-clip-border border-2 border-transparent focus:border-gray-darker dark:focus:border-gray-lighter focus:outline-none'
   const inner = (
     <>
       <div className={`p-4 text-gray-50 ${background ?? ''}`}>
@@ -22,7 +22,7 @@ export default function Card ({ title, subtitle = '', background, children, href
   if (href) {
     return (
       <Link href={href}>
-        <a className={parentClasses + ' transform-gpu transition-transform'}>
+        <a className={parentClasses}>
           {inner}
         </a>
       </Link>
