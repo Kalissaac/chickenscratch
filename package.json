@@ -17,7 +17,7 @@
     "cookie": "^0.4.1",
     "dayjs": "^1.10.4",
     "fuse.js": "^6.4.6",
-    "jose": "^3.6.2",
+    "jose": "^3.7.0",
     "magic-sdk": "^4.1.1",
     "mongodb": "^3.6.4",
     "next": "^10.0.7",
@@ -42,16 +42,16 @@
     "@types/nprogress": "^0.2.0",
     "@types/react": "^17.0.2",
     "@types/react-toast-notifications": "^2.4.0",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
     "autoprefixer": "10.0.2",
-    "eslint": "^7.20.0",
+    "eslint": "^7.21.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "postcss": "^8.2.6",
     "tailwindcss": "^2.0.3",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.2"
   },
   "license": "MIT",
   "repository": "https://github.com/Kalissaac/chickenscratch.git"

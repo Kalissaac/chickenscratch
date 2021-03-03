@@ -21,7 +21,7 @@ export default async function logout (req: NextApiRequest, res: NextApiResponse)
 
     await magic.users.logoutByIssuer(user.iss)
     removeTokenCookie(res)
-    res.redirect('/')
+    res.redirect('/login?logoutSuccess=1')
   } catch (error) {
     responseHandler(error, res)
   }

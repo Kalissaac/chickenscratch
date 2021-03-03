@@ -17,9 +17,7 @@ import { Node } from 'slate'
 
 dayjs.extend(relativeTime)
 
-const serialize = (nodes: Node[]): string => {
-  return nodes.map(n => Node.string(n)).join('\n')
-}
+const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join('\n')
 
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()

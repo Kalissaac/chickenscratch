@@ -7,6 +7,7 @@ import Slideover from '@components/slideover'
 import { useRouter } from 'next/router'
 import type ParchmentDocument from '@interfaces/document'
 import { useUser } from '@shared/hooks'
+import { mutate } from 'swr'
 
 const links = [
   { href: '/home#recent', label: 'Recently Edited' },
@@ -82,7 +83,7 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Func
         <h2 className='text-lg leading-7 font-semibold'>
           Profile
         </h2>
-        <button className='text-red-500 hover:text-red-600' onClick={() => { router.push('/api/logout').catch(() => { alert('Error logging out user') }) }}>Sign Out</button>
+        <button className='text-red-500 hover:text-red-600' onClick={() => { router.push('/api/logout').then(() => { mutate('/api/user', null).catch(console.error) }).catch(() => { alert('Error logging out user') }) }}>Sign Out</button>
       </header>
       <div className='flex items-center'>
         <div className='w-16 h-16 relative'>
