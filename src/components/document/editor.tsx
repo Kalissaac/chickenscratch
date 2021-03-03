@@ -102,7 +102,7 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
-        className='prose dark:prose-light min-h-screen'
+        className='prose dark:prose-light min-w-full min-h-screen'
         readOnly={mode !== EditorModes.Editing}
       />
       <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} />
@@ -116,7 +116,7 @@ export function EditorWrapper ({ mode }: { mode: EditorModes }): JSX.Element {
   const cloudDocument: ParchmentDocument = pageData?.document
 
   return (
-    <div className='p-32 pt-16 px-6 sm:px-32 md:px-64 lg:px-72 xl:px-96'>
+    <div className='m-32 mt-16 mx-6 sm:mx-32 md:mx-64 lg:mx-72 xl:mx-96'>
       {cloudDocument
         ? <DocumentEditor cloudDocument={cloudDocument} mode={mode} />
         : <DocumentSkeleton />

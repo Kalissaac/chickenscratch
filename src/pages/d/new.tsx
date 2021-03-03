@@ -27,7 +27,7 @@ export default function DocumentEditPage (): JSX.Element {
         <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
         <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full mr-4' />
       </div>
-      <div className='p-32 px-6 sm:px-32 md:px-64 lg:px-72 xl:px-96'>
+      <div className='m-32 mt-16 mx-6 sm:mx-32 md:mx-64 lg:mx-72 xl:mx-96'>
         <DocumentSkeleton />
       </div>
     </>
