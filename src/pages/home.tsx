@@ -50,17 +50,17 @@ export default function HomePage (): JSX.Element {
       <Nav files={pageData?.allFiles} />
       <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
-      <div className='lg:p-20 lg:pt-4'>
-        <div className='flex mb-12 space-x-4' id='homesearch'>
-          <button className='basis bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none flex justify-center items-center px-6 text-gray-100 font-light uppercase' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
+      <div className='lg:p-20 pt-8 lg:pt-4'>
+        <div className='hidden lg:flex mb-12 space-x-4' id='homesearch'>
+          <button className='basis bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none flex justify-center items-center px-6 text-gray-100 font-light uppercase' title='Create new document' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
           <SearchBar files={pageData?.allFiles} />
         </div>
 
-        <div className='flex items-center mb-4'>
+        <div className='flex items-center mb-4 ml-4 lg:ml-0'>
           <button className={`text-xl uppercase border-b-2 transition-all ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')} id='recent'>Recently edited</button>
           <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
         </div>
-        <div className='flex justify-between -ml-2 -mr-2 mb-12'>
+        <div className='flex flex-col lg:flex-row justify-between -ml-2 -mr-2 mb-12 gap-y-2 lg:gap-y-0'>
           {dataLoading && Array(4).fill(0).map((_, i) => (
             <Card
               title={<SkeletonLine width='2/4' className='animate-pulse h-5 my-1' />}
