@@ -18,7 +18,7 @@ export default function DocumentEditPage (): JSX.Element {
   const activeDocument: ParchmentDocument = pageData?.document
 
   if (userError) {
-    if (userError.name === 'USER_NOT_AUTHENTICATED') return <InitialLoader />
+    if (userError.name === 'USER_NOT_AUTHENTICATED' || userError.name === 'USER_NOT_FOUND') return <InitialLoader />
     if (userError.message === 'NetworkError when attempting to fetch resource.') return <InitialLoader message='Reconnecting...' />
     throw userError
   }

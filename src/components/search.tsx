@@ -16,12 +16,12 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
       <div className='flex items-center px-6' style={style}>
         <SearchIcon size='1.25em' aria-label='Search Icon' />
         <input
-          type='text' placeholder='What are you looking for?' className='w-full ml-4 py-4 outline-none font-light dark:bg-gray-800 dark:text-gray-100 focus:outline-none' aria-label='Search bar for documents'
+          type='text' placeholder='What are you looking for?' title='Search documents' className='w-full ml-4 py-4 outline-none font-light dark:bg-gray-800 dark:text-gray-100 focus:outline-none' aria-label='Search bar for documents'
           onChange={async (e) => {
             const { value } = e.currentTarget
             // Dynamically load fuse.js
             const fuse = new Fuse(files, {
-              keys: ['title', 'body.children.text'],
+              keys: ['title', 'body.children.text', 'body.children.children.text'],
               includeMatches: true
             })
 
