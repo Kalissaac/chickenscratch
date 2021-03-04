@@ -1,12 +1,5 @@
 import type { Node } from 'slate'
-
-enum CollaboratorRole {
-  Viewer = 'viewer',
-  Editor = 'editor',
-  Commentor = 'commentor',
-  Suggestor = 'suggestor',
-  Owner = 'owner'
-}
+import type Collaborator from '@interfaces/collaborator'
 
 export default interface ParchmentDocument {
   _id: string
@@ -14,10 +7,7 @@ export default interface ParchmentDocument {
   created: string
   lastModified: string
   body: Node[]
-  collaborators: Array<{
-    user: string
-    role: CollaboratorRole
-  }>
+  collaborators: Collaborator[]
   tags: string[]
   due?: string
   public?: boolean
@@ -25,6 +15,7 @@ export default interface ParchmentDocument {
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {
+  // Real shitty comparison method, TODO: need to find a better way of comparing differences between documents
   return (
     documentA.title === documentB.title &&
     documentA.lastModified === documentB.lastModified &&
