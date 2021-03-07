@@ -9,17 +9,21 @@ dayjs.extend(relativeTime)
 
 const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join('\n')
 
-export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateLock }: { activeDocument: ParchmentDocument, lastUpdate: number, updateLock: boolean }): JSX.Element {
+export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateLock, saveDocument }: { activeDocument: ParchmentDocument, lastUpdate: number, updateLock: boolean, saveDocument: () => void }): JSX.Element {
   return (
     <div className='fixed left-0 bottom-0 right-0 bg-gray-100 dark:bg-gray-darker text-xs font-mono flex justify-between items-center h-6 px-8'>
-      <StatusBarItem onClick={() => {}}>{serialize(activeDocument.body).match(/[\w\d’'-]+/gi)?.length ?? 0} words</StatusBarItem>
-      <StatusBarItem onClick={() => {}} title={activeDocument.lastModified}>
-        {updateLock
-          ? <><Save className='inline' /> saving</>
-          : <><Save className='inline' /> last saved {dayjs(lastUpdate).fromNow()}</>
-        }
-
-      </StatusBarItem>
+      <section className='h-full space-x-1'>
+        <StatusBarItem onClick={() => {}}>{serialize(activeDocument.body).match(/[\w\d’'-]+/gi)?.length ?? 0} words</StatusBarItem>
+        <StatusBarItem onClick={() => {}}>English (U.S.)</StatusBarItem>
+      </section>
+      <section className='h-full space-x-1'>
+        <StatusBarItem onClick={saveDocument} title={activeDocument.lastModified}>
+          {updateLock
+            ? <><Save className='inline' /> saving</>
+            : <><Save className='inline' /> last saved {dayjs(lastUpdate).fromNow()}</>
+          }
+        </StatusBarItem>
+      </section>
     </div>
   )
 }
