@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState, useEffect, createRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { FormEvent } from 'react'
 import Head from 'next/head'
 import { Magic } from 'magic-sdk'
@@ -7,12 +7,12 @@ import { WebAuthnExtension } from '@magic-ext/webauthn'
 import { useRouter } from 'next/router'
 import { Switch, Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
-import { Check, ChevronLeft, X } from '@kalissaac/react-feather'
+import { Check, ChevronLeft, Loader, X } from '@kalissaac/react-feather'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
-  const emailRef = createRef<HTMLInputElement>()
+  const emailRef = useRef<HTMLInputElement>(null)
   const [securityKeyEnabled, setSecurityKeyEnabled] = useState(false)
   const [magic, setMagic] = useState<Magic | null>(null)
   const { addToast } = useToasts()
@@ -175,7 +175,7 @@ export default function LoginPage (): JSX.Element {
                 </Switch.Group>
               </div>
               <button type='submit' className={`login-btn mt-4 ${activity ? 'cursor-wait hover:bg-accent-1-500 pointer-events-none' : ''}`}>
-                {activity && <svg className='animate-spin h-5 w-5 text-white self-center -ml-1 mr-3 inline' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'><circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4' /><path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z' /></svg>}
+                {activity && <Loader className='inline -ml-2 mr-2' style={{ animation: 'spin 2s linear infinite' }} />}
                 Sign In
               </button>
             </form>

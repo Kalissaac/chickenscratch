@@ -38,34 +38,42 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
   const router = useRouter()
 
   async function saveDocument (mutateDocument = false): Promise<void> {
-    setUpdateLock(true)
-    const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
-    setActiveDocument((prevDocument) => {
-      return {
-        ...prevDocument,
-        title: docTitle?.value || 'Untitled Document' // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-      }
-    })
-    if (compareDocuments(cloudDocument, activeDocument)) return setUpdateLock(false)
-    const res = await fetch('/api/document/update', {
-      method: 'POST',
-      body: JSON.stringify({
-        id: activeDocument._id,
-        document: {
-          title: activeDocument.title,
-          body: activeDocument.body
+    const finish = (): void => {
+      setTimeout(() => {
+        setUpdateLock(false)
+      }, 1_000)
+    }
+    try {
+      setUpdateLock(true)
+      const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
+      setActiveDocument((prevDocument) => {
+        return {
+          ...prevDocument,
+          title: docTitle?.value || 'Untitled Document' // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
         }
       })
-    })
+      if (compareDocuments(cloudDocument, activeDocument)) return finish()
+      const res = await fetch('/api/document/update', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: activeDocument._id,
+          document: {
+            title: activeDocument.title,
+            body: activeDocument.body
+          }
+        })
+      })
 
-    if (!res.ok) {
-      const data = await res.json()
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error)
+      }
+      if (mutateDocument) mutate(`/api/document/get?id=${activeDocument._id}`, activeDocument).catch(console.error)
+      setLastUpdate(Date.now())
+    } catch (error) {
       setUpdateLock(false)
-      throw new Error(data.error)
+      throw error
     }
-    if (mutateDocument) mutate(`/api/document/get?id=${activeDocument._id}`, activeDocument).catch(console.error)
-    setLastUpdate(Date.now())
-    setUpdateLock(false)
   }
 
   useUnload(e => {
@@ -105,7 +113,7 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
         className='prose dark:prose-light min-w-full min-h-screen'
         readOnly={mode !== EditorModes.Editing}
       />
-      <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} />
+      <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} saveDocument={async () => await saveDocument()} />
     </Slate>
   )
 }
