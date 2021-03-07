@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, createRef } from 'react'
 import type { FormEvent } from 'react'
 import Head from 'next/head'
 import { Magic } from 'magic-sdk'
@@ -13,6 +13,7 @@ import { useUser } from '@shared/hooks'
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
+  const emailRef = createRef<HTMLInputElement>()
   const [magic, setMagic] = useState<Magic | null>(null)
   const { addToast } = useToasts()
   const router = useRouter()
@@ -33,8 +34,8 @@ export default function LoginPage (): JSX.Element {
   }, [magic])
 
   useEffect(() => {
-    document.getElementById('email')?.setAttribute('value', loginStep.email)
-  }, [loginStep.email])
+    emailRef.current?.setAttribute('value', loginStep.email)
+  }, [loginStep, emailRef.current])
 
   function returnToLogin (): void {
     setActivity(false)
@@ -154,7 +155,7 @@ export default function LoginPage (): JSX.Element {
 
           <div>
             <form action='/api/auth/callback/credentials' method='post' onSubmit={submitLogin}>
-              <input type='email' name='email' id='email' placeholder='Email' className='my-3 login-field login-input' required />
+              <input type='email' name='email' id='email' ref={emailRef} placeholder='Email' className='my-3 login-field login-input' required />
               <br />
               <div className='my-3 login-field flex justify-between'>Use a Security Key <input type='checkbox' name='securitykey' /></div>
               <button type='submit' className={`login-btn mt-4 ${activity ? 'cursor-wait hover:bg-accent-1-500 pointer-events-none' : ''}`}>
