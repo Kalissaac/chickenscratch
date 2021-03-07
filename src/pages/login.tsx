@@ -165,16 +165,16 @@ export default function LoginPage (): JSX.Element {
                     onChange={setSecurityKeyEnabled}
                     className='bg-gray-300 dark:bg-gray-700 absolute right-4 top-3 bottom-3 flex rounded-md overflow-hidden w-16 self-stretch'
                   >
-                    <span className={`w-1/2 ${!securityKeyEnabled ? 'bg-red-500 text-white' : 'bg-transparent'} transition-colors flex justify-center items-center`}>
+                    <span className={`w-1/2 ${!securityKeyEnabled ? 'bg-red-500 text-white' : 'bg-transparent'} transition-colors flex justify-center items-center self-stretch`}>
                       <X aria-label='X icon' />
                     </span>
-                    <span className={`w-1/2 ${securityKeyEnabled ? 'bg-green-500 text-white' : 'bg-transparent'} transition-colors flex justify-center items-center`}>
+                    <span className={`w-1/2 ${securityKeyEnabled ? 'bg-green-500 text-white' : 'bg-transparent'} transition-colors flex justify-center items-center self-stretch`}>
                       <Check aria-label='Checkmark icon' />
                     </span>
                   </Switch>
                 </Switch.Group>
               </div>
-              <button type='submit' className={`login-btn mt-4 ${activity ? 'cursor-wait hover:bg-accent-1-500 pointer-events-none' : ''}`}>
+              <button type='submit' aria-keyshortcuts='Enter' className={`login-btn mt-4 ${activity ? 'cursor-wait hover:bg-accent-1-500 pointer-events-none' : ''}`}>
                 {activity && <Loader className='inline -ml-2 mr-2' style={{ animation: 'spin 2s linear infinite' }} />}
                 Sign In
               </button>
