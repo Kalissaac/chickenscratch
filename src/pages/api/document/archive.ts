@@ -4,11 +4,10 @@ import { connectToDatabase } from '@shared/mongo'
 import { ObjectId } from 'mongodb'
 import { responseHandler } from '@shared/error'
 
-export default async function UpdateDocument (req: NextApiRequest, res: NextApiResponse): Promise<void> {
+export default async function DeleteDocument (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
   try {
-    const requestBody = JSON.parse(req.body)
-    const documentID = requestBody.id as string
+    const documentID = req.query.id as string
     if (!documentID) {
       error.name = 'NO_ID_SPECIFIED'
       error.message = 'No document ID was specified in the request'
@@ -29,16 +28,14 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       throw error
     }
 
-    const updateRequest = await client.db('data').collection('documents').updateOne({
+    const archiveResult = await client.db('data').collection('documents').updateOne({
       _id: ObjectId.createFromHexString(documentID),
-      collaborators: { $elemMatch: { user: user.email, role: { $in: ['editor', 'owner'] } } },
-      deleted: { $exists: false },
-      archived: false
+      collaborators: { $elemMatch: { user: user.email, role: 'owner' } }
     },
-    { $set: { ...requestBody.document, lastModified: new Date() } })
-    if (updateRequest.result.ok !== 1) {
+    { $set: { archived: true } })
+    if (archiveResult.result.ok !== 1) {
       error.name = 'UNKNOWN_ERROR'
-      error.message = 'MongoDB could not update document with ID: ' + documentID
+      error.message = 'MongoDB could not archive document with ID: ' + documentID
       throw error
     }
 

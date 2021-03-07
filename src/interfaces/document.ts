@@ -10,7 +10,7 @@ export default interface ParchmentDocument {
   collaborators: Collaborator[]
   tags: string[]
   due?: string
-  public?: boolean
+  public: boolean
   deleted?: string
   archived: boolean
 }

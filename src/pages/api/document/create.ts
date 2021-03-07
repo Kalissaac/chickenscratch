@@ -28,7 +28,9 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
         user: user.email,
         role: 'owner'
       }],
-      tags: []
+      tags: [],
+      public: false,
+      archived: false
     })
     if (newFileRef.result.ok !== 1) {
       error.name = 'UNKNOWN_ERROR'
