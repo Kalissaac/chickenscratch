@@ -39,13 +39,13 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }
                   leaveFrom='opacity-100'
                   leaveTo='opacity-0'
                 >
-                  <div className='absolute top-0 left-0 -ml-8 pt-4 pr-2 flex sm:-ml-10 sm:pr-4'>
+                  <div className='absolute top-0 left-0 -ml-8 pt-6 pr-2 flex sm:-ml-10 sm:pr-4'>
                     <button aria-label='Close panel' onClick={() => setSlideoverOpen(!slideoverOpen)} className='text-gray-800 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 text-3xl transition ease-in-out duration-150'>
                       <IconX />
                     </button>
                   </div>
                 </Transition.Child>
-                <div className='h-full flex flex-col space-y-6 py-6 px-4 sm:px-6 bg-white dark:bg-gray-900 space-y-4 shadow-xl overflow-y-scroll'>
+                <div className='h-full flex flex-col space-y-6 py-6 px-4 sm:px-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
                   {children}
                 </div>
               </div>
