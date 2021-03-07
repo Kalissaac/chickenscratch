@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { Switch, Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
 import { Check, ChevronLeft, X } from '@kalissaac/react-feather'
-import { useUser } from '@shared/hooks'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
@@ -18,11 +17,12 @@ export default function LoginPage (): JSX.Element {
   const [magic, setMagic] = useState<Magic | null>(null)
   const { addToast } = useToasts()
   const router = useRouter()
-  const { user } = useUser(false)
 
   useEffect(() => {
-    if (user) router.push('/home').catch(console.error)
-  }, [user])
+    fetch('/api/user')
+      .then(res => res.ok && router.push('/home'))
+      .catch(e => console.error(e))
+  }, [])
 
   useEffect(() => {
     magic === null &&
