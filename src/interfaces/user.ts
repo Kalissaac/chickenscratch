@@ -12,4 +12,9 @@ export default interface User {
     }
   }
   fileStructure: Folder[]
+  integrations: {
+    [name: string]: {
+      accessToken: string
+    }
+  }
 }

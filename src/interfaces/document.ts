@@ -13,6 +13,9 @@ export default interface ParchmentDocument {
   public: boolean
   deleted?: string
   archived: boolean
+  integrations: {
+    googleDrive: string // linked google drive file
+  }
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {

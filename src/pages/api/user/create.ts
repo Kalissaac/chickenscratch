@@ -25,7 +25,9 @@ export default async function CreateUser (req: NextApiRequest, res: NextApiRespo
       _id: user.publicAddress,
       email: user.email,
       creationDate: new Date(),
-      name
+      name,
+      tags: {},
+      fileStructure: []
     })
     if (newFileRef.result.ok !== 1) {
       error.name = 'UNKNOWN_ERROR'
