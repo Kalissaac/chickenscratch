@@ -45,3 +45,7 @@ html {
   scroll-padding-top: 8rem; /* height of sticky header */
   scroll-behavior: smooth !important;
 }
+
+.card:focus .card-border {
+  display: block;
+}
