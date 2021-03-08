@@ -2,7 +2,7 @@ import { Transition } from '@headlessui/react'
 import { X as IconX } from '@kalissaac/react-feather'
 import { ReactNode } from 'react'
 
-export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }: { slideoverOpen: boolean, setSlideoverOpen: Function, children: ReactNode }): JSX.Element {
+export default function Slideover ({ slideoverOpen, setSlideoverOpen, children, style = {} }: { slideoverOpen: boolean, setSlideoverOpen: Function, children: ReactNode, style?: object }): JSX.Element {
   return (
     <div className='fixed inset-0 z-30 overflow-hidden pointer-events-none'>
       <div className='absolute inset-0 overflow-hidden'>
@@ -30,7 +30,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }
             leaveTo='translate-x-full'
           >
             {(ref) => (
-              <div ref={ref} className='relative w-screen max-w-md'>
+              <div ref={ref} className='relative w-screen max-w-sm h-full'>
                 <Transition.Child
                   enter='opacity transition ease-in-out duration-500'
                   enterFrom='opacity-0'
@@ -45,7 +45,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children }
                     </button>
                   </div>
                 </Transition.Child>
-                <div className='h-full flex flex-col space-y-6 py-6 px-4 sm:px-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll'>
+                <div className='h-full flex flex-col space-y-6 py-6 px-4 sm:px-6 bg-white dark:bg-gray-900 shadow-xl overflow-y-scroll' style={style}>
                   {children}
                 </div>
               </div>
