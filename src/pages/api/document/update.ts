@@ -29,6 +29,8 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       throw error
     }
 
+    if (requestBody.document.due) requestBody.document.due = new Date(requestBody.document.due)
+
     const updateRequest = await client.db('data').collection('documents').updateOne({
       _id: ObjectId.createFromHexString(documentID),
       collaborators: { $elemMatch: { user: user.email, role: { $in: ['editor', 'owner'] } } },

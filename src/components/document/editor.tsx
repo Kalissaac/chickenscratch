@@ -1,7 +1,7 @@
 import ParchmentDocument, { compareDocuments } from '@interfaces/document'
 import { useUnload } from '@shared/hooks'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useContext, Dispatch } from 'react'
 import useSWR, { mutate } from 'swr'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
@@ -11,6 +11,7 @@ import withShortcuts from '@components/document/editor/withShortcuts'
 import Element from '@components/document/editor/element'
 import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
 import DocumentStatusBar from '@components/document/editor/statusbar'
+import ParchmentEditorContext, { DocumentAction } from '@components/document/editor/context'
 
 enum EditorModes {
   Editing,
@@ -19,7 +20,7 @@ enum EditorModes {
   Suggesting
 }
 
-export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument: ParchmentDocument, mode: EditorModes }): JSX.Element {
+export default function DocumentEditor ({ activeDocument, documentAction, mode }: { activeDocument: ParchmentDocument, documentAction: Dispatch<DocumentAction>, mode: EditorModes }): JSX.Element {
   const editor = useMemo(() =>
     withNoDoubleSpaces(
       withShortcuts(
@@ -32,10 +33,10 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
     ),
   [])
   const renderElement = useCallback(props => <Element {...props} />, [])
-  const [activeDocument, setActiveDocument] = useState(cloudDocument)
+  const router = useRouter()
+  const { data: pageData } = useSWR(`/api/document/get?id=${router.query.document as string}`)
   const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getTime())
   const [updateLock, setUpdateLock] = useState(false)
-  const router = useRouter()
 
   async function saveDocument (mutateDocument = false): Promise<void> {
     const finish = (): void => {
@@ -45,21 +46,15 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
     }
     try {
       setUpdateLock(true)
-      const docTitle = document.getElementById('doctitle') as HTMLInputElement | null
-      setActiveDocument((prevDocument) => {
-        return {
-          ...prevDocument,
-          title: docTitle?.value || 'Untitled Document' // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-        }
-      })
-      if (compareDocuments(cloudDocument, activeDocument)) return finish()
+      if (compareDocuments(pageData?.document, activeDocument)) return finish()
       const res = await fetch('/api/document/update', {
         method: 'POST',
         body: JSON.stringify({
           id: activeDocument._id,
           document: {
             title: activeDocument.title,
-            body: activeDocument.body
+            body: activeDocument.body,
+            due: activeDocument.due ? new Date(activeDocument.due) : undefined
           }
         })
       })
@@ -92,11 +87,9 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
       editor={editor}
       value={activeDocument.body}
       onChange={value => {
-        setActiveDocument((prevDocument) => {
-          return {
-            ...prevDocument,
-            body: value
-          }
+        documentAction({
+          type: 'setBody',
+          payload: value
         })
 
         if (mode !== EditorModes.Editing) return
@@ -119,14 +112,12 @@ export default function DocumentEditor ({ cloudDocument, mode }: { cloudDocument
 }
 
 export function EditorWrapper ({ mode }: { mode: EditorModes }): JSX.Element {
-  const router = useRouter()
-  const { data: pageData } = useSWR(`/api/document/get?id=${router.query.document as string}`)
-  const cloudDocument: ParchmentDocument = pageData?.document
+  const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
 
   return (
     <div className='m-32 mt-16 mx-6 sm:mx-32 md:mx-64 lg:mx-72 xl:mx-96'>
-      {cloudDocument
-        ? <DocumentEditor cloudDocument={cloudDocument} mode={mode} />
+      {(activeDocument && documentAction)
+        ? <DocumentEditor activeDocument={activeDocument} documentAction={documentAction} mode={mode} />
         : <DocumentSkeleton />
       }
     </div>
