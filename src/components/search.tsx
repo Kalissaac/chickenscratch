@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { Search as SearchIcon, FileText } from '@kalissaac/react-feather'
 import Fuse from 'fuse.js'
 import type ParchmentDocument from '@interfaces/document'
@@ -27,9 +27,9 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
 
             setResults(fuse.search(value))
           }}
-          onBlur={() => {
-            setResults(null)
-          }}
+          // onBlur={() => {
+          //   setResults(null)
+          // }}
         />
       </div>
       {results && results.length > 0 &&
@@ -39,11 +39,13 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
               <Link href={`/d/${file._id}/edit`}>
                 <a className='w-full h-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 p-4 px-6 flex items-center'>
                   <FileText size='1.25em' aria-label='File Icon' />
-                  <div className='ml-5'>
+                  <div className='ml-5 flex-1 whitespace-nowrap overflow-ellipsis overflow-hidden'>
                     <div>{file.title}</div>
-                    {/* Add in text matches here: <div>{JSON.stringify(matches)}</div> */}
+                    {matches &&
+                      <div className='text-gray-600 dark:text-gray-400 text-sm'>{insertHighlights(matches[0])}</div>
+                    }
                   </div>
-                  <span className='ml-auto text-gray-500'>{dayjs().to(dayjs(file.lastModified))}</span>
+                  <span className='self-end ml-5 text-gray-500 dark:text-gray-400'>{dayjs().to(dayjs(file.lastModified))}</span>
                 </a>
               </Link>
             </li>
@@ -51,5 +53,20 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
         </ol>
       }
     </div>
+  )
+}
+
+function insertHighlights (match: Fuse.FuseResultMatch): ReactNode {
+  let styledText = match.value ?? ''
+  if (match.key !== 'body.children.text' && match.key !== 'body.children.children.text') return <></>
+  for (const index of match.indices.slice().reverse()) {
+    if (index[0] === index[1]) continue
+    console.log(index)
+    styledText = styledText.slice(0, index[1]) + '</mark>' + styledText.slice(index[1])
+    styledText = styledText.slice(0, index[0]) + '<mark class="bg-accent-1-50">' + styledText.slice(index[0])
+  }
+  console.log(styledText)
+  return (
+    <span dangerouslySetInnerHTML={{ __html: styledText }}></span>
   )
 }
