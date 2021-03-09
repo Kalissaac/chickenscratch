@@ -163,7 +163,7 @@ export default function LoginPage (): JSX.Element {
                   <Switch
                     checked={securityKeyEnabled}
                     onChange={setSecurityKeyEnabled}
-                    className='bg-gray-300 dark:bg-gray-700 absolute right-4 top-3 bottom-3 flex rounded-md overflow-hidden w-16 self-stretch'
+                    className='bg-gray-300 dark:bg-gray-700 absolute right-4 top-3 bottom-3 flex rounded-md overflow-hidden w-16 self-stretch' type='button'
                   >
                     <span className={`w-1/2 ${!securityKeyEnabled ? 'bg-red-500 text-white' : 'bg-transparent'} transition-colors flex justify-center items-center self-stretch`}>
                       <X aria-label='X icon' />
