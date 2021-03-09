@@ -77,13 +77,13 @@ export default function HomePage (): JSX.Element {
               </div>
             </Card>
           ))}
-          {activeTab === 'recentEdit' && pageData?.recentFiles.length > 0
+          {activeTab === 'recentEdit' && (pageData?.recentFiles.length > 0
             ? pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
               const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
               return (
               <Card
                 title={file.title}
-                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</>}
+                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
                 background='bg-gradient-to-r from-yellow-600 to-red-500'
                 href={`/d/${file._id}/edit`}
                 key={file._id}
@@ -99,7 +99,7 @@ export default function HomePage (): JSX.Element {
               >
               Click to create a new document
             </Card>
-          }
+          )}
           {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
             const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
             return (
