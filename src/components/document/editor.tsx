@@ -69,6 +69,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
       setUpdateLock(false)
       throw error
     }
+    finish()
   }
 
   useUnload(e => {
