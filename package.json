@@ -34,6 +34,7 @@
   "devDependencies": {
     "@magic-sdk/types": "^3.0.1",
     "@next/bundle-analyzer": "^10.0.8",
+    "@tailwindcss/jit": "^0.1.5",
     "@types/cookie": "^0.4.0",
     "@types/draft-js": "^0.10.44",
     "@types/jsonwebtoken": "^8.5.0",
@@ -43,7 +44,7 @@
     "@types/react": "^17.0.3",
     "@types/react-toast-notifications": "^2.4.0",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
-    "autoprefixer": "10.0.2",
+    "autoprefixer": "^10.2.5",
     "eslint": "^7.21.0",
     "eslint-config-standard-with-typescript": "^20.0.0",
     "eslint-plugin-import": "^2.22.1",
