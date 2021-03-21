@@ -51,11 +51,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
         method: 'POST',
         body: JSON.stringify({
           id: activeDocument._id,
-          document: {
-            title: activeDocument.title,
-            body: activeDocument.body,
-            due: activeDocument.due ? new Date(activeDocument.due) : undefined
-          }
+          document: activeDocument
         })
       })
 
