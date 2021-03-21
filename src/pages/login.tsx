@@ -136,7 +136,7 @@ export default function LoginPage (): JSX.Element {
   }
 
   return (
-    <div style={{ backgroundColor: '#152532' }}>
+    <div className='bg-[#152532]'>
       <Head>
         <title>Login to Parchment</title>
       </Head>

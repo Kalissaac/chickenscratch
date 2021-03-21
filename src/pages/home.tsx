@@ -135,7 +135,7 @@ export default function HomePage (): JSX.Element {
                       <th scope="col" className="px-6 py-3 w-1/6">
                         Tags
                       </th>
-                      <th scope="col" className="relative px-6 py-3" style={{ width: '5%' }}>
+                      <th scope="col" className="relative px-6 py-3 w-[5%]">
                         <span className="sr-only">Edit</span>
                       </th>
                     </tr>

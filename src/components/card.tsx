@@ -14,7 +14,7 @@ export default function Card ({ title, subtitle = '', background, children, href
         <div className='font-extralight text-xs mb-1'>{subtitle}</div>
         <h2 className='text-lg whitespace-nowrap overflow-ellipsis overflow-hidden'>{title}</h2>
       </div>
-      <div className='p-4 text-sm whitespace-pre-wrap break-words overflow-hidden overflow-ellipsis' style={{ minHeight: '6rem', maxHeight: '10rem' }}>
+      <div className='p-4 text-sm whitespace-pre-wrap break-words overflow-hidden overflow-ellipsis min-h-[6rem] max-h-[10rem]'>
         {children}
       </div>
     </>
