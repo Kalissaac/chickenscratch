@@ -15,9 +15,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children, 
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          {(ref) => (
-            <div ref={ref} className='absolute inset-0 bg-gray-900 bg-opacity-20 transition-opacity pointer-events-auto' style={{ backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} onClick={() => setSlideoverOpen(!slideoverOpen)} />
-          )}
+          <div className='absolute inset-0 bg-gray-900 bg-opacity-20 transition-opacity pointer-events-auto' style={{ backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }} onClick={() => setSlideoverOpen(!slideoverOpen)} />
         </Transition>
         <section className='absolute inset-y-0 right-0 pl-10 max-w-full flex pointer-events-auto'>
           <Transition
@@ -29,8 +27,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children, 
             leaveFrom='translate-x-0'
             leaveTo='translate-x-full'
           >
-            {(ref) => (
-              <div ref={ref} className='relative w-screen max-w-sm h-full'>
+              <div className='relative w-screen max-w-sm h-full'>
                 <Transition.Child
                   enter='opacity transition ease-in-out duration-500'
                   enterFrom='opacity-0'
@@ -49,7 +46,6 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children, 
                   {children}
                 </div>
               </div>
-            )}
           </Transition>
         </section>
       </div>
