@@ -37,10 +37,10 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           </Field>
 
           <Field title='Due Date'>
-            <input type="datetime-local" name="duedate" id="duedate" value={activeDocument.due ?? ''} onChange={e => {
+            <input type="datetime-local" name="duedate" id="duedate" placeholder='YYYY-MM-DDTHH:MM:SS' value={activeDocument.due ?? ''} onChange={e => {
               if (!e.target || !e.target.value) return
               documentAction({
-                type: 'setDate',
+                type: 'setDue',
                 payload: e.target.value
               })
             }} className='bg-transparent' />
