@@ -95,10 +95,9 @@ module.exports = {
     },
     fontFamily: {
       sans: [...defaultTheme.fontFamily.sans],
-      serif: ['New York Large', ...defaultTheme.fontFamily.serif],
-      newYorkMedium: ['New York Medium', ...defaultTheme.fontFamily.serif],
-      newYorkExtraLarge: ['New York Extra Large', ...defaultTheme.fontFamily.serif],
-      mono: defaultTheme.fontFamily.mono
+      serif: ['"New York Large"', ...defaultTheme.fontFamily.serif],
+      newYorkMedium: ['"New York Medium"', ...defaultTheme.fontFamily.serif],
+      newYorkExtraLarge: ['"New York Extra Large"', ...defaultTheme.fontFamily.serif],
     }
   },
   variants: {
