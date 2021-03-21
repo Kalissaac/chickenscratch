@@ -180,10 +180,10 @@ export default function HomePage (): JSX.Element {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {dayjs().to(dayjs(file.lastModified))}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 whitespace-nowrap space-x-2">
                           {file.tags.length > 0
                             ? file.tags.map(tag => (
-                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100" key={tag}>
                                 {tag}
                               </span>
                             ))

@@ -66,7 +66,6 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
             {user.name} <MoreVertical className='ml-1' aria-label='View More Icon' />
           </button>
         </div>
-
       </nav>
 
       {/* Mobile navigation */}

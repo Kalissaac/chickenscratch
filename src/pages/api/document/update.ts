@@ -29,6 +29,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       throw error
     }
 
+    // TODO: Add proper document validation
     if (requestBody.document._id) delete requestBody.document._id // MongoDB doesn't like when _id is specified on update
     if (requestBody.document.due) requestBody.document.due = new Date(requestBody.document.due)
 
