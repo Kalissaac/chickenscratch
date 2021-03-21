@@ -98,6 +98,8 @@ module.exports = {
       serif: ['"New York Large"', ...defaultTheme.fontFamily.serif],
       newYorkMedium: ['"New York Medium"', ...defaultTheme.fontFamily.serif],
       newYorkExtraLarge: ['"New York Extra Large"', ...defaultTheme.fontFamily.serif],
+      mono: defaultTheme.fontFamily.mono,
+      editor: ['"iA Writer Quattro S"', ...defaultTheme.fontFamily.sans]
     }
   },
   variants: {

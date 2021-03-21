@@ -100,7 +100,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
-        className='prose dark:prose-light min-w-full min-h-screen'
+        className='prose dark:prose-light min-w-full min-h-screen font-editor'
         readOnly={mode !== EditorModes.Editing}
       />
       <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} saveDocument={async () => await saveDocument()} />
