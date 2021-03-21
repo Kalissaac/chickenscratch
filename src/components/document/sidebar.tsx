@@ -1,6 +1,6 @@
 import Slideover from '@components/slideover'
 import { Listbox, Transition } from '@headlessui/react'
-import { Archive, Check, ChevronDown, Eye, MessageSquare, Plus, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
+import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Plus, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
 import { ReactNode, useContext, useState } from 'react'
 import ParchmentEditorContext from '@components/document/editor/context'
@@ -30,9 +30,9 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           <Field title='Tags'>
             <ol className='space-y-2'>
               {activeDocument.tags.map(tag => (
-                <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400'>{tag} <X className='ml-1' /></button></li>
+                <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400' onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}>{tag} <X className='ml-1' /></button></li>
               ))}
-              <li><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400'><Plus className='mr-1' /> Add tag</button></li>
+              <li><FieldInput action='addTag' placeholder='+ Add tag' /></li>
             </ol>
           </Field>
 
@@ -207,11 +207,30 @@ function Field ({ title, children }: { title: string, children: ReactNode }): JS
   )
 }
 
+function FieldInput ({ action, placeholder }: { action: string, placeholder: string }): JSX.Element {
+  const [, documentAction] = useContext(ParchmentEditorContext)
+
+  return (
+    <input
+      type='text'
+      className='outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all'
+      placeholder={placeholder}
+      onKeyPress={e => {
+        if (e.code !== 'Enter') return
+        if (!documentAction) return
+        const value = e.currentTarget.value
+        if (!value) return
+
+        documentAction({ type: action, payload: value })
+        e.currentTarget.value = ''
+      }}
+    />
+  )
+}
+
 function CollaboratorIcon ({ role }: { role: string}): JSX.Element {
   const className = 'mr-1'
   switch (role) {
-    case 'editor':
-      return <User className={className}/>
     case 'viewer':
       return <Eye className={className}/>
     case 'owner':
@@ -220,6 +239,7 @@ function CollaboratorIcon ({ role }: { role: string}): JSX.Element {
       return <MessageSquare className={className}/>
     case 'suggestor':
       return <ThumbsUp className={className}/>
+    case 'editor':
     default:
       return <User className={className}/>
   }
