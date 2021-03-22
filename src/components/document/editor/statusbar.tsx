@@ -11,7 +11,7 @@ const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join
 
 export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateLock, saveDocument }: { activeDocument: ParchmentDocument, lastUpdate: number, updateLock: boolean, saveDocument: () => void }): JSX.Element {
   return (
-    <div className='fixed left-0 bottom-0 right-0 bg-gray-100 dark:bg-gray-darker text-xs font-mono flex justify-between items-center h-6 px-8'>
+    <div className='fixed left-0 bottom-0 right-0 text-gray-900 dark:text-gray-50 text-opacity-75 hover:text-opacity-100 text-xs font-editor flex justify-between items-center h-6 px-8'>
       <section className='h-full space-x-1'>
         <StatusBarItem onClick={() => {}}>{serialize(activeDocument.body).match(/[\w\d’'-]+/gi)?.length ?? 0} words</StatusBarItem>
         <StatusBarItem onClick={() => {}}>English (U.S.)</StatusBarItem>
