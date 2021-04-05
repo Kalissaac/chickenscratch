@@ -1,19 +1,20 @@
 import Card from '@components/card'
+import DocumentPreview from '@components/document/preview'
 import Footer from '@components/footer'
 import InitialLoader from '@components/loader'
 import Nav from '@components/nav'
 import SearchBar from '@components/search'
-import { useUser } from '@shared/hooks'
-import { FileText, Info, Plus } from '@kalissaac/react-feather'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import DocumentPreview from '@components/document/preview'
+import { SkeletonLine } from '@components/skeleton'
 import type ParchmentDocument from '@interfaces/document'
-import useSWR from 'swr'
+import { FileText, Folder, Info, Plus } from '@kalissaac/react-feather'
+import { useUser } from '@shared/hooks'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { SkeletonLine } from '@components/skeleton'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import { Node } from 'slate'
+import useSWR from 'swr'
 
 dayjs.extend(relativeTime)
 
@@ -47,6 +48,10 @@ export default function HomePage (): JSX.Element {
 
   return (
     <>
+      <Head>
+        <title>Home | Parchment</title>
+      </Head>
+
       <Nav files={pageData?.allFiles} />
       <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
