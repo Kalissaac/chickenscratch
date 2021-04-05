@@ -39,7 +39,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
 
   return (
     <>
-      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} hidden lg:flex bg-opacity-95 dark:bg-opacity-95 items-center justify-between p-8 px-20 top-0 z-20 transition-colors`} style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} aria-label='Navigation Bar'>
+      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} hidden lg:flex bg-opacity-95 dark:bg-opacity-95 items-center justify-between p-8 px-20 top-0 z-20 transition-colors backdrop-filter backdrop-blur`} aria-label='Navigation Bar'>
         <div className='flex items-center w-full'>
           <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
@@ -69,7 +69,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
       </nav>
 
       {/* Mobile navigation */}
-      <nav className='flex lg:hidden bg-white dark:bg-gray-900 shadow-lg sticky bg-opacity-95 dark:bg-opacity-95 items-center justify-between p-4 px-8 md:px-12 top-0 z-20' style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} aria-label='Navigation Bar'>
+      <nav className='flex lg:hidden bg-white dark:bg-gray-900 shadow-lg sticky bg-opacity-95 dark:bg-opacity-95 items-center justify-between p-4 px-8 md:px-12 top-0 z-20 backdrop-filter backdrop-blur' aria-label='Navigation Bar'>
         <Link href='/home'><a className='h-full uppercase font-serif font-bold text-4xl dark:text-white border-accent-1-500 dark:border-white border-b-2 mr-12'>P</a></Link>
         <button className='h-full'><Menu size='1.5rem' /></button>
       </nav>

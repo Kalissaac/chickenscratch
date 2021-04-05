@@ -36,7 +36,7 @@ export default function DocumentTitlebar ({ setSidebarOpen }: { setSidebarOpen: 
 
   return (
     <>
-      <Transition show={showTitlebar} unmount={false} className='sticky top-0 z-10 p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 bg-opacity-80' style={{ backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+      <Transition show={showTitlebar} unmount={false} className='sticky top-0 z-10 p-6 flex justify-between items-center text-gray-800 dark:text-gray-50 text-2xl bg-white dark:bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur'
         enter='transition ease-in-out duration-200 transform'
         enterFrom='-translate-y-full'
         enterTo='translate-y-0'
