@@ -2,12 +2,10 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      './src/{components,pages}/**/*.{js,ts,jsx,tsx}'
-    ]
-  },
+  purge: [
+    './src/{components,pages}/**/*.{js,ts,jsx,tsx}'
+  ],
+  mode: 'jit',
   darkMode: 'class', // 'media' or 'class'
   theme: {
     extend: {
@@ -33,9 +31,9 @@ module.exports = {
         light: {
           css: [
             {
-              color: theme('colors.gray.300'),
+              color: theme('colors.gray.200'),
               '[class~="lead"]': {
-                color: theme('colors.gray.200')
+                color: theme('colors.gray.100')
               },
               a: {
                 color: theme('colors.white')
