@@ -6,7 +6,13 @@
 			"script": "dev",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "next"
+			"detail": "next",
+			"presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "develop",
+      },
+      "runOptions": { "runOn": "folderOpen" }
 		},
 		{
 			"type": "npm",
