@@ -54,7 +54,7 @@ export async function verifyTokenCookie (token: string): Promise<jwtUser> {
   }
   try {
     const result = await jwtVerify(token, Buffer.from(process.env.JWT_SECRET, 'base64'))
-    return result.payload as jwtUser
+    return result.payload as unknown as jwtUser
   } catch (originalError) {
     if (originalError.name === 'JWSSignatureVerificationFailed') {
       const error = new Error()
