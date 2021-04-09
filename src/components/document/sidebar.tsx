@@ -188,7 +188,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
             </Listbox>
           </Field>
 
-          <div className='flex pt-8 mt-auto'>
+          <div className='flex pt-8' style={{ marginTop: 'auto' }}>
             <button className='basis flex-1 bg-red-500 hover:bg-red-600 text-gray-50 focus:border-black p-2 px-4 flex justify-center items-center' title='Delete document' onClick={() => { fetch(`/api/document/delete?id=${activeDocument._id}`).then(r => r.ok && router.push('/home')).catch(console.error) }}><Trash className='mr-2' /> Delete Document</button>
             <button className='basis ml-4 w-12 h-12 bg-gray-500 hover:bg-gray-600 text-gray-50 focus:border-black p-2 flex justify-center items-center' title='Archive document' onClick={() => { fetch(`/api/document/archive?id=${activeDocument._id}`).then(r => r.ok && router.push('/home')).catch(console.error) }}><Archive /></button>
           </div>
