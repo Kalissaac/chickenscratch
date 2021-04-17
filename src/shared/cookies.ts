@@ -4,7 +4,7 @@ import jwtVerify from 'jose/jwt/verify'
 import SignJWT from 'jose/jwt/sign'
 
 const TOKEN_NAME = 'token'
-const MAX_AGE = 60 * 60 * 24 * 7 // 1 week
+const MAX_AGE = 60 * 60 * 24 * 7 * 2 // 2 weeks
 
 export async function signToken (metadata: any): Promise<string> {
   if (!process.env.JWT_SECRET) throw new Error('JWT_SECRET environment variable not found!')
@@ -15,7 +15,7 @@ export async function signToken (metadata: any): Promise<string> {
   })
     .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
     .setIssuedAt()
-    .setExpirationTime('1 week')
+    .setExpirationTime(Math.floor((Date.now() / 1000) + MAX_AGE))
     .setIssuer(metadata.issuer ?? '')
     .sign(Buffer.from(process.env.JWT_SECRET, 'base64'))
 
