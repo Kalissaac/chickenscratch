@@ -21,16 +21,16 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           <Field title='Collaborators'>
             <ol className='space-y-2'>
               {activeDocument.collaborators.map(collaborator => (
-                <li key={collaborator.user}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400' title={`${collaborator.user} (${collaborator.role})`}><CollaboratorIcon role={collaborator.role} /> {collaborator.user}<X className='ml-1' /></button></li>
+                <li key={collaborator.user}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={`${collaborator.user} (${collaborator.role})`} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}><CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
               ))}
-              <li><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400'><Plus className='mr-1' /> Add collaborator</button></li>
+              <li><FieldInput action='addCollaborator' placeholder='+ Add collaborator' type='email' /></li>
             </ol>
           </Field>
 
           <Field title='Tags'>
             <ol className='space-y-2'>
               {activeDocument.tags.map(tag => (
-                <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400' onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}>{tag} <X className='ml-1' /></button></li>
+                <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={tag} onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}><span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
               ))}
               <li><FieldInput action='addTag' placeholder='+ Add tag' /></li>
             </ol>
@@ -207,24 +207,60 @@ function Field ({ title, children }: { title: string, children: ReactNode }): JS
   )
 }
 
-function FieldInput ({ action, placeholder }: { action: string, placeholder: string }): JSX.Element {
+function FieldInput ({ action, placeholder, type = 'text' }: { action: string, placeholder: string, type?: string }): JSX.Element {
   const [, documentAction] = useContext(ParchmentEditorContext)
+  const enterPromptRef = useRef<HTMLButtonElement>(null)
 
   return (
+    <div className='focus-within:border-gray-800 dark:focus-within:border-gray-50 border-transparent border-b-2 w-full transition-colors flex group'>
     <input
-      type='text'
-      className='outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all'
+        type={type}
+        className='field-input outline-none bg-transparent w-full transition-all flex-1'
       placeholder={placeholder}
       onKeyPress={e => {
         if (e.code !== 'Enter') return
         if (!documentAction) return
         const value = e.currentTarget.value
         if (!value) return
+          let payload: string | object
 
-        documentAction({ type: action, payload: value })
+          switch (action) {
+            case 'addCollaborator':
+              payload = {
+                user: value,
+                role: 'editor'
+              }
+              break
+            default:
+              payload = value
+          }
+
+          documentAction({ type: action, payload })
         e.currentTarget.value = ''
       }}
+        // TODO: Check onChange for performance issues regarding adding classes like this
+        onChange={e => {
+          if (e.currentTarget.value) {
+            enterPromptRef.current?.classList.add('flex')
+            enterPromptRef.current?.classList.remove('hidden')
+          } else {
+            enterPromptRef.current?.classList.add('hidden')
+            enterPromptRef.current?.classList.remove('flex')
+          }
+        }}
+        onFocus={e => {
+          if (e.currentTarget.value) {
+            enterPromptRef.current?.classList.add('flex')
+            enterPromptRef.current?.classList.remove('hidden')
+          }
+        }}
+        onBlur={() => {
+          enterPromptRef.current?.classList.add('hidden')
+          enterPromptRef.current?.classList.remove('flex')
+        }}
     />
+      <button ref={enterPromptRef} className='text-gray-600 dark:text-gray-400 p-0.5 px-2 text-xs items-center hidden'><CornerDownLeft className='mr-1' /> Enter</button>
+    </div>
   )
 }
 
