@@ -1,8 +1,8 @@
 import Slideover from '@components/slideover'
 import { Listbox, Transition } from '@headlessui/react'
-import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Plus, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
+import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useState } from 'react'
+import { ReactNode, useContext, useRef, useState } from 'react'
 import ParchmentEditorContext from '@components/document/editor/context'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
