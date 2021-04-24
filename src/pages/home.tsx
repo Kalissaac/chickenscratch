@@ -9,14 +9,11 @@ import type ParchmentDocument from '@interfaces/document'
 import { FileText, Folder, Info, Plus } from '@kalissaac/react-feather'
 import { useUser } from '@shared/hooks'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Node } from 'slate'
 import useSWR from 'swr'
-
-dayjs.extend(relativeTime)
 
 const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join('\n')
 

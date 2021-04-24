@@ -1,9 +1,5 @@
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { ReactNode } from 'react'
-
-dayjs.extend(relativeTime)
 
 export default function Card ({ title, subtitle = '', background, children, href }: { title: ReactNode, subtitle?: ReactNode, background?: string, children: ReactNode, href?: string }): JSX.Element {
   const parentClasses = 'card relative rounded-xl shadow-lg hover:shadow-xl focus:shadow-xl transition-shadow flex-1 min-w-0 mx-2 bg-white dark:bg-gray-900 box-border overflow-hidden focus:outline-none'

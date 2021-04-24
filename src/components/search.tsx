@@ -4,9 +4,6 @@ import Fuse from 'fuse.js'
 import type ParchmentDocument from '@interfaces/document'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-
-dayjs.extend(relativeTime)
 
 export default function SearchBar ({ files, style }: { files: ParchmentDocument[], style?: Object }): JSX.Element {
   const [results, setResults] = useState<Array<Fuse.FuseResult<ParchmentDocument>> | null>(null)
