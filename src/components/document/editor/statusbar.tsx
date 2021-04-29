@@ -17,6 +17,9 @@ export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateL
         <StatusBarItem onClick={() => {}}>English (U.S.)</StatusBarItem>
       </section>
       <section className='h-full space-x-1'>
+        <StatusBarItem onClick={() => {}} title={new Date().toString()}>
+          <Clock className='inline' /> {dayjs().format('HH:mm')}
+        </StatusBarItem>
         <StatusBarItem onClick={saveDocument} title={activeDocument.lastModified}>
           {updateLock
             ? <><Save className='inline' /> saving</>
