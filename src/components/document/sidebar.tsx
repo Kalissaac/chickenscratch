@@ -49,7 +49,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
           <Field title='Folder'>
             <Listbox
               as="div"
-              className="space-y-1"
+              className="space-y-1 relative"
               value={fileFolder}
               onChange={setFileFolder}
             >
@@ -58,60 +58,50 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
                   {/* <Listbox.Label className="block text-sm leading-5 font-medium text-gray-700">
                     Assigned to
                   </Listbox.Label> */}
-                  <div className="relative">
-                    <span className="inline-block w-full rounded-md shadow-sm">
-                      <Listbox.Button className="cursor-default relative w-full rounded-md border border-gray-300 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
-                        <span className="block truncate">{fileFolder}</span>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <ChevronDown />
-                        </span>
-                      </Listbox.Button>
-                    </span>
+                  <span className="inline-block w-full rounded-md shadow-sm">
+                    <Listbox.Button className="cursor-default relative w-full rounded-md border border-gray-300 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                      <span className="block truncate">{fileFolder}</span>
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <ChevronDown />
+                      </span>
+                    </Listbox.Button>
+                  </span>
 
-                    <Transition
-                      show={open}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                      className="absolute mt-1 w-full rounded-md bg-white shadow-lg"
+                  <Transition
+                    show={open}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                    className="absolute mt-1 w-full rounded-md bg-white shadow-lg"
+                  >
+                    <Listbox.Options
+                      static
+                      className="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
                     >
-                      <Listbox.Options
-                        static
-                        className="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
-                      >
-                        {['folder 1', 'folder 2', 'folder 3', 'folder 4', 'folder 5', 'folder 6', 'folder 7'].map((person) => (
-                          <Listbox.Option key={person} value={person}>
-                            {({ selected, active }) => (
-                              <div
-                                className={`${
-                                  active
-                                    ? 'text-white bg-accent-1-500'
-                                    : 'text-gray-900'
-                                } cursor-default select-none relative py-2 pl-8 pr-4`}
-                              >
-                                <span
-                                  className={`${
-                                    selected ? 'font-semibold' : 'font-normal'
-                                  } block truncate`}
-                                >
-                                  {person}
+                      {['folder 1', 'folder 2', 'folder 3', 'folder 4', 'folder 5', 'folder 6', 'folder 7'].map((person) => (
+                        <Listbox.Option key={person} value={person}>
+                          {({ selected, active }) => (
+                            <div
+                              className={`${
+                                active
+                                  ? 'text-white bg-accent-1-500'
+                                  : 'text-gray-900'
+                              } cursor-default select-none relative py-2 pl-8 pr-4`}
+                            >
+                              <span className={`${selected ? 'font-semibold' : 'font-normal'} block truncate`}>
+                                {person}
+                              </span>
+                              {selected && (
+                                <span className={`${active ? 'text-white' : 'text-accent-1-500'} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
+                                  <Check />
                                 </span>
-                                {selected && (
-                                  <span
-                                    className={`${
-                                      active ? 'text-white' : 'text-accent-1-500'
-                                    } absolute inset-y-0 left-0 flex items-center pl-1.5`}
-                                  >
-                                    <Check />
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
+                              )}
+                            </div>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
                 </>
               )}
             </Listbox>
@@ -213,15 +203,15 @@ function FieldInput ({ action, placeholder, type = 'text' }: { action: string, p
 
   return (
     <div className='focus-within:border-gray-800 dark:focus-within:border-gray-50 border-transparent border-b-2 w-full transition-colors flex group'>
-    <input
+      <input
         type={type}
         className='field-input outline-none bg-transparent w-full transition-all flex-1'
-      placeholder={placeholder}
-      onKeyPress={e => {
-        if (e.code !== 'Enter') return
-        if (!documentAction) return
-        const value = e.currentTarget.value
-        if (!value) return
+        placeholder={placeholder}
+        onKeyPress={e => {
+          if (e.code !== 'Enter') return
+          if (!documentAction) return
+          const value = e.currentTarget.value
+          if (!value) return
           let payload: string | object
 
           switch (action) {
@@ -236,8 +226,8 @@ function FieldInput ({ action, placeholder, type = 'text' }: { action: string, p
           }
 
           documentAction({ type: action, payload })
-        e.currentTarget.value = ''
-      }}
+          e.currentTarget.value = ''
+        }}
         // TODO: Check onChange for performance issues regarding adding classes like this
         onChange={e => {
           if (e.currentTarget.value) {
@@ -258,7 +248,7 @@ function FieldInput ({ action, placeholder, type = 'text' }: { action: string, p
           enterPromptRef.current?.classList.add('hidden')
           enterPromptRef.current?.classList.remove('flex')
         }}
-    />
+      />
       <button ref={enterPromptRef} className='text-gray-600 dark:text-gray-400 p-0.5 px-2 text-xs items-center hidden'><CornerDownLeft className='mr-1' /> Enter</button>
     </div>
   )
