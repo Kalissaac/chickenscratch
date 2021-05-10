@@ -107,7 +107,7 @@ export default function HomePage (): JSX.Element {
             return (
               <Card
                 title={file.title}
-                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && `&#8226; due ${dayjs().to(dayjs(file.due))}`}</>}
+                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
                 background='bg-gradient-to-r from-yellow-600 to-red-500'
                 href={`/d/${file._id}/edit`}
                 key={file._id}
