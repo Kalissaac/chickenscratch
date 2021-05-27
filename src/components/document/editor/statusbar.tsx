@@ -40,7 +40,7 @@ function StatusBarItem ({ children, onClick, title }: { children: ReactNode, onC
   )
 }
 
-function CounterMenu ({ openMenu, setOpenMenu }): JSX.Element {
+function CounterMenu ({ openMenu, setOpenMenu }: { openMenu: string, setOpenMenu: React.Dispatch<React.SetStateAction<string>> }): JSX.Element {
   return (
     <Transition show={openMenu === 'counter'} onBlur={() => setOpenMenu('')} className='absolute left-0 right-0 bottom-24 -top-24 h-24 bg-gray-300 dark:bg-gray-800'>
       Words

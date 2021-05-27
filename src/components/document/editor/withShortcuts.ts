@@ -7,7 +7,7 @@ import {
 } from 'slate'
 import { ReactEditor } from 'slate-react'
 
-const SHORTCUTS = {
+const SHORTCUTS: { [shortcut: string]: string } = {
   '*': 'list-item',
   '-': 'list-item',
   '+': 'orderedlist-item',

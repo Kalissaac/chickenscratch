@@ -14,7 +14,7 @@ export class APIError extends Error {
   name: string
   message: string
   stacktrace: string
-  type: ErrorType
+  type: ErrorType | undefined
 
   constructor (name: string, message: string, stacktrace: string) {
     super(message)

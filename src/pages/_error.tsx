@@ -1,7 +1,8 @@
 import { Home } from '@kalissaac/react-feather'
 import Link from 'next/link'
+import type { NextPage } from 'next'
 
-export default function ErrorPage ({ statusCode }): JSX.Element {
+const ErrorPage: NextPage<{ statusCode: number | string }> = ({ statusCode }: { statusCode: number | string }) => {
   return (
     <>
       <div className='flex flex-col justify-center items-center h-screen'>
@@ -19,3 +20,5 @@ ErrorPage.getInitialProps = ({ res, err }) => {
   const statusCode = res?.statusCode ?? err?.name ?? 418
   return { statusCode }
 }
+
+export default ErrorPage

@@ -1,4 +1,6 @@
-const Element = ({ attributes, children, element }): JSX.Element => {
+import type { RenderElementProps } from 'slate-react'
+
+const Element = ({ attributes, children, element }: RenderElementProps): JSX.Element => {
   switch (element.type) {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>
