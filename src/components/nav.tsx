@@ -39,7 +39,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
 
   return (
     <>
-      <nav className={`${scrolling ? 'bg-white dark:bg-gray-900 shadow-lg sticky' : ''} hidden lg:flex bg-opacity-95 dark:bg-opacity-95 items-center justify-between p-8 px-20 top-0 z-20 transition-colors backdrop-filter backdrop-blur`} aria-label='Navigation Bar'>
+      <nav className={`${scrolling ? 'bg-gray-50 dark:bg-gray-900 shadow-lg sticky py-6' : 'p-8'} hidden lg:flex bg-opacity-95 dark:bg-opacity-95 items-center justify-between px-20 top-0 z-20 transition-colors backdrop-filter backdrop-blur`} aria-label='Navigation Bar'>
         <div className='flex items-center w-full'>
           <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
@@ -85,7 +85,7 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Func
   return (
     <Slideover setSlideoverOpen={setSidebarOpen} slideoverOpen={sidebarOpen}>
       <header className='flex items-center justify-between'>
-        <h2 className='text-lg leading-7 font-semibold'>
+        <h2 className='text-xl leading-7 font-semibold font-serif tracking-wide'>
           Profile
         </h2>
         <button className='text-red-500 hover:text-red-600' onClick={() => { router.push('/api/logout').then(() => { mutate('/api/user', null).catch(console.error) }).catch(() => { alert('Error logging out user') }) }}>Sign Out</button>
