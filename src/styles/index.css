@@ -6,9 +6,12 @@
 @tailwind components;
 /* Stop purging. */
 
-html,
 body {
-  @apply bg-gray-lighter dark:bg-gray-darker text-gray-darker dark:text-gray-50 min-h-screen;
+  @apply bg-gray-lighter text-gray-darker dark:text-gray-50 min-h-screen;
+}
+
+html.dark, .dark body {
+  @apply bg-gray-darker;
 }
 
 /* body * {
