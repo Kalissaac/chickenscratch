@@ -40,6 +40,7 @@ export default function HomePage (): JSX.Element {
 
   const dataLoading = !pageData && !dataError
 
+  const baseTabClasses = 'text-xl uppercase border-b-2 transition-all'
   const activeTabClasses = 'font-medium border-gray-darker dark:border-gray-lighter'
   const inactiveTabClasses = 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-500 border-transparent'
 
@@ -58,9 +59,10 @@ export default function HomePage (): JSX.Element {
           <SearchBar files={pageData?.allFiles} />
         </div>
 
-        <div className='flex items-center mb-4 ml-4 lg:ml-0'>
-          <button className={`text-xl uppercase border-b-2 transition-all ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')} id='recent'>Recently edited</button>
-          <button className={`text-xl uppercase border-b-2 ml-5 transition-all ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
+        <div className='flex items-center mb-4 ml-4 lg:ml-0 space-x-5'>
+          <button className={`${baseTabClasses} ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')} id='recent'>Recently edited</button>
+          <button className={`${baseTabClasses} ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
+          <button className={`${baseTabClasses} ${activeTab === 'favorites' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('favorites')} id='favorites'>Favorites</button>
         </div>
         <div className='flex flex-col lg:flex-row justify-between -ml-2 -mr-2 mb-12 gap-y-2 lg:gap-y-0'>
           {dataLoading && Array(4).fill(0).map((_, i) => (
@@ -103,6 +105,20 @@ export default function HomePage (): JSX.Element {
             </Card>
           )}
           {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
+            const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
+            return (
+              <Card
+                title={file.title}
+                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
+                background='bg-gradient-to-r from-yellow-600 to-red-500'
+                href={`/d/${file._id}/edit`}
+                key={file._id}
+              >
+                {serializedBody}
+              </Card>
+            )
+          })}
+          {activeTab === 'favorites' && pageData?.recentFiles.slice(0, 3).map((file: ParchmentDocument) => {
             const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
             return (
               <Card
