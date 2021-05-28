@@ -54,7 +54,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
           {scrolling &&
             <>
               <SearchBar files={files} />
-              <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' /></button>
+              <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' className='text-xl' /></button>
             </>
           }
 
