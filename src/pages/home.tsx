@@ -79,7 +79,7 @@ export default function HomePage (): JSX.Element {
               </div>
             </Card>
           ))}
-          {activeTab === 'recentEdit' && (pageData?.recentFiles.length > 0
+          {activeTab === 'recentEdit' && pageData && (pageData?.recentFiles.length > 0
             ? pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
               const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
               return (
