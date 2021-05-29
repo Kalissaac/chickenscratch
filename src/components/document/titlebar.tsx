@@ -4,8 +4,9 @@ import { ChevronLeft, Info } from '@kalissaac/react-feather'
 import { SkeletonLine } from '@components/skeleton'
 import ParchmentEditorContext from './editor/context'
 import { Transition } from '@headlessui/react'
+import Image from 'next/image'
 
-export default function DocumentTitlebar ({ setSidebarOpen }: { setSidebarOpen: Function }): JSX.Element {
+export default function DocumentTitlebar ({ setSidebarOpen, showBackButton = true }: { setSidebarOpen: Function, showBackButton?: boolean }): JSX.Element {
   const router = useRouter()
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
   const titleInputRef = useRef<HTMLInputElement>(null)
@@ -44,11 +45,15 @@ export default function DocumentTitlebar ({ setSidebarOpen }: { setSidebarOpen: 
         leaveFrom='translate-y-0'
         leaveTo='-translate-y-full'
       >
-        <button className='self-stretch flex justify-center items-center ml-4' aria-label='Back button' onClick={() => router.back()}><ChevronLeft aria-label='Left arrow' /></button>
+        {showBackButton
+          ? <button className='self-stretch flex justify-center items-center ml-4' aria-label='Back button' onClick={() => router.back()}><ChevronLeft aria-label='Left arrow' /></button>
+          : <button className='self-stretch flex justify-center items-center ml-4 relative w-[1em]' aria-label='Home button' onClick={async () => await router.push('/home')}><Image src='/favicon.svg' layout='fill' /></button>
+        }
         {(activeDocument && documentAction)
           ? <input id='doctitle' ref={titleInputRef} type='text' className='text-center font-serif outline-none bg-transparent focus:outline-none focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 transition-all' placeholder='Untitled Document'
               onChange={({ currentTarget: input }) => {
-                document.title = input.value + ' | Parchment'; input.size = Math.max(input.value.length, 10)
+                document.title = input.value + ' | Parchment'
+                input.size = Math.max(input.value.length, 10)
                 documentAction({
                   type: 'setTitle',
                   payload: input.value
