@@ -11,18 +11,31 @@ import { useUser } from '@shared/hooks'
 import dayjs from 'dayjs'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Node } from 'slate'
 import useSWR from 'swr'
 
 const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join('\n')
 
+enum tabs {
+  recent = 'recent',
+  invitations = 'invitations',
+  favorites = 'favorites'
+}
+
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
-  const [activeTab, setActiveTab] = useState('recentEdit')
+  const [activeTab, setActiveTab] = useState<tabs>(tabs.recent)
   const [activeDocumentPreview, setActiveDocumentPreview] = useState<ParchmentDocument | null>(null)
   const { data: pageData, error: dataError } = useSWR(user ? '/api/home' : null)
   const router = useRouter()
+
+  useEffect(() => {
+    const id = router.asPath.split('#').pop()
+    if (id && Object.values(tabs).includes(id as tabs)) {
+      setActiveTab(id as tabs)
+    }
+  }, [router.asPath])
 
   if (userLoading) {
     return <InitialLoader />
@@ -59,10 +72,10 @@ export default function HomePage (): JSX.Element {
           <SearchBar files={pageData?.allFiles} />
         </div>
 
-        <div className='flex items-center mb-4 ml-4 lg:ml-0 space-x-5'>
-          <button className={`${baseTabClasses} ${activeTab === 'recentEdit' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('recentEdit')} id='recent'>Recently edited</button>
-          <button className={`${baseTabClasses} ${activeTab === 'invitations' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('invitations')} id='invitations'>Invitations</button>
-          <button className={`${baseTabClasses} ${activeTab === 'favorites' ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab('favorites')} id='favorites'>Favorites</button>
+        <div className='flex items-center mb-4 ml-4 lg:ml-0 space-x-6'>
+          <button className={`${baseTabClasses} ${activeTab === tabs.recent ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab(tabs.recent)} id='recent'>Recently edited</button>
+          <button className={`${baseTabClasses} ${activeTab === tabs.invitations ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab(tabs.invitations)} id='invitations'>Invitations</button>
+          <button className={`${baseTabClasses} ${activeTab === tabs.favorites ? activeTabClasses : inactiveTabClasses}`} onClick={() => setActiveTab(tabs.favorites)} id='favorites'>Favorites</button>
         </div>
         <div className='flex flex-col lg:flex-row justify-between -ml-2 -mr-2 mb-12 gap-y-2 lg:gap-y-0'>
           {dataLoading && Array(4).fill(0).map((_, i) => (
@@ -81,7 +94,7 @@ export default function HomePage (): JSX.Element {
               </div>
             </Card>
           ))}
-          {activeTab === 'recentEdit' && pageData && (pageData?.recentFiles.length > 0
+          {activeTab === tabs.recent && pageData && (pageData?.recentFiles.length > 0
             ? pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
               const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
               return (
@@ -104,7 +117,7 @@ export default function HomePage (): JSX.Element {
               Click to create a new document
             </Card>
           )}
-          {activeTab === 'invitations' && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
+          {activeTab === tabs.invitations && pageData?.recentFiles.slice(0, 5).map((file: ParchmentDocument) => {
             const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
             return (
               <Card
@@ -118,7 +131,7 @@ export default function HomePage (): JSX.Element {
               </Card>
             )
           })}
-          {activeTab === 'favorites' && pageData?.recentFiles.slice(0, 3).map((file: ParchmentDocument) => {
+          {activeTab === tabs.favorites && pageData?.recentFiles.slice(0, 3).map((file: ParchmentDocument) => {
             const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
             return (
               <Card
