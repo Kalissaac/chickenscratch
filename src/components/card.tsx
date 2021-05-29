@@ -6,7 +6,7 @@ export default function Card ({ title, subtitle = '', background, children, href
   const inner = (
     <>
       <div className='card-border rounded-xl absolute hidden inset-0 box-border pointer-events-none border-2 border-gray-darker dark:border-gray-lighter' />
-      <div className={`p-4 text-gray-50 ${background ?? ''}`}>
+      <div className={`p-4 text-gray-50 ${background ?? 'bg-accent-1-500'}`}>
         <div className='font-extralight text-xs mb-1'>{subtitle}</div>
         <h2 className='text-lg whitespace-nowrap overflow-ellipsis overflow-hidden'>{title}</h2>
       </div>
