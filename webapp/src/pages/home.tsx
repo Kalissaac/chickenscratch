@@ -6,7 +6,7 @@ import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { SkeletonLine } from '@components/skeleton'
 import type ParchmentDocument from '@interfaces/document'
-import { FileText, Info, Plus } from '@kalissaac/react-feather'
+import { FileText, Grid, Info, List, Plus } from '@kalissaac/react-feather'
 import { useUser } from '@shared/hooks'
 import dayjs from 'dayjs'
 import Head from 'next/head'
@@ -101,7 +101,7 @@ export default function HomePage (): JSX.Element {
               <Card
                 title={file.title}
                 subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
-                background='bg-gradient-to-r from-yellow-600 to-red-500'
+                background='bg-gradient-to-r from-pink-600 to-purple-500'
                 href={`/d/${file._id}/edit`}
                 key={file._id}
               >
@@ -147,11 +147,23 @@ export default function HomePage (): JSX.Element {
           })}
         </div>
 
+        <div className='flex items-center justify-between mb-4 ml-4 lg:ml-0 text-xl'>
+          <h2 className='uppercase font-medium text-gray-600 border-b-2m border-gray-darker dark:border-gray-lighter' id='files'>{pageData?.allFiles.length ?? 0} documents</h2>
+          <div className='flex justify-center items-center text-xl space-x-2'>
+            <button className='bg-black bg-opacity-25 rounded-lg p-1'>
+              <List />
+            </button>
+            <button className=''>
+              <Grid />
+            </button>
+          </div>
+        </div>
+
         <div className="flex flex-col">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800" id='files'>
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
                   <thead className="bg-gray-50 dark:bg-gray-900">
                     <tr className='text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
                       <th scope="col" className="px-6 py-3">
@@ -181,10 +193,10 @@ export default function HomePage (): JSX.Element {
                           </div>
                         </td>
                         <td className="px-6 py-4 my-1 whitespace-nowrap">
-                          <SkeletonLine width='2/4' />
+                          <SkeletonLine width='[66%]' />
                         </td>
                         <td className="px-6 py-4 my-1 whitespace-nowrap">
-                          <SkeletonLine width='1/4' />
+                          <SkeletonLine width='[66%]' />
                         </td>
                         <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
                           {Array(3).fill(0).map((_, j) => (
