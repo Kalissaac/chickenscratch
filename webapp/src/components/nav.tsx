@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from '@components/search'
-import { AlertTriangle, ArrowRight, Edit2, Menu, MoreVertical, Plus } from '@kalissaac/react-feather'
+import { Edit2, Menu, MoreVertical, Plus } from '@kalissaac/react-feather'
 import Image from 'next/image'
 import Slideover from '@components/slideover'
 import { useRouter } from 'next/router'
@@ -100,19 +100,6 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Func
           <div className='font-semibold text-lg'>{user.name} <button><Edit2 width='0.9em' height='0.9em' /></button></div>
           <div className='font-mono'>{user.email}</div>
         </div>
-      </div>
-
-      <div className='space-y-2'>
-        <h3 className='text-lg font-semibold tracking-wide'>Danger Zone</h3>
-        <div className='bg-red-200'>
-          <h4 className='flex items-center font-medium'><AlertTriangle className='mr-2' /> Caution</h4>
-          <p className='text-sm'>
-            This action cannot be reversed!<br />
-            All of your data will be deleted from our servers.<br />
-            <span className='flex items-center border-b-2 border-transparent hover:border-current transition-colors'>If you have anything you want to keep, make a backup first <ArrowRight className='ml-2' /></span>
-          </p>
-        </div>
-        <button className='basis w-full bg-red-500 hover:bg-red-600 text-gray-50 focus:border-black p-2 px-4' title='Delete account' onClick={() => { fetch('/api/user/delete').then(r => r.ok && router.push('/')).catch(console.error) }}>Delete Account</button>
       </div>
     </Slideover>
   )
