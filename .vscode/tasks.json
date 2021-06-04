@@ -4,24 +4,30 @@
 		{
 			"type": "npm",
 			"script": "dev",
-			"problemMatcher": [],
-			"label": "npm: dev",
+			"path": "webapp/",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"label": "Run Next.js webapp",
 			"detail": "next",
 			"presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "group": "develop",
-      },
-      "runOptions": { "runOn": "folderOpen" }
+				"reveal": "always",
+				"panel": "dedicated",
+				"group": "develop"
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
 		},
 		{
 			"type": "npm",
 			"script": "build",
+			"path": "webapp/",
 			"problemMatcher": [
 				"$tsc"
 			],
 			"group": "build",
-			"label": "npm: build",
+			"label": "Build Next.js webapp",
 			"detail": "next build"
 		}
 	]

@@ -1,7 +1,7 @@
 module.exports = {
   extends: 'standard-with-typescript',
   parserOptions: {
-    project: './tsconfig.json'
+    project: './webapp/tsconfig.json'
   },
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
