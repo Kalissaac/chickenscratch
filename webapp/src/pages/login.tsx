@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { Switch, Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
 import { Check, ChevronLeft, Loader, X } from '@kalissaac/react-feather'
+import BackgroundImage from '../../public/images/loginbg.jpg'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
@@ -192,7 +193,7 @@ export default function LoginPage (): JSX.Element {
 
       <SecondaryStepWrapper stage='securitykey' secondary='Plug in your security key to sign in with' prompt='Plug in your security key' />
 
-      <Image src='/images/loginbg.jpg' layout='fill' className='object-cover hidden md:visible' />
+      <Image src={BackgroundImage} layout='fill' placeholder='blur' className='object-cover hidden md:visible' />
     </div>
   )
 }
