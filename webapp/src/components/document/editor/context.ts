@@ -10,8 +10,19 @@ export function createDocumentValue (initalDocument: ParchmentDocument): [Parchm
   return useReducer(documentReducer, initalDocument)
 }
 
+export type DocumentActionTypes =
+  'setTitle' |
+  'setBody' |
+  'addCollaborator' |
+  'removeCollaborator' |
+  'addTag' |
+  'removeTag' |
+  'setDue' |
+  'setPublic' |
+  'dangerouslyOverwrite'
+
 export interface DocumentAction {
-  type: string
+  type: DocumentActionTypes
   payload: any
 }
 
@@ -63,6 +74,11 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
       return {
         ...document,
         due: action.payload
+      }
+    case 'setPublic':
+      return {
+        ...document,
+        public: action.payload
       }
     case 'dangerouslyOverwrite':
       return action.payload

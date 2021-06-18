@@ -41,7 +41,7 @@ export default function DocumentViewPage (): JSX.Element {
       </Head>
       <ParchmentEditorContext.Provider value={[activeDocument, documentAction]}>
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <Titlebar setSidebarOpen={setSidebarOpen} />
+        <Titlebar setSidebarOpen={setSidebarOpen} showBackButton={false} />
         <EditorWrapper mode={1} />
       </ParchmentEditorContext.Provider>
     </>

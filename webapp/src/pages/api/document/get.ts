@@ -15,13 +15,6 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       throw error
     }
 
-    const user = await verifyTokenCookie(req.cookies.token)
-    if (!user) {
-      error.name = 'USER_NOT_AUTHENTICATED'
-      error.message = 'User data could not be decoded from JWT'
-      throw error
-    }
-
     const { client } = await connectToDatabase()
     if (Buffer.byteLength(documentID, 'utf-8') !== 24) {
       error.name = 'FILE_NOT_FOUND'
@@ -31,13 +24,27 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
 
     const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({
       _id: ObjectId.createFromHexString(documentID),
-      collaborators: { $elemMatch: { user: user.email } },
       deleted: { $exists: false }
     })
     if (!requestedDocument) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate document with ID: ' + documentID
       throw error
+    }
+
+    if (!requestedDocument.public) {
+      const user = await verifyTokenCookie(req.cookies.token)
+      if (!user) {
+        error.name = 'USER_NOT_AUTHENTICATED'
+        error.message = 'User data could not be decoded from JWT'
+        throw error
+      }
+
+      if (!requestedDocument.collaborators.map(c => c.user).includes(user.email)) {
+        error.name = 'FILE_NOT_FOUND'
+        error.message = 'MongoDB failed to locate document with ID: ' + documentID
+        throw error
+      }
     }
 
     res.json({ document: requestedDocument })

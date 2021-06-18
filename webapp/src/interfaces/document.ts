@@ -26,6 +26,7 @@ export function compareDocuments (documentA: ParchmentDocument, documentB: Parch
     documentA.body === documentB.body &&
     documentA.collaborators === documentB.collaborators &&
     documentA.tags === documentB.tags &&
-    documentA.due === documentB.due
+    documentA.due === documentB.due &&
+    documentA.public === documentB.public
   )
 }
