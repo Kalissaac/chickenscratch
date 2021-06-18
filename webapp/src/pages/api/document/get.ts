@@ -32,19 +32,22 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       throw error
     }
 
-    if (!requestedDocument.public) {
-      const user = await verifyTokenCookie(req.cookies.token)
-      if (!user) {
-        error.name = 'USER_NOT_AUTHENTICATED'
-        error.message = 'User data could not be decoded from JWT'
-        throw error
-      }
+    if (requestedDocument.public) {
+      res.json({ document: requestedDocument })
+      return
+    }
 
-      if (!requestedDocument.collaborators.map(c => c.user).includes(user.email)) {
-        error.name = 'FILE_NOT_FOUND'
-        error.message = 'MongoDB failed to locate document with ID: ' + documentID
-        throw error
-      }
+    const user = await verifyTokenCookie(req.cookies.token)
+    if (!user) {
+      error.name = 'USER_NOT_AUTHENTICATED'
+      error.message = 'User data could not be decoded from JWT'
+      throw error
+    }
+
+    if (!requestedDocument.collaborators.map(c => c.user).includes(user.email)) {
+      error.name = 'FILE_NOT_FOUND'
+      error.message = 'MongoDB failed to locate document with ID: ' + documentID
+      throw error
     }
 
     res.json({ document: requestedDocument })
