@@ -1,14 +1,12 @@
 import Slideover from '@components/slideover'
-import { Listbox, Transition } from '@headlessui/react'
-import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
+import { Archive, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useRef, useState } from 'react'
+import { ReactNode, useContext, useRef } from 'react'
 import ParchmentEditorContext, { DocumentActionTypes } from '@components/document/editor/context'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
   const router = useRouter()
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
-  const [fileFolder, setFileFolder] = useState('folder 1')
 
   return (
     <Slideover slideoverOpen={sidebarOpen} setSlideoverOpen={setSidebarOpen}>
