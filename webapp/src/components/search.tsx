@@ -58,11 +58,9 @@ function insertHighlights (match: Fuse.FuseResultMatch): ReactNode {
   if (match.key !== 'body.children.text' && match.key !== 'body.children.children.text') return <></>
   for (const index of match.indices.slice().reverse()) {
     if (index[0] === index[1]) continue
-    console.log(index)
     styledText = styledText.slice(0, index[1]) + '</mark>' + styledText.slice(index[1])
     styledText = styledText.slice(0, index[0]) + '<mark class="bg-accent-1-50">' + styledText.slice(index[0])
   }
-  console.log(styledText)
   return (
     <span dangerouslySetInnerHTML={{ __html: styledText }}></span>
   )
