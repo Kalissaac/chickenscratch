@@ -22,7 +22,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
 
     const { client } = await connectToDatabase()
     const allFiles: ParchmentDocument[] = await client.db('data').collection('documents')
-      .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false }, archived: false })
+      .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false }, archived: false }, { projection: { body: 0 } })
       .collation({ locale: 'en' })
       .sort({ title: 1 })
       .toArray()
