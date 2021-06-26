@@ -13,7 +13,7 @@ import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
 import DocumentStatusBar from '@components/document/editor/statusbar'
 import ParchmentEditorContext, { DocumentAction } from '@components/document/editor/context'
 
-enum EditorModes {
+export enum EditorModes {
   Editing,
   Viewing,
   Commenting,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Titlebar from '@components/document/titlebar'
 import Sidebar from '@components/document/sidebar'
-import { EditorWrapper } from '@components/document/editor'
+import { EditorModes, EditorWrapper } from '@components/document/editor'
 import Head from 'next/head'
 import useSWR from 'swr'
 import { useUser } from '@shared/hooks'
@@ -40,9 +40,9 @@ export default function DocumentViewPage (): JSX.Element {
         }
       </Head>
       <ParchmentEditorContext.Provider value={[activeDocument, documentAction]}>
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <Titlebar setSidebarOpen={setSidebarOpen} showBackButton={false} />
-        <EditorWrapper mode={1} />
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} mode={EditorModes.Viewing} />
+        <Titlebar setSidebarOpen={setSidebarOpen} showBackButton={false} mode={EditorModes.Viewing} />
+        <EditorWrapper mode={EditorModes.Viewing} />
       </ParchmentEditorContext.Provider>
     </>
   )

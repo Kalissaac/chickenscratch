@@ -3,8 +3,9 @@ import { Archive, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, U
 import { useRouter } from 'next/router'
 import { ReactNode, useContext, useRef } from 'react'
 import ParchmentEditorContext, { DocumentActionTypes } from '@components/document/editor/context'
+import { EditorModes } from '@components/document/editor'
 
-export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
+export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: { setSidebarOpen: Function, sidebarOpen: boolean, mode: EditorModes }): JSX.Element {
   const router = useRouter()
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
 
@@ -21,7 +22,9 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
               {activeDocument.collaborators.map(collaborator => (
                 <li key={collaborator.user}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={`${collaborator.user} (${collaborator.role})`} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}><CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
               ))}
+              {mode === EditorModes.Editing &&
               <li><FieldInput action='addCollaborator' placeholder='+ Add collaborator' type='email' /></li>
+              }
             </ol>
           </Field>
 
@@ -30,7 +33,9 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
               {activeDocument.tags.map(tag => (
                 <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={tag} onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}><span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
               ))}
+              {mode === EditorModes.Editing &&
               <li><FieldInput action='addTag' placeholder='+ Add tag' /></li>
+              }
             </ol>
           </Field>
 
@@ -41,7 +46,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
                 type: 'setDue',
                 payload: e.target.value
               })
-            }} className='bg-transparent' />
+            }} className='bg-transparent' disabled={mode !== EditorModes.Editing} />
           </Field>
 
           <Field title='Publicly Viewable'>
@@ -50,7 +55,9 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen }: { setS
                 type: 'setPublic',
                 payload: e.target.checked
               })
-            }} className='bg-transparent' />
+            }} className='bg-transparent' disabled={mode !== EditorModes.Editing} />
+          </Field>
+
           </Field>
 
           <div className='flex pt-8' style={{ marginTop: 'auto' }}>
