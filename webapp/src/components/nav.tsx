@@ -41,7 +41,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
     <>
       <nav className={`${scrolling ? 'bg-gray-50 dark:bg-gray-900 shadow-lg sticky py-6' : 'p-8'} hidden lg:flex bg-opacity-95 dark:bg-opacity-95 items-center justify-between px-20 top-0 z-20 transition-colors backdrop-blur`} aria-label='Navigation Bar'>
         <div className='flex items-center w-full'>
-          <Link href='/home'><a className='uppercase font-serif font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
+          <Link href='/home'><a className='uppercase font-newYorkExtraLarge font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
           {!scrolling &&
             <ul className='flex space-x-6 whitespace-nowrap'>
