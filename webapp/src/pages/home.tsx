@@ -147,16 +147,8 @@ export default function HomePage (): JSX.Element {
           })}
         </div>
 
-        <div className='flex items-center justify-between mb-4 ml-4 lg:ml-0 text-xl'>
-          <h2 className='uppercase font-medium text-gray-600 dark:text-gray-400 border-b-2m border-gray-darker dark:border-gray-lighter' id='files'>{pageData?.allFiles.length ?? 0} documents</h2>
-          <div className='flex justify-center items-center text-xl space-x-2'>
-            <button className='bg-black bg-opacity-25 rounded-lg p-1'>
-              <List />
-            </button>
-            <button className=''>
-              <Grid />
-            </button>
-          </div>
+        <div className='flex items-center justify-between mb-4 ml-4 lg:ml-0 text-xl text-gray-700 dark:text-gray-400'>
+          <h2 className='uppercase font-medium border-b-2m border-gray-darker dark:border-gray-lighter ml-1' id='files'>{pageData?.allFiles.length ?? 0} documents</h2>
         </div>
 
         <div className="flex flex-col">
