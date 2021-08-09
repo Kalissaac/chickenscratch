@@ -1,6 +1,6 @@
 import { Home } from '@kalissaac/react-feather'
 import Link from 'next/link'
-import type { NextPage } from 'next'
+import type { NextPage, NextPageContext } from 'next'
 
 const ErrorPage: NextPage<{ statusCode: number | string }> = ({ statusCode }: { statusCode: number | string }) => {
   return (
@@ -16,7 +16,7 @@ const ErrorPage: NextPage<{ statusCode: number | string }> = ({ statusCode }: { 
   )
 }
 
-ErrorPage.getInitialProps = ({ res, err }) => {
+ErrorPage.getInitialProps = ({ res, err }: NextPageContext) => {
   const statusCode = res?.statusCode ?? err?.name ?? 418
   return { statusCode }
 }
