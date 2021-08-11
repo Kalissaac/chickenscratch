@@ -1,7 +1,7 @@
 import Slideover from '@components/slideover'
-import { Archive, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User, X } from '@kalissaac/react-feather'
+import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User as UserIcon, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
-import { ReactNode, useContext, useRef } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import ParchmentEditorContext, { DocumentActionTypes } from '@components/document/editor/context'
 import { EditorModes } from '@components/document/editor'
 
@@ -70,16 +70,17 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
 
 function Field ({ title, children }: { title: string, children: ReactNode }): JSX.Element {
   return (
-    <div>
+    <div className='relative'>
       <h3 className='font-medium text-sm uppercase text-gray-700 dark:text-gray-300 mb-2'>{title}</h3>
       {children}
     </div>
   )
 }
 
-function FieldInput ({ action, placeholder, type = 'text' }: { action: DocumentActionTypes, placeholder: string, type?: string }): JSX.Element {
+function FieldInput ({ action, placeholder, type = 'text', managedValue, disabled = false, enterPrompt = true, choiceList }: { action: DocumentActionTypes, placeholder: string, type?: string, managedValue?: string, disabled?: boolean, enterPrompt?: boolean, choiceList?: ReactNode }): JSX.Element {
   const [, documentAction] = useContext(ParchmentEditorContext)
-  const enterPromptRef = useRef<HTMLButtonElement>(null)
+  const [showEnterPrompt, setShowEnterPrompt] = useState(false)
+  const [showChoiceList, setShowChoiceList] = useState(false)
 
   return (
     <div className='focus-within:border-gray-800 dark:focus-within:border-gray-50 border-transparent border-b-2 w-full transition-colors flex group'>
@@ -87,6 +88,8 @@ function FieldInput ({ action, placeholder, type = 'text' }: { action: DocumentA
         type={type}
         className='field-input outline-none bg-transparent w-full transition-all flex-1'
         placeholder={placeholder}
+        value={managedValue}
+        disabled={disabled}
         onKeyPress={e => {
           if (e.code !== 'Enter') return
           if (!documentAction) return
@@ -106,30 +109,73 @@ function FieldInput ({ action, placeholder, type = 'text' }: { action: DocumentA
           }
 
           documentAction({ type: action, payload })
-          e.currentTarget.value = ''
+          if (!managedValue) e.currentTarget.value = ''
         }}
         // TODO: Check onChange for performance issues regarding adding classes like this
         onChange={e => {
           if (e.currentTarget.value) {
-            enterPromptRef.current?.classList.add('flex')
-            enterPromptRef.current?.classList.remove('hidden')
+            setShowEnterPrompt(true)
           } else {
-            enterPromptRef.current?.classList.add('hidden')
-            enterPromptRef.current?.classList.remove('flex')
+            setShowEnterPrompt(false)
+          }
+
+          if (managedValue !== undefined && documentAction) {
+            const value = e.currentTarget.value
+            if (!value) return
+            let payload: string | object
+
+            switch (action) {
+              case 'addCollaborator':
+                payload = {
+                  user: value,
+                  role: 'editor'
+                }
+                break
+              default:
+                payload = value
+            }
+
+            documentAction({ type: action, payload })
           }
         }}
         onFocus={e => {
           if (e.currentTarget.value) {
-            enterPromptRef.current?.classList.add('flex')
-            enterPromptRef.current?.classList.remove('hidden')
+            setShowEnterPrompt(true)
           }
+          setShowChoiceList(true)
         }}
         onBlur={() => {
-          enterPromptRef.current?.classList.add('hidden')
-          enterPromptRef.current?.classList.remove('flex')
+          setShowEnterPrompt(false)
+          setShowChoiceList(false)
         }}
       />
-      <button ref={enterPromptRef} className='text-gray-600 dark:text-gray-400 p-0.5 px-2 text-xs items-center hidden'><CornerDownLeft className='mr-1' /> Enter</button>
+      <Transition
+        show={enterPrompt && showEnterPrompt}
+        enter='transition-opacity duration-75'
+        enterFrom='opacity-0'
+        enterTo='opacity-100'
+        leave='transition-opacity duration-75'
+        leaveFrom='opacity-100'
+        leaveTo='opacity-0'
+        as='button'
+        className='text-gray-600 dark:text-gray-400 p-0.5 px-2 text-xs flex items-center'
+      >
+        <CornerDownLeft className='mr-1' /> Enter
+      </Transition>
+
+      <Transition
+        show={(choiceList && showChoiceList) === true}
+        enter='transition-opacity duration-200'
+        enterFrom='opacity-0'
+        enterTo='opacity-100'
+        leave='transition-opacity duration-150'
+        leaveFrom='opacity-100'
+        leaveTo='opacity-0'
+        as='ol'
+        className='absolute left-0 right-0 top-full max-h-[33vh] overflow-auto bg-white dark:bg-gray-800 shadow-2xl drop-shadow-xl rounded-b-md z-10'
+      >
+        {choiceList}
+      </Transition>
     </div>
   )
 }
@@ -147,6 +193,6 @@ function CollaboratorIcon ({ role }: { role: string}): JSX.Element {
       return <ThumbsUp className={className}/>
     case 'editor':
     default:
-      return <User className={className}/>
+      return <UserIcon className={className}/>
   }
 }
