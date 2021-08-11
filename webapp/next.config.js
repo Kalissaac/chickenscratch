@@ -4,6 +4,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = withBundleAnalyzer({
   poweredByHeader: false,
+  reactStrictMode: true,
   async redirects () {
     return [
       {
