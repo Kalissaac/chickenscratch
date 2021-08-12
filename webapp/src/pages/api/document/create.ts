@@ -32,7 +32,7 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
       public: false,
       archived: false
     })
-    if (newFileRef.result.ok !== 1) {
+    if (!newFileRef.acknowledged) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not create document'
       throw error

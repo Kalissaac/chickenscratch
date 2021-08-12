@@ -33,7 +33,7 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
       collaborators: { $elemMatch: { user: user.email, role: 'owner' } }
     },
     { $set: { archived: true } })
-    if (archiveResult.result.ok !== 1) {
+    if (!archiveResult.acknowledged) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not archive document with ID: ' + documentID
       throw error

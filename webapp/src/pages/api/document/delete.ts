@@ -34,7 +34,7 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
       deleted: { $exists: false }
     },
     { $set: { deleted: new Date() } })
-    if (deletionResult.result.ok !== 1) {
+    if (!deletionResult.acknowledged) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not delete document with ID: ' + documentID
       throw error

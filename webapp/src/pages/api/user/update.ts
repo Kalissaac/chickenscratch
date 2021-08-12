@@ -8,7 +8,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
   const error = new Error()
   try {
     const requestBody = JSON.parse(req.body)
-    if (!requestBody.document) {
+    if (!requestBody.user) {
       error.name = 'NO_BODY'
       error.message = 'No user to update was specified in the request'
       throw error
@@ -22,7 +22,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
     }
 
     const { client } = await connectToDatabase()
-    const requestedUser: ParchmentDocument = await client.db('data').collection('users').findOne({ _id: user.publicAddress })
+    const requestedUser = await client.db('data').collection('users').findOne({ _id: user.publicAddress }) as ParchmentDocument
     if (!requestedUser) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate user with ID: ' + user.publicAddress
@@ -30,7 +30,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
     }
 
     const updateRequest = await client.db('data').collection('users').updateOne({ _id: user.publicAddress }, { $set: { ...requestBody.user, lastModified: new Date() } })
-    if (updateRequest.result.ok !== 1) throw new Error('Database could not update document!')
+    if (!updateRequest.acknowledged) throw new Error('Database could not update document!')
 
     res.json({ success: true })
   } catch (error) {

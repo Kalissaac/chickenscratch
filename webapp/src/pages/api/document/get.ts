@@ -22,10 +22,10 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       throw error
     }
 
-    const requestedDocument: ParchmentDocument = await client.db('data').collection('documents').findOne({
+    const requestedDocument = await client.db('data').collection('documents').findOne({
       _id: ObjectId.createFromHexString(documentID),
       deleted: { $exists: false }
-    })
+    }) as ParchmentDocument
     if (!requestedDocument) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate document with ID: ' + documentID

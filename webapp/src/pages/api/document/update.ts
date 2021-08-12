@@ -40,7 +40,7 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
       archived: false
     },
     { $set: { ...requestBody.document, lastModified: new Date() } })
-    if (updateRequest.result.ok !== 1) {
+    if (!updateRequest.acknowledged) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not update document with ID: ' + documentID
       throw error

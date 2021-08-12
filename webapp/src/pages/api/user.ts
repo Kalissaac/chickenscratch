@@ -23,7 +23,7 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
     }
 
     const { client } = await connectToDatabase()
-    const user: User = await client.db('data').collection('users').findOne({ _id: publicAddress })
+    const user = await client.db('data').collection('users').findOne({ _id: publicAddress }) as User
     if (!user) {
       error.name = 'USER_NOT_FOUND'
       error.message = 'No user found in MongoDB with id: ' + publicAddress
