@@ -4,6 +4,7 @@ import Fuse from 'fuse.js'
 import type ParchmentDocument from '@interfaces/document'
 import Link from 'next/link'
 import dayjs from 'dayjs'
+import { Transition } from '@headlessui/react'
 
 export default function SearchBar ({ files, style }: { files: ParchmentDocument[], style?: Object }): JSX.Element {
   const [results, setResults] = useState<Array<Fuse.FuseResult<ParchmentDocument>> | null>(null)
@@ -24,31 +25,39 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
 
             setResults(fuse.search(value))
           }}
-          // onBlur={() => {
-          //   setResults(null)
-          // }}
+          onBlur={() => {
+            setResults(null)
+          }}
         />
       </div>
-      {results && results.length > 0 &&
-        <ol className='absolute rounded-b-lg bg-white dark:bg-gray-800 text-gray-darker dark:text-gray-lighter border-2 border-t-0 border-gray-400 py-2 z-10 shadow-2xl top-full -left-0.5 -right-0.5'>
-          {results.map(({ item: file, matches }) => (
-            <li key={file._id}>
-              <Link href={`/d/${file._id}/edit`}>
-                <a className='w-full h-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 p-4 px-6 flex items-center'>
-                  <FileText size='1.25em' aria-label='File Icon' />
-                  <div className='ml-5 flex-1 whitespace-nowrap overflow-ellipsis overflow-hidden'>
-                    <div>{file.title}</div>
-                    {matches &&
-                      <div className='text-gray-600 dark:text-gray-400 text-sm'>{insertHighlights(matches[0])}</div>
-                    }
-                  </div>
-                  <span className='self-end ml-5 text-gray-500 dark:text-gray-400'>{dayjs().to(dayjs(file.lastModified))}</span>
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      }
+      <Transition
+        show={(results && results.length > 0) === true}
+        as='ol'
+        className='absolute z-10 top-full -left-0.5 -right-0.5 rounded-b-lg bg-white dark:bg-gray-800 text-gray-darker dark:text-gray-lighter border-2 border-t-0 border-gray-400 py-2 shadow-2xl'
+        // enter='transition ease-in-out duration-200 transform'
+        // enterFrom='-scale-y-full'
+        // enterTo='scale-y-0'
+        // leave='transition ease-in-out duration-300 transform'
+        // leaveFrom='scale-y-0'
+        // leaveTo='-scale-y-full'
+      >
+        {results?.map(({ item: file, matches }) => (
+          <li key={file._id}>
+            <Link href={`/d/${file._id}/edit`}>
+              <a className='w-full h-full bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 p-4 px-6 flex items-center'>
+                <FileText size='1.25em' aria-label='File Icon' />
+                <div className='ml-5 flex-1 whitespace-nowrap overflow-ellipsis overflow-hidden'>
+                  <div>{file.title}</div>
+                  {matches &&
+                    <div className='text-gray-600 dark:text-gray-400 text-sm'>{insertHighlights(matches[0])}</div>
+                  }
+                </div>
+                <span className='self-endw ml-5 text-gray-500 dark:text-gray-400'>{dayjs().to(dayjs(file.lastModified))}</span>
+              </a>
+            </Link>
+          </li>
+        ))}
+      </Transition>
     </div>
   )
 }
