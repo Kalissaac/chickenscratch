@@ -72,13 +72,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
           </Field>
 
           <Field title='Due Date'>
-            <input type="datetime-local" name="duedate" id="duedate" placeholder='YYYY-MM-DDTHH:MM:SS' value={activeDocument.due ?? ''} onChange={e => {
-              if (!e.target || !e.target.value) return
-              documentAction({
-                type: 'setDue',
-                payload: e.target.value
-              })
-            }} className='bg-transparent' disabled={mode !== EditorModes.Editing} />
+            <FieldInput placeholder='YYYY-MM-DDTHH:MM:SS' action='setDue' type='datetime-local' managedValue={activeDocument.due ?? ''} enterPrompt={false} disabled={mode !== EditorModes.Editing} />
           </Field>
 
           <Field title='Publicly Viewable'>
