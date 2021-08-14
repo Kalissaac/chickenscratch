@@ -22,6 +22,7 @@ export default async function CreateUser (req: NextApiRequest, res: NextApiRespo
 
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('users').insertOne({
+      // @ts-expect-error: MongoDB driver doesn't have types for string _id
       _id: user.publicAddress,
       email: user.email,
       creationDate: new Date(),
@@ -29,7 +30,7 @@ export default async function CreateUser (req: NextApiRequest, res: NextApiRespo
       tags: {},
       fileStructure: []
     })
-    if (newFileRef.result.ok !== 1) {
+    if (!newFileRef.acknowledged) {
       error.name = 'UNKNOWN_ERROR'
       error.message = 'MongoDB could not create user document'
       throw error
