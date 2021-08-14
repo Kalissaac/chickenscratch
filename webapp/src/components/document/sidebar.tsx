@@ -1,5 +1,5 @@
 import Slideover from '@components/slideover'
-import { Dialog, Listbox, Transition } from '@headlessui/react'
+import { Transition } from '@headlessui/react'
 import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User as UserIcon, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
 import { ReactNode, useContext, useState } from 'react'
@@ -8,11 +8,13 @@ import { EditorModes } from '@components/document/editor'
 import Image from 'next/image'
 import useSWR from 'swr'
 import User from '@interfaces/user'
+import { useUser } from '@shared/hooks'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: { setSidebarOpen: Function, sidebarOpen: boolean, mode: EditorModes }): JSX.Element {
   const router = useRouter()
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
-  const { data: commonCollaborators} = useSWR<{ users: User[] }>('/api/user/commonCollaborators')
+  const { user } = useUser()
+  const { data: commonCollaborators } = useSWR<{ users: User[] }>('/api/user/commonCollaborators')
 
   return (
     <Slideover slideoverOpen={sidebarOpen} setSlideoverOpen={setSidebarOpen}>
@@ -25,13 +27,17 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
           <Field title='Collaborators'>
             <ol className='space-y-2'>
               {activeDocument.collaborators.map(collaborator => (
-                <li key={collaborator.user}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={`${collaborator.user} (${collaborator.role})`} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}><CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
+                <li key={collaborator.user}>
+                  <button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={`${collaborator.user} (${collaborator.role})`} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}>
+                    <CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' />
+                  </button>
+                </li>
               ))}
               {mode === EditorModes.Editing &&
                 <li><FieldInput action='addCollaborator' placeholder='+ Add collaborator' type='email' choiceList={
                   (commonCollaborators?.users && commonCollaborators.users.map(collaborator => (
                     <li key={collaborator._id}>
-                      <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addCollaborator', payload: { user: collaborator.email, role: 'editor' } })}}>
+                      <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addCollaborator', payload: { user: collaborator.email, role: 'editor' } }) }}>
                         <Image src='/images/user.jpg' width={32} height={32} className='rounded-full bg-gradient-to-b from-gray-500 to-gray-600' />
                         <div className='ml-4 text-left'>
                           <div className='font-medium'>{collaborator.name}</div><div className='text-sm text-gray-700 dark:text-gray-300'>{collaborator.email}</div>

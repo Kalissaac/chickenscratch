@@ -98,22 +98,22 @@ export default function HomePage (): JSX.Element {
             ? pageData?.recentFiles.slice(0, 4).map((file: ParchmentDocument) => {
               const serializedBody = typeof file.body === 'string' ? file.body : serialize(file.body)
               return (
-              <Card
-                title={file.title}
-                subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
-                background='bg-gradient-to-r from-pink-600 to-purple-500'
-                href={`/d/${file._id}/edit`}
-                key={file._id}
-              >
-                {serializedBody}
-              </Card>
+                <Card
+                  title={file.title}
+                  subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
+                  background='bg-gradient-to-r from-pink-600 to-purple-500 dark:from-pink-800 dark:to-purple-700'
+                  href={`/d/${file._id}/edit`}
+                  key={file._id}
+                >
+                  {serializedBody}
+                </Card>
               )
             })
             : <Card
               title='No recent documents'
               background='bg-gray-600 dark:bg-gray-800'
               href='/d/new'
-              >
+            >
               Click to create a new document
             </Card>
           )}
