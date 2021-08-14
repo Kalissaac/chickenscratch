@@ -66,7 +66,7 @@ export default function HomePage (): JSX.Element {
       <Nav files={pageData?.allFiles} />
       <DocumentPreview activeDocument={activeDocumentPreview} setActiveDocument={setActiveDocumentPreview} />
 
-      <div className='lg:p-20 pt-8 lg:pt-4'>
+      <div className='lg:p-20 pt-8 lg:pt-4 min-h-screen'>
         <div className='hidden lg:flex mb-12 space-x-4' id='homesearch'>
           <button className='basis bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none flex justify-center items-center px-6 text-gray-100 font-light uppercase' title='Create new document' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
           <SearchBar files={pageData?.allFiles} />
@@ -103,6 +103,7 @@ export default function HomePage (): JSX.Element {
                   subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
                   background='bg-gradient-to-r from-pink-600 to-purple-500 dark:from-pink-800 dark:to-purple-700'
                   href={`/d/${file._id}/edit`}
+                  onClick={async () => await mutate(`/api/document/get?id=${file._id}`, file)}
                   key={file._id}
                 >
                   {serializedBody}
@@ -125,6 +126,7 @@ export default function HomePage (): JSX.Element {
                 subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
                 background='bg-gradient-to-r from-yellow-600 to-red-500'
                 href={`/d/${file._id}/edit`}
+                onClick={async () => await mutate(`/api/document/get?id=${file._id}`, file)}
                 key={file._id}
               >
                 {serializedBody}
@@ -139,6 +141,7 @@ export default function HomePage (): JSX.Element {
                 subtitle={<>{dayjs().to(dayjs(file.lastModified))} &#8226; {serializedBody.match(/[\w\d’'-]+/gi)?.length ?? 0} {serializedBody.match(/[\w\d’'-]+/gi)?.length === 1 ? 'word' : 'words'} {file.due && <>&#8226; due {dayjs().to(dayjs(file.due))}</>}</>}
                 background='bg-gradient-to-r from-yellow-600 to-red-500'
                 href={`/d/${file._id}/edit`}
+                onClick={async () => await mutate(`/api/document/get?id=${file._id}`, file)}
                 key={file._id}
               >
                 {serializedBody}
