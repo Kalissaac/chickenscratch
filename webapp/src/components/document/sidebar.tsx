@@ -48,10 +48,25 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
           <Field title='Tags'>
             <ol className='space-y-2'>
               {activeDocument.tags.map(tag => (
-                <li key={tag}><button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={tag} onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}><span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' /></button></li>
+                <li key={tag}>
+                  <button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={tag} onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}>
+                    <span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' />
+                  </button>
+                </li>
               ))}
               {mode === EditorModes.Editing &&
-              <li><FieldInput action='addTag' placeholder='+ Add tag' /></li>
+                <li><FieldInput action='addTag' placeholder='+ Add tag' choiceList={
+                  Object.entries(user.tags).map(([tagName, tagDetails]) => (
+                    <li key={tagName}>
+                      <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addTag', payload: tagName }) }}>
+                        <span className='bg-gray-600 h-2 w-2 rounded-full mr-2' style={{ backgroundColor: tagDetails.color }} />
+                        <div className='ml-2'>
+                          {tagName}
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                /></li>
               }
             </ol>
           </Field>
