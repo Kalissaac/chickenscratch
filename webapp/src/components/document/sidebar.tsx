@@ -40,7 +40,8 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                       <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addCollaborator', payload: { user: collaborator.email, role: 'editor' } }) }}>
                         <Image src='/images/user.jpg' width={32} height={32} className='rounded-full bg-gradient-to-b from-gray-500 to-gray-600' />
                         <div className='ml-4 text-left'>
-                          <div className='font-medium'>{collaborator.name}</div><div className='text-sm text-gray-700 dark:text-gray-300'>{collaborator.email}</div>
+                          <div className='font-medium leading-none'>{collaborator.name}</div>
+                          <div className='text-sm text-gray-700 dark:text-gray-300'>{collaborator.email}</div>
                         </div>
                       </button>
                     </li>
@@ -62,12 +63,12 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
               ))}
               {mode === EditorModes.Editing &&
                 <li><FieldInput action='addTag' placeholder='+ Add tag' choiceList={
-                  Object.entries(user.tags).map(([tagName, tagDetails]) => (
-                    <li key={tagName}>
-                      <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addTag', payload: tagName }) }}>
-                        <span className='bg-gray-600 h-2 w-2 rounded-full mr-2' style={{ backgroundColor: tagDetails.color }} />
+                  Object.entries(user.tags).map(([tagId, tag]) => (
+                    <li key={tagId}>
+                      <button className='w-full flex items-center p-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors' onClick={() => { documentAction({ type: 'addTag', payload: tagId }) }}>
+                        <span className='bg-gray-600 h-2 w-2 rounded-full mr-2' style={{ backgroundColor: tag.color }} />
                         <div className='ml-2'>
-                          {tagName}
+                          {tag.name}
                         </div>
                       </button>
                     </li>

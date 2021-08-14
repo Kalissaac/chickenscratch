@@ -6,8 +6,8 @@ export default interface User {
   name: string
   creationDate: string
   tags: {
-    [name: string]: {
-      created: string
+    [id: string]: {
+      name: string
       color: string
     }
   }
