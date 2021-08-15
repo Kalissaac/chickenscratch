@@ -28,8 +28,8 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
             <ol className='space-y-2'>
               {activeDocument.collaborators.map(collaborator => (
                 <li key={collaborator.user}>
-                  <button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={`${collaborator.user} (${collaborator.role})`} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}>
-                    <CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' />
+                  <button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 disabled:hover:text-current disabled:cursor-default group' title={`${collaborator.user} (${collaborator.role})`} disabled={collaborator.user === user.email} onClick={() => { documentAction({ type: 'removeCollaborator', payload: collaborator }) }}>
+                    <CollaboratorIcon role={collaborator.role} /> {collaborator.user} <X className='ml-1 opacity-0 group-hover:opacity-100 group-disabled:group-hover:opacity-0 transition-opacity' />
                   </button>
                 </li>
               ))}
