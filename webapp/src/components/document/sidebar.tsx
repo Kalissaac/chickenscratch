@@ -59,7 +59,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
               {activeDocument.tags.map(tag => (
                 <li key={tag}>
                   <button className='flex items-center hover:text-gray-500 dark:hover:text-gray-400 group' title={tag} onClick={() => { documentAction({ type: 'removeTag', payload: tag }) }}>
-                    <span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' />
+                    <span className='bg-gray-600 group-hover:opacity-80 h-3 w-3 rounded-full mr-2' style={{ backgroundColor: user.tags[tag]?.color }} /> {tag} <X className='ml-1 opacity-0 group-hover:opacity-100 transition-opacity' />
                   </button>
                 </li>
               ))}
