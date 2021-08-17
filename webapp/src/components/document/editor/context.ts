@@ -40,7 +40,9 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
       }
     case 'addCollaborator': {
       const collaborators = document.collaborators.slice()
-      collaborators.push(action.payload)
+      if (!collaborators.map(c => c.user).includes(action.payload.user)) {
+        collaborators.push(action.payload)
+      }
       return {
         ...document,
         collaborators
@@ -48,7 +50,9 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
     }
     case 'removeCollaborator': {
       const collaborators = document.collaborators.slice()
-      collaborators.splice(collaborators.map(c => c.user).indexOf(action.payload), 1)
+      if (collaborators.map(c => c.user).includes(action.payload.user)) {
+        collaborators.splice(collaborators.map(c => c.user).indexOf(action.payload), 1)
+      }
       return {
         ...document,
         collaborators
@@ -56,7 +60,9 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
     }
     case 'addTag': {
       const tags = document.tags.slice()
-      tags.push(action.payload)
+      if (!tags.includes(action.payload)) {
+        tags.push(action.payload)
+      }
       return {
         ...document,
         tags
@@ -64,7 +70,9 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
     }
     case 'removeTag': {
       const tags = document.tags.slice()
-      tags.splice(tags.indexOf(action.payload), 1)
+      if (tags.includes(action.payload)) {
+        tags.splice(tags.indexOf(action.payload), 1)
+      }
       return {
         ...document,
         tags
