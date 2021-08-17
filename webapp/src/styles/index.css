@@ -7,7 +7,7 @@
 /* Stop purging. */
 
 body {
-  @apply bg-gray-lighter text-gray-darker dark:text-gray-50 min-h-screen;
+  @apply bg-gray-lighter text-gray-darker dark:text-gray-50 min-h-screen relative;
 }
 
 html.dark, .dark body {
@@ -36,6 +36,14 @@ html.dark, .dark body {
 
 .login-btn {
   @apply px-8 py-3 text-center w-full md:w-auto font-medium text-white bg-accent-1-500 hover:bg-accent-1-700 focus:bg-accent-1-700 border-2 border-accent-1-500 focus:border-gray-900 focus:outline-none text-lg shadow-lg rounded-lg box-border transition-colors;
+}
+
+.input-wrapper:hover:not(:focus-within) {
+  @apply border-gray-300;
+}
+
+.input-wrapper:focus-within {
+  @apply border-gray-800 dark:border-gray-50;
 }
 
 /* Start purging... */

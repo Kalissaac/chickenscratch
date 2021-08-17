@@ -118,7 +118,7 @@ function FieldInput ({ action, placeholder, type = 'text', managedValue, disable
   const [showChoiceList, setShowChoiceList] = useState(false)
 
   return (
-    <div className='focus-within:border-gray-800 dark:focus-within:border-gray-50 border-transparent border-b-2 w-full transition-colors flex group'>
+    <div className='input-wrapper border-transparent border-b-2 w-full transition-colors flex group'>
       <input
         type={type}
         className='field-input outline-none bg-transparent w-full transition-all flex-1'
