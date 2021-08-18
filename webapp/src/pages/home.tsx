@@ -13,7 +13,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Node } from 'slate'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 
 const serialize = (nodes: Node[]): string => nodes.map(n => Node.string(n)).join('\n')
 
