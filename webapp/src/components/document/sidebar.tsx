@@ -98,7 +98,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                     Document access level:
                   </Listbox.Label>
                   <span className='inline-block w-full rounded-md shadow-sm'>
-                    <Listbox.Button className='cursor-default relative w-full rounded-md border border-gray-300 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5'>
+                    <Listbox.Button className='cursor-default relative w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 dark:focus:border-accent-1-500 transition ease-in-out duration-150 sm:text-sm sm:leading-5'>
                       <span className='block truncate capitalize'>{activeDocument.access}</span>
                       <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                         <ChevronDown />
@@ -111,7 +111,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                     leave='transition ease-in duration-100'
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
-                    className='absolute mt-1 w-full rounded-md bg-white shadow-2xl z-20'
+                    className='absolute mt-1 w-full rounded-md bg-white dark:bg-black shadow-2xl z-20'
                   >
                     <Listbox.Options
                       static

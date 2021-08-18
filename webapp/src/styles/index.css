@@ -39,7 +39,7 @@ html.dark, .dark body {
 }
 
 .input-wrapper:hover:not(:focus-within) {
-  @apply border-gray-300;
+  @apply border-gray-300 dark:border-gray-600;
 }
 
 .input-wrapper:focus-within {
