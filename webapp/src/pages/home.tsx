@@ -6,10 +6,11 @@ import Nav from '@components/nav'
 import SearchBar from '@components/search'
 import { SkeletonLine } from '@components/skeleton'
 import type ParchmentDocument from '@interfaces/document'
-import { FileText, Info, Plus } from '@kalissaac/react-feather'
+import { FileText, Grid, Info, List, Plus, Tag } from '@kalissaac/react-feather'
 import { useUser } from '@shared/hooks'
 import dayjs from 'dayjs'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Node } from 'slate'
@@ -26,6 +27,7 @@ enum tabs {
 export default function HomePage (): JSX.Element {
   const { user, loading: userLoading, error: userError } = useUser()
   const [activeTab, setActiveTab] = useState<tabs>(tabs.recent)
+  const [fileDisplay, setFileDisplay] = useState<'list' | 'grid' | 'tags'>('list')
   const [activeDocumentPreview, setActiveDocumentPreview] = useState<ParchmentDocument | null>(null)
   const { data: pageData, error: dataError } = useSWR(user ? '/api/home' : null)
   const router = useRouter()
@@ -152,105 +154,162 @@ export default function HomePage (): JSX.Element {
 
         <div className='flex items-center justify-between mb-4 ml-4 lg:ml-0 text-xl text-gray-700 dark:text-gray-400'>
           <h2 className='uppercase font-medium border-b-2m border-gray-darker dark:border-gray-lighter ml-1' id='files'>{pageData?.allFiles.length ?? 0} documents</h2>
-        </div>
-
-        <div className="flex flex-col">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
-                  <thead className="bg-gray-50 dark:bg-gray-900">
-                    <tr className='text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
-                      <th scope="col" className="px-6 py-3">
-                        Name
-                      </th>
-                      <th scope="col" className="px-6 py-3 w-1/6">
-                        Type
-                      </th>
-                      <th scope="col" className="px-6 py-3 w-1/6">
-                        Last Modified
-                      </th>
-                      <th scope="col" className="px-6 py-3 w-1/6">
-                        Tags
-                      </th>
-                      <th scope="col" className="relative px-6 py-3 w-[5%]">
-                        <span className="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
-                    {dataLoading && Array(5).fill(0).map((_, i) => (
-                      <tr key={i} className='focus:outline-none animate-pulse'>
-                        <td className="px-6 py-4 my-1 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <SkeletonLine className='mr-4' />
-                            <SkeletonLine width='3/4' />
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 my-1 whitespace-nowrap">
-                          <SkeletonLine width='[66%]' />
-                        </td>
-                        <td className="px-6 py-4 my-1 whitespace-nowrap">
-                          <SkeletonLine width='[66%]' />
-                        </td>
-                        <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
-                          {Array(3).fill(0).map((_, j) => (
-                            <SkeletonLine key={`${i}-${j}`} width='1/3' />
-                          ))}
-                        </td>
-                        <td className="p-4 whitespace-nowrap">
-                          <SkeletonLine className='mr-8 float-right rounded-full' />
-                        </td>
-                      </tr>
-                    ))}
-                    {pageData?.allFiles.length > 0
-                      ? pageData?.allFiles.map((file: ParchmentDocument) => (
-                      <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center text-sm font-medium">
-                            <FileText className='mr-4 text-base' aria-label='Document Icon' />
-                            {file.title}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          Document
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {dayjs().to(dayjs(file.lastModified))}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                          {file.tags.length > 0
-                            ? file.tags.map(tag => (
-                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100" key={tag}>
-                                {tag}
-                              </span>
-                            ))
-                            : <span className="text-sm text-gray-500">No tags</span>
-                          }
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-right font-medium focus:bg-gray-100 dark:focus:bg-gray-800 focus:outline-none" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
-                          <Info className='float-right mr-8' aria-label='Information Icon' />
-                        </td>
-                      </tr>
-                      ))
-                      : <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push('/d/new')} tabIndex={0}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center text-sm font-medium">
-                          <FileText className='mr-4 text-base' aria-label='Document Icon' />
-                          Create a new document
-                        </div>
-                      </td>
-                      <td />
-                      <td />
-                      <td />
-                      <td />
-                    </tr>}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <div className='flex justify-center items-center text-xl space-x-2'>
+            <button className={'p-2 ' + (fileDisplay === 'list' ? 'bg-gray-300 dark:bg-gray-800 rounded-lg' : '')} onClick={() => setFileDisplay('list')} title='List view'>
+              <List />
+            </button>
+            <button className={'p-2 ' + (fileDisplay === 'grid' ? 'bg-gray-300 dark:bg-gray-800 rounded-lg' : '')} onClick={() => setFileDisplay('grid')} title='Grid view'>
+              <Grid />
+            </button>
+            <button className={'p-2 ' + (fileDisplay === 'tags' ? 'bg-gray-300 dark:bg-gray-800 rounded-lg' : '')} onClick={() => setFileDisplay('tags')} title='Tag view'>
+              <Tag />
+            </button>
           </div>
         </div>
+
+        {fileDisplay === 'list' &&
+          <section className="flex flex-col">
+            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div className="shadow overflow-hidden border-b border-gray-200 dark:border-gray-800 sm:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                    <thead className="bg-gray-50 dark:bg-gray-900">
+                      <tr className='text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider'>
+                        <th scope="col" className="px-6 py-3">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 w-1/6">
+                          Type
+                        </th>
+                        <th scope="col" className="px-6 py-3 w-1/6">
+                          Last Modified
+                        </th>
+                        <th scope="col" className="px-6 py-3 w-1/6">
+                          Tags
+                        </th>
+                        <th scope="col" className="relative px-6 py-3 w-[5%]">
+                          <span className="sr-only">Edit</span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-800">
+                      {dataLoading && Array(5).fill(0).map((_, i) => (
+                        <tr key={i} className='focus:outline-none animate-pulse'>
+                          <td className="px-6 py-4 my-1 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <SkeletonLine className='mr-4' />
+                              <SkeletonLine width='3/4' />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 my-1 whitespace-nowrap">
+                            <SkeletonLine width='[66%]' />
+                          </td>
+                          <td className="px-6 py-4 my-1 whitespace-nowrap">
+                            <SkeletonLine width='[66%]' />
+                          </td>
+                          <td className="px-6 py-4 my-1 whitespace-nowrap flex space-x-4">
+                            {Array(3).fill(0).map((_, j) => (
+                              <SkeletonLine key={`${i}-${j}`} width='1/3' />
+                            ))}
+                          </td>
+                          <td className="p-4 whitespace-nowrap">
+                            <SkeletonLine className='mr-8 float-right rounded-full' />
+                          </td>
+                        </tr>
+                      ))}
+                      {pageData?.allFiles.length > 0
+                        ? pageData?.allFiles.map((file: ParchmentDocument) => (
+                          <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' key={file._id} onClick={async () => await mutate(`/api/document/get?id=${file._id}`, file) && await router.push(`/d/${file._id}/edit`)} tabIndex={0}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center text-sm font-medium">
+                                <FileText className='mr-4 text-base' aria-label='Document Icon' />
+                                {file.title}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                              Document
+                          </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                              {dayjs().to(dayjs(file.lastModified))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                              {file.tags.length > 0
+                                ? file.tags.map(tag => (
+                                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100" key={tag}>
+                                    {tag}
+                                  </span>
+                                ))
+                                : <span className="text-sm text-gray-500 dark:text-gray-400">No tags</span>
+                              }
+                            </td>
+                            <td className="p-4 whitespace-nowrap text-right font-medium focus:bg-gray-100 dark:focus:bg-gray-800 focus:outline-none" onClick={async (e) => { e.stopPropagation(); setActiveDocumentPreview(file) }} tabIndex={0}>
+                              <Info className='float-right mr-8' aria-label='Information Icon' />
+                            </td>
+                          </tr>
+                        ))
+                        : <tr className='cursor-pointer hover:bg-gray-50 focus:bg-gray-100 dark:hover:bg-gray-900 dark:focus:bg-gray-800 focus:outline-none' onClick={async () => await router.push('/d/new')} tabIndex={0}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center text-sm font-medium">
+                              <FileText className='mr-4 text-base' aria-label='Document Icon' />
+                            Create a new document
+                          </div>
+                          </td>
+                          <td />
+                          <td />
+                          <td />
+                          <td />
+                        </tr>}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+        }
+        {fileDisplay === 'grid' &&
+          <section className='grid grid-cols-4 gap-6'>
+            {pageData?.allFiles.length > 0
+              ? pageData?.allFiles.map((file: ParchmentDocument) => (
+                <Link href={`/d/${file._id}/edit`} key={file._id}>
+                  <a className='shadow-md hover:shadow-lg transition-all rounded-md bg-white hover:bg-gray-50 dark:bg-black p-4 py-3 flex flex-col gap-2'>
+                    <div className='space-x-2'>
+                      {file.tags.length > 0
+                        ? file.tags.map(tag => (
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100" key={tag}>
+                            {tag}
+                          </span>
+                        ))
+                        : <span className="text-sm text-gray-500 dark:text-gray-400">No tags</span>
+                      }
+                    </div>
+                    <h4 className='font-medium'>{file.title}</h4>
+                    <div className='text-sm text-gray-600'>last modified {dayjs().to(dayjs(file.lastModified))}</div>
+                  </a>
+                </Link>
+              ))
+              : <Link href='/d/new'>
+                  <a className='shadow-md hover:shadow-lg transition-all rounded-md bg-white hover:bg-gray-50 dark:bg-black p-4 py-3 flex flex-col gap-2'>
+                    <h4 className='font-medium flex items-center gap-2'><Plus /> New Document</h4>
+                    <div className='text-sm text-gray-700'>No tags found for your account. Why don't you make a new document and add one?</div>
+                  </a>
+                </Link>
+            }
+          </section>
+        }
+        {fileDisplay === 'tags' &&
+          <section className='grid grid-cols-4 gap-6'>
+            {Object.entries(user.tags).map(([tagId, tag]) => (
+              <Link href={`/t/${tagId}`}>
+                <a className='rounded-lg bg-white hover:bg-gray-50 transition-all dark:bg-gray-800 dark:hover:bg-gray-700 p-6 shadow-md hover:shadow-lg flex flex-col items-center justify-center gap-4' key={tagId}>
+                  <div className='bg-gray-500 text-gray-50 dark:text-gray-900 rounded-full w-12 h-12 flex justify-center items-center' style={{ backgroundColor: tag.color }}>
+                    <span className='font-semibold text-lg uppercase'>{tag.name.charAt(0)}</span>
+                  </div>
+                  <div className='font-medium'>{tag.name}</div>
+                </a>
+              </Link>
+            ))}
+          </section>
+        }
       </div>
 
       <Footer />
