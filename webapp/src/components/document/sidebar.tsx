@@ -1,5 +1,5 @@
 import Slideover from '@components/slideover'
-import { Transition } from '@headlessui/react'
+import { Listbox, Transition } from '@headlessui/react'
 import { Archive, Check, ChevronDown, CornerDownLeft, Eye, MessageSquare, Shield, ThumbsUp, Trash, User as UserIcon, X } from '@kalissaac/react-feather'
 import { useRouter } from 'next/router'
 import { ReactNode, useContext, useState } from 'react'
@@ -9,6 +9,7 @@ import Image from 'next/image'
 import useSWR from 'swr'
 import User from '@interfaces/user'
 import { useUser } from '@shared/hooks'
+import { AccessLevels } from '@interfaces/document'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: { setSidebarOpen: Function, sidebarOpen: boolean, mode: EditorModes }): JSX.Element {
   const router = useRouter()
@@ -84,13 +85,65 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
             <FieldInput placeholder='YYYY-MM-DDTHH:MM:SS' action='setDue' type='datetime-local' managedValue={activeDocument.due ?? ''} enterPrompt={false} disabled={mode !== EditorModes.Editing} />
           </Field>
 
-          <Field title='Publicly Viewable'>
-            <input type="checkbox" name="public" id="public" checked={activeDocument.public} onChange={e => {
-              documentAction({
-                type: 'setPublic',
-                payload: e.target.checked
-              })
-            }} className='bg-transparent' disabled={mode !== EditorModes.Editing} />
+          <Field title='Access Level'>
+            <Listbox
+              as='div'
+              className='space-y-1 relative'
+              value={activeDocument.access}
+              onChange={accessLevel => { documentAction({ type: 'setAccess', payload: accessLevel }) }}
+            >
+              {({ open }) => (
+                <>
+                  <Listbox.Label className='sr-only'>
+                    Document access level:
+                  </Listbox.Label>
+                  <span className='inline-block w-full rounded-md shadow-sm'>
+                    <Listbox.Button className='cursor-default relative w-full rounded-md border border-gray-300 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5'>
+                      <span className='block truncate capitalize'>{activeDocument.access}</span>
+                      <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
+                        <ChevronDown />
+                      </span>
+                    </Listbox.Button>
+                  </span>
+
+                  <Transition
+                    show={open}
+                    leave='transition ease-in duration-100'
+                    leaveFrom='opacity-100'
+                    leaveTo='opacity-0'
+                    className='absolute mt-1 w-full rounded-md bg-white shadow-2xl z-20'
+                  >
+                    <Listbox.Options
+                      static
+                      className='max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5'
+                    >
+                      {Object.keys(AccessLevels).map(accessLevel => (
+                        <Listbox.Option key={accessLevel} value={accessLevel}>
+                          {({ selected, active }) => (
+                            <div
+                              className={`${
+                                active
+                                  ? 'text-white bg-accent-1-500'
+                                  : 'text-gray-900'
+                              } cursor-default select-none relative py-2 pl-8 pr-4`}
+                            >
+                              <span className={`${selected ? 'font-semibold' : 'font-normal'} block truncate capitalize`}>
+                                {accessLevel}
+                              </span>
+                              {selected && (
+                                <span className={`${active ? 'text-white' : 'text-accent-1-500'} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
+                                  <Check />
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </>
+              )}
+            </Listbox>
           </Field>
 
           <div className='flex pt-8' style={{ marginTop: 'auto' }}>

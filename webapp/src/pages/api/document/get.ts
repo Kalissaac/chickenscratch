@@ -32,7 +32,7 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
       throw error
     }
 
-    if (requestedDocument.public) {
+    if (requestedDocument.access !== 'private') {
       res.json({ document: requestedDocument })
       return
     }

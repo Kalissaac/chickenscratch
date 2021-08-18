@@ -18,7 +18,7 @@ export type DocumentActionTypes =
   'addTag' |
   'removeTag' |
   'setDue' |
-  'setPublic' |
+  'setAccess' |
   'dangerouslyOverwrite'
 
 export interface DocumentAction {
@@ -83,10 +83,10 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
         ...document,
         due: action.payload
       }
-    case 'setPublic':
+    case 'setAccess':
       return {
         ...document,
-        public: action.payload
+        access: action.payload
       }
     case 'dangerouslyOverwrite':
       return action.payload

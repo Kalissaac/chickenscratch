@@ -10,12 +10,18 @@ export default interface ParchmentDocument {
   collaborators: Collaborator[]
   tags: string[]
   due?: string
-  public: boolean
+  access: AccessLevels
   deleted?: string
   archived: boolean
   integrations: {
     googleDrive: string // linked google drive file
   }
+}
+
+export enum AccessLevels {
+  Private = 'private',
+  Unlisted = 'unlisted',
+  Public = 'public'
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {
@@ -27,6 +33,6 @@ export function compareDocuments (documentA: ParchmentDocument, documentB: Parch
     documentA.collaborators === documentB.collaborators &&
     documentA.tags === documentB.tags &&
     documentA.due === documentB.due &&
-    documentA.public === documentB.public
+    documentA.access === documentB.access
   )
 }
