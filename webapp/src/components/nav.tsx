@@ -16,7 +16,7 @@ const links = [
   { href: '/about', label: 'About' }
 ]
 
-export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Element {
+export default function Nav ({ files }: { files?: ParchmentDocument[] }): JSX.Element {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [scrolling, setScrolling] = useState(false)
   const router = useRouter()
@@ -43,7 +43,7 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
         <div className='flex items-center w-full'>
           <Link href='/home'><a className='uppercase font-newYorkExtraLarge font-bold text-4xl dark:text-white border-black dark:border-white border-r-2 pr-4 mr-12'>Parchment</a></Link>
 
-          {!scrolling &&
+          {(!scrolling || !files) &&
             <ul className='flex space-x-6 whitespace-nowrap'>
               {links.map(({ href, label }) => (
                 <li key={label + href}><Link href={href}><a className='font-light hover:text-gray-500 dark:hover:text-gray-300 transition-all'>{label}</a></Link></li>
@@ -51,10 +51,10 @@ export default function Nav ({ files }: { files: ParchmentDocument[] }): JSX.Ele
             </ul>
           }
 
-          {scrolling &&
+          {scrolling && files &&
             <>
-              <SearchBar files={files} />
-              <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 h-14 w-14 ml-4' onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' className='text-xl' /></button>
+              <SearchBar files={files} size='sm' />
+              <button className='bg-accent-1-500 basis flex justify-center items-center text-gray-50 p-[0.875rem] ml-4' onClick={async () => await router.push('/d/new')}><Plus aria-label='Add Icon' className='text-xl' /></button>
             </>
           }
 

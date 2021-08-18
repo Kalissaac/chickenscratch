@@ -6,7 +6,7 @@ import Link from 'next/link'
 import dayjs from 'dayjs'
 import { Transition } from '@headlessui/react'
 
-export default function SearchBar ({ files, style }: { files: ParchmentDocument[], style?: Object }): JSX.Element {
+export default function SearchBar ({ files, style, size = 'md' }: { files: ParchmentDocument[], style?: Object, size?: 'sm' | 'md' }): JSX.Element {
   const [results, setResults] = useState<Array<Fuse.FuseResult<ParchmentDocument>> | null>(null)
 
   return (
@@ -14,7 +14,7 @@ export default function SearchBar ({ files, style }: { files: ParchmentDocument[
       <div className='flex items-center px-6' style={style}>
         <SearchIcon size='1.25em' aria-label='Search Icon' />
         <input
-          type='text' placeholder='What are you looking for?' title='Search documents' className='w-full ml-4 py-4 outline-none font-light dark:bg-gray-800 dark:text-gray-100 focus:outline-none' aria-label='Search bar for documents'
+          type='text' placeholder='What are you looking for?' title='Search documents' className={`w-full ml-4 ${size === 'sm' ? 'py-3' : 'py-4'} outline-none font-light dark:bg-gray-800 dark:text-gray-100 focus:outline-none`} aria-label='Search bar for documents'
           onChange={async (e) => {
             const { value } = e.currentTarget
             // Dynamically load fuse.js
