@@ -29,7 +29,7 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
         role: 'owner'
       }],
       tags: [],
-      public: false,
+      access: 'private',
       archived: false
     })
     if (!newFileRef.acknowledged) {
