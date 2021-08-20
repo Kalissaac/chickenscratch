@@ -5,7 +5,6 @@ import { useUser } from '@shared/hooks'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import SearchBar from '@components/search'
 import { Plus } from '@kalissaac/react-feather'
 import { toUpper } from '@shared/util'
 import ParchmentDocument from '@interfaces/document'
@@ -31,8 +30,6 @@ export default function TagDetailPage (): JSX.Element {
     throw dataError
   }
 
-  const dataLoading = !pageData && !dataError
-
   return (
     <>
       <Head>
@@ -42,17 +39,16 @@ export default function TagDetailPage (): JSX.Element {
       <Nav files={pageData?.files} />
 
       <div className='lg:p-20 pt-8 lg:pt-4 min-h-screen'>
-        <div className='hidden lg:flex mb-12 space-x-4' id='homesearch'>
-          <button className='basis bg-accent-1-500 focus:border-gray-darker dark:focus:border-gray-100 focus:outline-none flex justify-center items-center px-6 text-gray-100 font-light uppercase' title='Create new document' onClick={async () => await router.push('/d/new')}><Plus size='1.25em' className='mr-1' aria-label='Add Icon' /> New Document</button>
-          <SearchBar files={pageData?.files} />
-        </div>
+        <div id='homesearch' />
 
-        <div className='flex items-center gap-4 p-4 px-6 shadow-sm bg-white dark:bg-black rounded-lg mb-12'>
+        <div className='flex items-center gap-4 p-4 mb-12'>
           <div className='bg-gray-500 text-gray-50 dark:text-gray-900 rounded-full w-12 h-12 flex justify-center items-center' style={{ backgroundColor: pageData?.tag?.color }}>
             <span className='font-semibold text-lg uppercase'>{(pageData?.tag ? pageData.tag.name : router.query.tag).charAt(0)}</span>
           </div>
-          <h2 className='text-lg capitalize font-medium'>{pageData?.tag ? pageData.tag.name : router.query.tag}</h2>
-          <p className='ml-auto'>{pageData?.files.length} documents</p>
+          <div className='flex flex-col'>
+            <h2 className='text-xl capitalize font-semibold'>{pageData?.tag ? pageData.tag.name : router.query.tag}</h2>
+            <p className='text-gray-800 dark:text-gray-200'>{pageData?.files.length} documents</p>
+          </div>
         </div>
 
         <section className='grid grid-cols-4 gap-6'>
