@@ -19,9 +19,9 @@ export default interface ParchmentDocument {
 }
 
 export enum AccessLevels {
-  Private = 'private',
-  Unlisted = 'unlisted',
-  Public = 'public'
+  private = 'private',
+  unlisted = 'unlisted',
+  public = 'public'
 }
 
 export function compareDocuments (documentA: ParchmentDocument, documentB: ParchmentDocument): boolean {
