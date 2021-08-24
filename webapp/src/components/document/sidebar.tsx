@@ -88,7 +88,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
           <Field title='Access Level'>
             <Listbox
               as='div'
-              className='space-y-1 relative'
+              className='relative'
               value={activeDocument.access}
               onChange={accessLevel => { documentAction({ type: 'setAccess', payload: accessLevel }) }}
             >
@@ -97,8 +97,8 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                   <Listbox.Label className='sr-only'>
                     Document access level:
                   </Listbox.Label>
-                  <span className='inline-block w-full rounded-md shadow-sm'>
-                    <Listbox.Button className='cursor-default relative w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-black pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-accent-1-300 dark:focus:border-accent-1-500 transition ease-in-out duration-150 sm:text-sm sm:leading-5'>
+                  <span className='inline-block w-full'>
+                    <Listbox.Button className={`cursor-default relative w-full border-b-2 ${open ? 'border-black dark:border-white' : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400'} pl-2 pr-10 py-2 text-left transition ease-in-out duration-150 sm:text-sm sm:leading-5`}>
                       <span className='block truncate capitalize'>{activeDocument.access}</span>
                       <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                         <ChevronDown />
@@ -111,27 +111,21 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                     leave='transition ease-in duration-100'
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
-                    className='absolute mt-1 w-full rounded-md bg-white dark:bg-black shadow-2xl z-20'
+                    className='absolute w-full rounded-md bg-white dark:bg-gray-800 shadow-2xl drop-shadow-xl z-20'
                   >
                     <Listbox.Options
                       static
-                      className='max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5'
+                      className='max-h-60 rounded-b-md text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5'
                     >
                       {Object.keys(AccessLevels).map(accessLevel => (
                         <Listbox.Option key={accessLevel} value={accessLevel}>
                           {({ selected, active }) => (
-                            <div
-                              className={`${
-                                active
-                                  ? 'text-white bg-accent-1-500'
-                                  : 'text-gray-900'
-                              } cursor-default select-none relative py-2 pl-8 pr-4`}
-                            >
+                            <div className={`${active ? 'bg-gray-200 dark:bg-gray-700' : 'text-gray-900 dark:text-gray-100'} transition-colors cursor-pointer select-none relative py-2 pl-8 pr-4`}>
                               <span className={`${selected ? 'font-semibold' : 'font-normal'} block truncate capitalize`}>
                                 {accessLevel}
                               </span>
                               {selected && (
-                                <span className={`${active ? 'text-white' : 'text-accent-1-500'} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
+                                <span className={`${active ? 'text-accent-1-800 dark:text-accent-1-50' : 'text-accent-1-500 dark:text-accent-1-400'} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
                                   <Check />
                                 </span>
                               )}
