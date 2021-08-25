@@ -1,24 +1,27 @@
 import { useRouter } from 'next/router'
 import { DocumentSkeleton, SkeletonLine } from '@components/skeleton'
 import { ChevronLeft } from '@kalissaac/react-feather'
+import { useEffect } from 'react'
 
 export default function DocumentEditPage (): JSX.Element {
   const router = useRouter()
-  fetch('/api/document/create').then(async r => {
-    const data = await r.json()
-    if (r.ok) {
-      await router.replace(`/d/${data.document._id as string}/edit`)
-      return
-    }
+  useEffect(() => {
+    fetch('/api/document/create').then(async r => {
+      const data = await r.json()
+      if (r.ok) {
+        await router.replace(`/d/${data.document._id as string}/edit`)
+        return
+      }
 
-    if (data.error === 'USER_NOT_AUTHENTICATED') {
-      await router.push('/login')
-      return
-    }
-    throw new Error(data.error)
-  }).catch(e => {
-    throw e
-  })
+      if (data.error === 'USER_NOT_AUTHENTICATED') {
+        await router.push('/login')
+        return
+      }
+      throw new Error(data.error)
+    }).catch(e => {
+      throw e
+    })
+  }, [])
 
   return (
     <>
