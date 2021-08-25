@@ -3,10 +3,10 @@ import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
 import { responseHandler } from '@shared/error'
 
-export default async function CreateDocument (req: NextApiRequest, res: NextApiResponse): Promise<void> {
+export default async function CreateDocument ({ cookies, query }: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
   try {
-    const user = await verifyTokenCookie(req.cookies.token)
+    const user = await verifyTokenCookie(cookies.token)
     if (!user) {
       error.name = 'USER_NOT_AUTHENTICATED'
       error.message = 'User data could not be decoded from JWT'
@@ -15,7 +15,7 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
 
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('documents').insertOne({
-      title: 'Untitled Document',
+      title: query.title || 'Untitled Document',
       body: [{
         type: 'paragraph',
         children: [{
@@ -24,11 +24,17 @@ export default async function CreateDocument (req: NextApiRequest, res: NextApiR
       }],
       created: new Date(),
       lastModified: new Date(),
-      collaborators: [{
-        user: user.email,
-        role: 'owner'
-      }],
-      tags: [],
+      collaborators: [
+        {
+          user: user.email,
+          role: 'owner'
+        },
+        ...(query.collaborators ? (query.collaborators as string).split(',') : []).map(c => ({
+          user: c,
+          role: 'editor'
+        }))
+      ],
+      tags: query.tags ? (query.tags as string).split(',') : [],
       access: 'private',
       archived: false
     })
