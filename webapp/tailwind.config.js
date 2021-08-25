@@ -88,6 +88,13 @@ module.exports = {
               }
             }
           ]
+        },
+        DEFAULT: {
+          css: {
+            h1: {
+              fontSize: '2em'
+            }
+          }
         }
       })
     },
