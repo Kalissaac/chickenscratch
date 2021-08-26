@@ -17,12 +17,6 @@ const withNoDoubleSpaces = (editor: ReactEditor): ReactEditor => {
       const beforeText = Editor.string(editor, rangeBefore)
 
       if (beforeText === ' ') return
-
-      const after = Editor.after(editor, anchor, { unit: 'character' }) ?? anchor
-      const rangeAfter = { anchor, focus: after }
-      const afterText = Editor.string(editor, rangeAfter)
-
-      if (afterText === ' ') return
     }
 
     insertText(text)
