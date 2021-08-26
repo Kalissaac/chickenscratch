@@ -24,6 +24,8 @@ const Element = ({ attributes, children, element }: RenderElementProps): JSX.Ele
       return <li {...attributes}>{children}</li>
     case 'orderedlist-item':
       return <li {...attributes}>{children}</li>
+    case 'link':
+      return <a {...attributes} href={element.url} onDoubleClick={e => { window.open(element.url, '_blank') }}>{children}</a>
     default:
       return <p {...attributes}>{children}</p>
   }

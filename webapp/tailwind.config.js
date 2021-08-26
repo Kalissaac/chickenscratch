@@ -36,7 +36,10 @@ module.exports = {
                 color: theme('colors.gray.100')
               },
               a: {
-                color: theme('colors.white')
+                color: theme('colors.accent-1.50'),
+                '&:hover': {
+                  color: theme('colors.accent-1.200')
+                }
               },
               strong: {
                 color: theme('colors.white')
@@ -93,6 +96,13 @@ module.exports = {
           css: {
             h1: {
               fontSize: '2em'
+            },
+            a: {
+              color: theme('colors.accent-1.600'),
+              '&:hover': {
+                color: theme('colors.accent-1.300')
+              },
+              fontWeight: '400'
             }
           }
         }

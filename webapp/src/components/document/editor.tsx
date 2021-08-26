@@ -13,6 +13,7 @@ import Leaf from '@components/document/editor/leaf'
 import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
 import DocumentStatusBar from '@components/document/editor/statusbar'
 import ParchmentEditorContext, { DocumentAction } from '@components/document/editor/context'
+import withLinks from './editor/withLinks'
 
 export enum EditorModes {
   Editing,
@@ -23,11 +24,13 @@ export enum EditorModes {
 
 export default function DocumentEditor ({ activeDocument, documentAction, mode }: { activeDocument: ParchmentDocument, documentAction: Dispatch<DocumentAction>, mode: EditorModes }): JSX.Element {
   const editor = useMemo(() =>
-    withNoDoubleSpaces(
-      withShortcuts(
-        withReact(
-          withHistory(
-            createEditor()
+    withLinks(
+      withNoDoubleSpaces(
+        withShortcuts(
+          withReact(
+            withHistory(
+              createEditor()
+            )
           )
         )
       )
