@@ -9,6 +9,7 @@ import { withHistory } from 'slate-history'
 import { DocumentSkeleton } from '@components/skeleton'
 import withShortcuts from '@components/document/editor/withShortcuts'
 import Element from '@components/document/editor/element'
+import Leaf from '@components/document/editor/leaf'
 import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
 import DocumentStatusBar from '@components/document/editor/statusbar'
 import ParchmentEditorContext, { DocumentAction } from '@components/document/editor/context'
@@ -33,6 +34,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
     ),
   [])
   const renderElement = useCallback(props => <Element {...props} />, [])
+  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const router = useRouter()
   const { data: pageData } = useSWR(`/api/document/get?id=${router.query.document as string}`)
   const [lastUpdate, setLastUpdate] = useState(new Date(activeDocument.lastModified).getTime())
@@ -97,6 +99,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
     >
       <Editable
         renderElement={renderElement}
+        renderLeaf={renderLeaf}
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
