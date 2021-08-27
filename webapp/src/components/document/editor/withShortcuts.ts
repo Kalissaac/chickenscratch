@@ -13,6 +13,7 @@ const SHORTCUTS: { [shortcut: string]: string } = {
   '+': 'orderedlist-item',
   '1.': 'orderedlist-item',
   '>': 'block-quote',
+  '```': 'code-block',
   '#': 'heading-one',
   '##': 'heading-two',
   '###': 'heading-three',
