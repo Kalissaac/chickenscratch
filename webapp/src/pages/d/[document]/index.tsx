@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Titlebar from '@components/document/titlebar'
-import Sidebar from '@components/document/sidebar'
 import { EditorModes, EditorWrapper } from '@components/document/editor'
 import Head from 'next/head'
 import useSWR from 'swr'
@@ -14,7 +13,6 @@ export default function DocumentViewPage (): JSX.Element {
   const router = useRouter()
   const { error: userError } = useUser(false)
   const { data: pageData, error: dataError } = useSWR(`/api/document/get?id=${router.query.document as string}`)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeDocument, documentAction] = createDocumentValue(pageData?.document)
 
   useEffect(() => {
@@ -40,8 +38,7 @@ export default function DocumentViewPage (): JSX.Element {
         }
       </Head>
       <ParchmentEditorContext.Provider value={[activeDocument, documentAction]}>
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} mode={EditorModes.Viewing} />
-        <Titlebar setSidebarOpen={setSidebarOpen} showBackButton={false} mode={EditorModes.Viewing} />
+        <Titlebar setSidebarOpen={() => {}} showBackButton={false} mode={EditorModes.Viewing} />
         <EditorWrapper mode={EditorModes.Viewing} />
       </ParchmentEditorContext.Provider>
     </>

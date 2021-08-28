@@ -70,7 +70,7 @@ export default function DocumentTitlebar ({ setSidebarOpen, showBackButton = tru
           : <SkeletonLine className='animate-pulse h-5 w-1/4 my-2' />
         }
         {activeDocument
-          ? <button className='self-stretch flex justify-center items-center mr-4' aria-label='Document information button' onClick={() => setSidebarOpen(true)}><Info aria-label='Info icon' /></button>
+          ? <button className='self-stretch flex justify-center items-center mr-4' aria-label='Document information button' onClick={() => setSidebarOpen(true)}>{showBackButton && <Info aria-label='Info icon' />}</button>
           : <SkeletonLine className='animate-pulse h-5 w-5 self-center rounded-full mr-4' />
         }
       </Transition>
