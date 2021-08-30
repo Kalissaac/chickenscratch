@@ -23,6 +23,6 @@ export default async function logout (req: NextApiRequest, res: NextApiResponse)
     removeTokenCookie(res)
     res.redirect('/login?logoutSuccess=1')
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

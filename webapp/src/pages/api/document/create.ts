@@ -46,6 +46,6 @@ export default async function CreateDocument ({ cookies, query }: NextApiRequest
 
     res.json({ document: { _id: newFileRef.insertedId } })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

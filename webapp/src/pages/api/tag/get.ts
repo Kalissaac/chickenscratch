@@ -37,10 +37,10 @@ export default async function GetTag (req: NextApiRequest, res: NextApiResponse)
       throw error
     }
 
-    const tagFiles: ParchmentDocument[] = await client.db('data').collection('documents')
+    const tagFiles = await client.db('data').collection('documents')
       .find({ collaborators: { $elemMatch: { user: email } }, tags: tagID, deleted: { $exists: false }, archived: false })
       .project({ body: 0 })
-      .toArray()
+      .toArray() as ParchmentDocument[]
     if (!tagFiles) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate all documents for user with userId: ' + email
@@ -49,6 +49,6 @@ export default async function GetTag (req: NextApiRequest, res: NextApiResponse)
 
     res.json({ tag: user.tags[tagID as string], files: tagFiles })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

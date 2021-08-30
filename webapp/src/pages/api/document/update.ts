@@ -48,6 +48,6 @@ export default async function UpdateDocument (req: NextApiRequest, res: NextApiR
 
     res.json({ success: true })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

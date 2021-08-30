@@ -32,6 +32,6 @@ export default async function GetUser (req: NextApiRequest, res: NextApiResponse
 
     res.json({ user })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

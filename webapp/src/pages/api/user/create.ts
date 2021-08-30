@@ -38,6 +38,6 @@ export default async function CreateUser (req: NextApiRequest, res: NextApiRespo
 
     res.json({ success: true })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

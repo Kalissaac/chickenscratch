@@ -21,22 +21,22 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     }
 
     const { client } = await connectToDatabase()
-    const allFiles: ParchmentDocument[] = await client.db('data').collection('documents')
+    const allFiles = await client.db('data').collection('documents')
       .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false } }, { projection: { body: 0 } })
       .collation({ locale: 'en' })
       .sort({ title: 1 })
-      .toArray()
+      .toArray() as ParchmentDocument[]
     if (!allFiles) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate all documents for user with email: ' + email
       throw error
     }
 
-    const recentFiles: ParchmentDocument[] = await client.db('data').collection('documents')
+    const recentFiles = await client.db('data').collection('documents')
       .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false }, archived: false })
       .sort({ lastModified: -1 })
       .limit(5)
-      .toArray()
+      .toArray() as ParchmentDocument[]
     if (!recentFiles) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate recent documents for user with email: ' + email
@@ -45,6 +45,6 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
 
     res.json({ allFiles, recentFiles })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

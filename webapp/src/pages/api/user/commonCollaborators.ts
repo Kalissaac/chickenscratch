@@ -28,9 +28,9 @@ export default async function GetCommonCollaborators (req: NextApiRequest, res: 
       3. Get profile for each of the collaborators
     */
 
-    const allFiles: ParchmentDocument[] = await client.db('data').collection('documents')
+    const allFiles = await client.db('data').collection('documents')
       .find({ collaborators: { $elemMatch: { user: userId } }, deleted: { $exists: false }, archived: false }, { projection: { collaborators: 1 } })
-      .toArray()
+      .toArray() as ParchmentDocument[]
     if (!allFiles) {
       error.name = 'FILE_NOT_FOUND'
       error.message = 'MongoDB failed to locate all documents for user with userId: ' + userId
@@ -53,6 +53,6 @@ export default async function GetCommonCollaborators (req: NextApiRequest, res: 
 
     res.json({ users: commonCollaboratorProfiles })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

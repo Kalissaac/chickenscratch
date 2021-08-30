@@ -42,6 +42,6 @@ export default async function DeleteDocument (req: NextApiRequest, res: NextApiR
 
     res.json({ success: true })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

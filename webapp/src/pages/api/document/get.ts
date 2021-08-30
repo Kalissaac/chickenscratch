@@ -52,6 +52,6 @@ export default async function GetDocument (req: NextApiRequest, res: NextApiResp
 
     res.json({ document: requestedDocument })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }

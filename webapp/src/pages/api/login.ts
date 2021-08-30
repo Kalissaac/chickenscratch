@@ -25,6 +25,6 @@ export default async function login (req: NextApiRequest, res: NextApiResponse):
     setTokenCookie(res, token)
     res.json({ success: true })
   } catch (error) {
-    responseHandler(error, res)
+    responseHandler(error as Error, res)
   }
 }
