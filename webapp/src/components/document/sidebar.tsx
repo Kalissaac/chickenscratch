@@ -98,7 +98,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                     Document access level:
                   </Listbox.Label>
                   <span className='inline-block w-full'>
-                    <Listbox.Button className={`cursor-default relative w-full border-b-2 ${open ? 'border-black dark:border-white' : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400'} pl-2 pr-10 py-2 text-left transition ease-in-out duration-150 sm:text-sm sm:leading-5`}>
+                    <Listbox.Button className={`cursor-default relative w-full border-b-2 ${open ? 'border-black dark:border-white' : 'border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400'} pl-2 pr-10 py-2 text-left transition ease-in-out duration-150 sm:leading-5`}>
                       <span className='block truncate capitalize'>{activeDocument.access}</span>
                       <span className='absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none'>
                         <ChevronDown />
@@ -115,7 +115,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
                   >
                     <Listbox.Options
                       static
-                      className='max-h-60 rounded-b-md text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5'
+                      className='max-h-60 rounded-b-md leading-6 shadow-xs overflow-auto focus:outline-none sm:leading-5'
                     >
                       {Object.keys(AccessLevels).map(accessLevel => (
                         <Listbox.Option key={accessLevel} value={accessLevel}>
