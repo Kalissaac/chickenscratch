@@ -13,7 +13,8 @@ import Leaf from '@components/document/editor/leaf'
 import withNoDoubleSpaces from '@components/document/editor/withNoDoubleSpaces'
 import DocumentStatusBar from '@components/document/editor/statusbar'
 import ParchmentEditorContext, { DocumentAction } from '@components/document/editor/context'
-import withLinks from './editor/withLinks'
+import withLinks from '@components/document/editor/withLinks'
+import keyEventHandler from '@components/document/editor/keyHandler'
 
 export enum EditorModes {
   Editing,
@@ -103,6 +104,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
+        onKeyDown={(event) => keyEventHandler(event, editor)}
         placeholder='Write your heart out...'
         spellCheck
         autoFocus

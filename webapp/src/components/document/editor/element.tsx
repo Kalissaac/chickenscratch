@@ -27,7 +27,7 @@ const Element = ({ attributes, children, element }: RenderElementProps): JSX.Ele
     case 'link':
       return <a {...attributes} href={element.url} onDoubleClick={e => { window.open(element.url, '_blank') }}>{children}</a>
     case 'code-block':
-      return <pre {...attributes}>{children}</pre>
+      return <pre {...attributes}><code>{children}</code></pre>
     default:
       return <p {...attributes}>{children}</p>
   }
