@@ -38,7 +38,7 @@ export default async function GetTag (req: NextApiRequest, res: NextApiResponse)
     }
 
     const tagFiles = await client.db('data').collection('documents')
-      .find({ collaborators: { $elemMatch: { user: email } }, tags: tagID, deleted: { $exists: false }, archived: false })
+      .find({ 'collaborators.user': email, tags: tagID, deleted: { $exists: false }, archived: false })
       .project({ body: 0 })
       .toArray() as ParchmentDocument[]
     if (!tagFiles) {

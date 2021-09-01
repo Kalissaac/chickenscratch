@@ -22,7 +22,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
 
     const { client } = await connectToDatabase()
     const allFiles = await client.db('data').collection('documents')
-      .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false } }, { projection: { body: 0 } })
+      .find({ 'collaborators.user': email, deleted: { $exists: false } }, { projection: { body: 0 } })
       .collation({ locale: 'en' })
       .sort({ title: 1 })
       .toArray() as ParchmentDocument[]
@@ -33,7 +33,7 @@ export default async function GetHomepageData (req: NextApiRequest, res: NextApi
     }
 
     const recentFiles = await client.db('data').collection('documents')
-      .find({ collaborators: { $elemMatch: { user: email } }, deleted: { $exists: false }, archived: false })
+      .find({ 'collaborators.user': email, deleted: { $exists: false }, archived: false })
       .sort({ lastModified: -1 })
       .limit(5)
       .toArray() as ParchmentDocument[]

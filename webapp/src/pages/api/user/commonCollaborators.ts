@@ -29,7 +29,7 @@ export default async function GetCommonCollaborators (req: NextApiRequest, res: 
     */
 
     const allFiles = await client.db('data').collection('documents')
-      .find({ collaborators: { $elemMatch: { user: userId } }, deleted: { $exists: false }, archived: false }, { projection: { collaborators: 1 } })
+      .find({ 'collaborators.user': userId, deleted: { $exists: false }, archived: false }, { projection: { collaborators: 1 } })
       .toArray() as ParchmentDocument[]
     if (!allFiles) {
       error.name = 'FILE_NOT_FOUND'
