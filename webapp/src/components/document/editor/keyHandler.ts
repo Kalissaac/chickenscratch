@@ -3,7 +3,7 @@ import { Editor, Element, Transforms } from 'slate'
 import type { ReactEditor } from 'slate-react'
 
 const keyEventHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEditor): void => {
-  editor.insertData = (data) => {
+  editor.insertData = data => {
     if (data.types.includes('text/plain')) {
       Transforms.insertText(editor, data.getData('text/plain'))
     }
@@ -28,8 +28,10 @@ const keyEventHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEdit
     }
   } else if (event.key === 'Enter' && codeBlock) {
     event.preventDefault()
-
     Transforms.insertText(editor, '\n')
+  } else if (event.key === 'Tab' && codeBlock) {
+    event.preventDefault()
+    Transforms.insertText(editor, '  ')
   }
 }
 
