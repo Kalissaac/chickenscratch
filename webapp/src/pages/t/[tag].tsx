@@ -42,8 +42,8 @@ export default function TagDetailPage (): JSX.Element {
         <div id='homesearch' />
 
         <div className='flex items-center gap-4 p-4 mb-12'>
-          <div className='bg-gray-500 text-gray-50 dark:text-gray-900 rounded-full w-12 h-12 flex justify-center items-center' style={{ backgroundColor: pageData?.tag?.color }}>
-            <span className='font-semibold text-lg uppercase'>{(pageData?.tag ? pageData.tag.name : router.query.tag).charAt(0)}</span>
+          <div className='bg-gray-500 text-gray-50 dark:text-gray-900 rounded-full w-14 h-14 flex justify-center items-center' style={{ backgroundColor: pageData?.tag?.color }}>
+            <span className='font-semibold text-xl uppercase'>{(pageData?.tag ? pageData.tag.name : router.query.tag).charAt(0)}</span>
           </div>
           <div className='flex flex-col'>
             <h2 className='text-xl capitalize font-semibold'>{pageData?.tag ? pageData.tag.name : router.query.tag}</h2>
