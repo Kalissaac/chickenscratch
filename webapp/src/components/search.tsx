@@ -26,7 +26,9 @@ export default function SearchBar ({ files, style, size = 'md' }: { files: Parch
             setResults(fuse.search(value))
           }}
           onBlur={() => {
-            setResults(null)
+            setTimeout(() => {
+              setResults(null)
+            }, 100)
           }}
         />
       </div>
