@@ -120,7 +120,7 @@ export function EditorWrapper ({ mode }: { mode: EditorModes }): JSX.Element {
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
 
   return (
-    <div className='mt-16 pb-32 mx-6 sm:mx-32 md:mx-64 lg:mx-72 xl:mx-96'>
+    <div className='mt-16 pb-32 mx-12 lg:mx-[25vw]'>
       {(activeDocument && documentAction)
         ? <DocumentEditor activeDocument={activeDocument} documentAction={documentAction} mode={mode} />
         : <DocumentSkeleton />
