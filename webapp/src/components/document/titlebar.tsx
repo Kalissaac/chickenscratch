@@ -6,6 +6,7 @@ import ParchmentEditorContext from './editor/context'
 import { Transition } from '@headlessui/react'
 import Image from 'next/image'
 import { EditorModes } from '@components/document/editor'
+import Link from 'next/link'
 
 export default function DocumentTitlebar ({ setSidebarOpen, showBackButton = true, mode }: { setSidebarOpen: Function, showBackButton?: boolean, mode: EditorModes }): JSX.Element {
   const router = useRouter()
@@ -48,7 +49,7 @@ export default function DocumentTitlebar ({ setSidebarOpen, showBackButton = tru
       >
         {showBackButton
           ? <button className='self-stretch flex justify-center items-center ml-4' aria-label='Back button' onClick={() => router.back()}><ChevronLeft aria-label='Left arrow' /></button>
-          : <button className='self-stretch flex justify-center items-center ml-4 relative w-[1em]' aria-label='Home button' onClick={async () => await router.push('/home')}><Image src='/favicon.svg' layout='fill' /></button>
+          : <Link href='/home' aria-label='Home button'><a className='self-stretch flex justify-center items-center ml-4 relative w-[1em]' ><Image src='/favicon.svg' layout='fill' /></a></Link>
         }
         {(activeDocument && documentAction)
           ? <input
