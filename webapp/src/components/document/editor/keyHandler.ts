@@ -3,12 +3,6 @@ import { Editor, Element, Transforms } from 'slate'
 import type { ReactEditor } from 'slate-react'
 
 const keyEventHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEditor): void => {
-  editor.insertData = data => {
-    if (data.types.includes('text/plain')) {
-      Transforms.insertText(editor, data.getData('text/plain'))
-    }
-  }
-
   const [codeBlock] = Editor.nodes(editor, {
     match: n => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code-block'
   })
