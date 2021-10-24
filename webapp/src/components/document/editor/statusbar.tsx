@@ -11,7 +11,7 @@ export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateL
   const [openMenu, setOpenMenu] = useState('')
   const wordCount = useMemo(() => serialize(activeDocument.body).match(/[\w\d’'-]+/gi)?.length ?? 0, [activeDocument.body])
   return (
-    <div className='fixed left-0 bottom-0 right-0 text-gray-900 dark:text-gray-50 text-opacity-60 dark:text-opacity-60 hover:text-opacity-100 dark:hover:text-opacity-100 transition-opacity text-xs font-editor flex justify-between items-center h-6 px-8'>
+    <div className='fixed left-0 bottom-0 right-0 text-gray-900 dark:text-gray-50 text-opacity-60 dark:text-opacity-60 hover:text-opacity-100 dark:hover:text-opacity-100 transition-opacity text-xs font-editor flex justify-between items-center h-6 px-8' id='document_statusbar'>
       <section className='h-full space-x-1 bg-gray-lighter dark:bg-gray-darker'>
         <StatusBarItem onClick={() => { setOpenMenu(openMenu === 'counter' ? '' : 'counter') }}><CounterMenu openMenu={openMenu} setOpenMenu={setOpenMenu} /><Type className='inline' /></StatusBarItem>
         <StatusBarItem onClick={() => {}}>{wordCount} words</StatusBarItem>

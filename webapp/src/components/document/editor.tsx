@@ -117,6 +117,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
         autoFocus
         className='prose dark:prose-light min-w-full min-h-screen font-editor'
         readOnly={mode !== EditorModes.Editing}
+        id='document_editor'
       />
       <DocumentStatusBar activeDocument={activeDocument} lastUpdate={lastUpdate} updateLock={updateLock} saveDocument={async () => await saveDocument()} />
     </Slate>
