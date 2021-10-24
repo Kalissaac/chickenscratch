@@ -15,7 +15,7 @@ export default function Slideover ({ slideoverOpen, setSlideoverOpen, children, 
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <div className='absolute inset-0 bg-black bg-opacity-50 pointer-events-auto backdrop-brightness-200 backdrop-blur-sm' onClick={() => setSlideoverOpen(!slideoverOpen)} />
+          <div className='absolute inset-0 bg-black bg-opacity-40 dark:bg-opacity-50 pointer-events-auto' onClick={() => setSlideoverOpen(!slideoverOpen)} />
         </Transition>
         <section className='absolute inset-y-0 right-0 pl-10 max-w-full flex pointer-events-auto'>
           <Transition
