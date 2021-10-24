@@ -104,7 +104,14 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        onKeyDown={(event) => keyEventHandler(event, editor)}
+        onKeyDown={event => {
+          if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+            event.preventDefault()
+            saveDocument().catch(console.error)
+          } else {
+            keyEventHandler(event, editor)
+          }
+        }}
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
@@ -116,11 +123,11 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
   )
 }
 
-export function EditorWrapper ({ mode }: { mode: EditorModes }): JSX.Element {
+export function EditorWrapper ({ mode, className = '' }: { mode: EditorModes, className?: string }): JSX.Element {
   const [activeDocument, documentAction] = useContext(ParchmentEditorContext)
 
   return (
-    <div className='mt-16 pb-32 mx-12 lg:mx-[25vw]'>
+    <div className={`mt-16 pb-32 mx-12 lg:mx-[25vw] ${className}`}>
       {(activeDocument && documentAction)
         ? <DocumentEditor activeDocument={activeDocument} documentAction={documentAction} mode={mode} />
         : <DocumentSkeleton />
