@@ -60,3 +60,7 @@ html {
 .card:focus .card-border {
   display: block;
 }
+
+.hide-statusbar #document_statusbar {
+  display: none;
+}
