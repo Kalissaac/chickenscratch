@@ -3,22 +3,10 @@ import ParchmentEditorContext, { createDocumentValue } from '@components/documen
 import DocumentTitlebar from '@components/document/titlebar'
 import { AccessLevels } from '@interfaces/document'
 import { GitHub } from '@kalissaac/react-feather'
-import { useUser } from '@shared/hooks'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import type { GetServerSideProps } from 'next'
 
 export default function LandingPage (): JSX.Element {
-  const { user } = useUser()
-  const router = useRouter()
-
-  useEffect(() => {
-    // Redirect logged in users to the editor
-    if (user) {
-      router.push('/home').catch(console.error)
-    }
-  }, [user])
-
   return (
     <main className='flex flex-col min-h-screen p-12 py-8 items-center bg-gradient-to-b from-gray-lighter to-gray-100 dark:from-gray-darker dark:to-gray-900'>
       <nav className='flex items-center justify-between w-full'>
@@ -67,4 +55,19 @@ export default function LandingPage (): JSX.Element {
       </ParchmentEditorContext.Provider>
     </main>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (context.req.cookies.token) {
+    return {
+      redirect: {
+        destination: '/home',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
 }
