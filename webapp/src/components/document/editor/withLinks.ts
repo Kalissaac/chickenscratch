@@ -15,7 +15,7 @@ const withLinks = (editor: ReactEditor): ReactEditor => {
 
   // Insert link when user pastes url
   editor.insertText = text => {
-    if (text && isUrl(text)) {
+    if (text && isUrl(text) && !isCodeBlockActive(editor)) {
       wrapLink(editor, text)
     } else {
       insertText(text)
@@ -26,7 +26,7 @@ const withLinks = (editor: ReactEditor): ReactEditor => {
   editor.insertData = data => {
     const text = data.getData('text/plain')
 
-    if (text && isUrl(text)) {
+    if (text && isUrl(text) && !isCodeBlockActive(editor)) {
       wrapLink(editor, text)
     } else {
       insertData(data)
@@ -42,6 +42,14 @@ const isLinkActive = (editor: ReactEditor): boolean => {
       !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link'
   })
   return !!link
+}
+
+const isCodeBlockActive = (editor: ReactEditor): boolean => {
+  const [codeblock] = Editor.nodes(editor, {
+    match: n =>
+      !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'code-block'
+  })
+  return !!codeblock
 }
 
 const unwrapLink = (editor: ReactEditor): void => {
