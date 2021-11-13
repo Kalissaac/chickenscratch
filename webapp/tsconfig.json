@@ -20,11 +20,20 @@
     "jsx": "preserve",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@styles/*": ["styles/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@shared/*": ["shared/*"],
-    }
+      "@components/*": [
+        "components/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@shared/*": [
+        "shared/*"
+      ]
+    },
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
