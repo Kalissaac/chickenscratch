@@ -12,21 +12,21 @@ export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateL
   const wordCount = useMemo(() => serialize(activeDocument.body).match(/[\w\d’'-]+/gi)?.length ?? 0, [activeDocument.body])
   return (
     <div className='fixed left-0 bottom-0 right-0 text-gray-900 dark:text-gray-50 text-opacity-60 dark:text-opacity-60 hover:text-opacity-100 dark:hover:text-opacity-100 transition-opacity text-xs font-editor flex justify-between items-center h-6 px-8' id='document_statusbar'>
-      <section className='h-full space-x-1 bg-gray-lighter dark:bg-gray-darker'>
-        <StatusBarItem onClick={() => { setOpenMenu(openMenu === 'counter' ? '' : 'counter') }}><CounterMenu openMenu={openMenu} setOpenMenu={setOpenMenu} /><Type className='inline' /></StatusBarItem>
+      <section className='h-full space-x-1 bg-gray-lighter dark:bg-gray-darker flex items-center'>
+        <StatusBarItem onClick={() => { setOpenMenu(openMenu === 'counter' ? '' : 'counter') }}><CounterMenu openMenu={openMenu} setOpenMenu={setOpenMenu} /><Type /></StatusBarItem>
         <StatusBarItem onClick={() => {}}>{wordCount} words</StatusBarItem>
         <StatusBarItem onClick={() => {}}>{(wordCount / 250).toFixed(2)} pages</StatusBarItem>
         <StatusBarItem onClick={() => {}}>{Math.ceil(wordCount / 265)} min</StatusBarItem>
         {/* <StatusBarItem onClick={() => {}}>English</StatusBarItem> */}
       </section>
-      <section className='h-full space-x-1 bg-gray-lighter dark:bg-gray-darker'>
+      <section className='h-full space-x-1 bg-gray-lighter dark:bg-gray-darker flex items-center'>
         <StatusBarItem onClick={() => {}} title={new Date().toString()}>
-          <Clock className='inline' /> {dayjs().format('HH:mm')}
+          <Clock className='mr-2' /> {dayjs().format('HH:mm')}
         </StatusBarItem>
         <StatusBarItem onClick={saveDocument} title={activeDocument.lastModified}>
           {updateLock
-            ? <><Save className='inline' /> saving</>
-            : <><Save className='inline' /> last saved {dayjs(lastUpdate).fromNow()}</>
+            ? <><Save className='mr-2' /> saving</>
+            : <><Save className='mr-2' /> last saved {dayjs(lastUpdate).fromNow()}</>
           }
         </StatusBarItem>
       </section>
@@ -36,7 +36,7 @@ export default function DocumentStatusBar ({ activeDocument, lastUpdate, updateL
 
 function StatusBarItem ({ children, onClick, title }: { children: ReactNode, onClick: () => void, title?: string }): JSX.Element {
   return (
-    <button onClick={onClick} title={title} className='hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors px-2 h-full relative'>{children}</button>
+    <button onClick={onClick} title={title} className='hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors px-2 h-full relative flex items-center'>{children}</button>
   )
 }
 
