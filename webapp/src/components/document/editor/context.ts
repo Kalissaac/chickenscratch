@@ -78,11 +78,13 @@ function documentReducer (document: ParchmentDocument, action: DocumentAction): 
         tags
       }
     }
-    case 'setDue':
+    case 'setDue': {
+      const dueDate = new Date(action.payload)
       return {
         ...document,
-        due: action.payload
+        due: dueDate.toISOString()
       }
+    }
     case 'setAccess':
       return {
         ...document,
