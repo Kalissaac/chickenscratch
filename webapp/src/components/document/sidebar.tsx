@@ -10,6 +10,7 @@ import useSWR from 'swr'
 import User from '@interfaces/user'
 import { useUser } from '@shared/hooks'
 import { AccessLevels } from '@interfaces/document'
+import { formatISOToLocalDate } from '@shared/util'
 
 export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: { setSidebarOpen: Function, sidebarOpen: boolean, mode: EditorModes }): JSX.Element {
   const router = useRouter()
@@ -82,7 +83,7 @@ export default function DocumentSidebar ({ setSidebarOpen, sidebarOpen, mode }: 
           </Field>
 
           <Field title='Due Date'>
-            <FieldInput placeholder='YYYY-MM-DDTHH:MM:SS' action='setDue' type='datetime-local' managedValue={activeDocument.due ?? ''} enterPrompt={false} disabled={mode !== EditorModes.Editing} />
+            <FieldInput placeholder='YYYY-MM-DDTHH:MM:SS' action='setDue' type='datetime-local' managedValue={formatISOToLocalDate(activeDocument.due ?? '', false)} enterPrompt={false} disabled={mode !== EditorModes.Editing} />
           </Field>
 
           <Field title='Access Level'>
