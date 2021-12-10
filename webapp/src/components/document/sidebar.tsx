@@ -169,6 +169,24 @@ function FieldInput ({ action, placeholder, type = 'text', managedValue, disable
   const [showEnterPrompt, setShowEnterPrompt] = useState(false)
   const [showChoiceList, setShowChoiceList] = useState(false)
 
+  const updateChangedValue = (value?: string): void => {
+    if (!value || !documentAction) return
+
+    let payload: string | object
+    switch (action) {
+      case 'addCollaborator':
+        payload = {
+          user: value,
+          role: 'editor'
+        }
+        break
+      default:
+        payload = value
+    }
+
+    documentAction({ type: action, payload })
+  }
+
   return (
     <div className='input-wrapper border-transparent border-b-2 w-full transition-colors flex group'>
       <input
@@ -179,23 +197,7 @@ function FieldInput ({ action, placeholder, type = 'text', managedValue, disable
         disabled={disabled}
         onKeyPress={e => {
           if (e.code !== 'Enter') return
-          if (!documentAction) return
-          const value = e.currentTarget.value
-          if (!value) return
-          let payload: string | object
-
-          switch (action) {
-            case 'addCollaborator':
-              payload = {
-                user: value,
-                role: 'editor'
-              }
-              break
-            default:
-              payload = value
-          }
-
-          documentAction({ type: action, payload })
+          updateChangedValue(e.currentTarget.value)
           if (!managedValue) e.currentTarget.value = ''
         }}
         // TODO: Check onChange for performance issues regarding adding classes like this
@@ -206,24 +208,7 @@ function FieldInput ({ action, placeholder, type = 'text', managedValue, disable
             setShowEnterPrompt(false)
           }
 
-          if (managedValue !== undefined && documentAction) {
-            const value = e.currentTarget.value
-            if (!value) return
-            let payload: string | object
-
-            switch (action) {
-              case 'addCollaborator':
-                payload = {
-                  user: value,
-                  role: 'editor'
-                }
-                break
-              default:
-                payload = value
-            }
-
-            documentAction({ type: action, payload })
-          }
+          if (managedValue) updateChangedValue(e.currentTarget.value)
         }}
         onFocus={e => {
           if (e.currentTarget.value) {
