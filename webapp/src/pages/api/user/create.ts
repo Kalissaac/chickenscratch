@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { verifyTokenCookie } from '@shared/cookies'
 import { connectToDatabase } from '@shared/mongo'
 import { responseHandler } from '@shared/error'
+import { ObjectId } from 'mongodb'
 
 export default async function CreateUser (req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const error = new Error()
@@ -22,8 +23,7 @@ export default async function CreateUser (req: NextApiRequest, res: NextApiRespo
 
     const { client } = await connectToDatabase()
     const newFileRef = await client.db('data').collection('users').insertOne({
-      // @ts-expect-error: MongoDB driver doesn't have types for string _id
-      _id: user.publicAddress,
+      _id: user.publicAddress as unknown as ObjectId,
       email: user.email,
       creationDate: new Date(),
       name,
