@@ -9,13 +9,14 @@ import { Switch, Transition } from '@headlessui/react'
 import { useToasts } from 'react-toast-notifications'
 import { Check, ChevronLeft, Loader, X } from '@kalissaac/react-feather'
 import BackgroundImage from '../../public/images/loginbg.jpg'
+import type { InstanceWithExtensions, SDKBase } from '@magic-sdk/provider'
 
 export default function LoginPage (): JSX.Element {
   const [activity, setActivity] = useState(false)
   const [loginStep, setLoginStep] = useState({ stage: 'initial', email: '' })
   const emailRef = useRef<HTMLInputElement>(null)
   const [securityKeyEnabled, setSecurityKeyEnabled] = useState(false)
-  const [magic, setMagic] = useState<Magic | null>(null)
+  const [magic, setMagic] = useState<InstanceWithExtensions<SDKBase, [WebAuthnExtension]> | null>(null)
   const { addToast } = useToasts()
   const router = useRouter()
 
@@ -48,6 +49,8 @@ export default function LoginPage (): JSX.Element {
     e.preventDefault()
     setActivity(true)
 
+    if (!magic) return
+
     const data = new FormData(e.target as HTMLFormElement)
     const email = data.get('email') as string
 
@@ -60,13 +63,13 @@ export default function LoginPage (): JSX.Element {
     if (securityKeyEnabled) {
       try {
         setLoginStep({ stage: 'securitykey', email })
-        const webauthn = magic?.webauthn as WebAuthnExtension
+        const webauthn = magic?.webauthn
         const didToken = await webauthn.login({ username: email })
         await authenticateWithServer(didToken ?? '')
       } catch (error) {
         returnToLogin()
         console.log({ error })
-        switch ((error as any).code) {
+        switch ((error as any)?.code) {
           case -32603:
             addToast('Email not found! Are you registered?', { appearance: 'error' })
             break
@@ -85,7 +88,7 @@ export default function LoginPage (): JSX.Element {
       } catch (error) {
         returnToLogin()
         console.log({ error })
-        switch ((error as any).code) {
+        switch ((error as any)?.code) {
           default:
             addToast('Unknown error occured!', { appearance: 'error' })
         }
