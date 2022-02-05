@@ -2,14 +2,14 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [
+  content: [
     './src/{components,pages}/**/*.{js,ts,jsx,tsx}'
   ],
-  mode: 'jit',
-  darkMode: 'class', // 'media' or 'class'
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        current: 'currentColor',
         'accent-1': {
           50: '#72a5d0',
           100: '#689bc6',
@@ -25,7 +25,7 @@ module.exports = {
         'accent-2': '#353B48',
         'gray-darker': '#090909',
         'gray-lighter': '#F2F2F2',
-        gray: colors.trueGray
+        gray: colors.neutral
       },
       typography: (theme) => ({
         light: {
@@ -95,7 +95,7 @@ module.exports = {
         DEFAULT: {
           css: {
             h1: {
-              fontSize: '2em'
+              fontSize: '1.75em'
             },
             a: {
               color: theme('colors.accent-1.600'),
@@ -115,11 +115,6 @@ module.exports = {
       newYorkExtraLarge: ['"New York Extra Large"', ...defaultTheme.fontFamily.serif],
       mono: defaultTheme.fontFamily.mono,
       editor: ['"iA Writer Quattro S"', ...defaultTheme.fontFamily.sans]
-    }
-  },
-  variants: {
-    extend: {
-      typography: ['dark']
     }
   },
   plugins: [require('@tailwindcss/typography')]
