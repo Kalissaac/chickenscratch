@@ -115,7 +115,7 @@ export default function DocumentEditor ({ activeDocument, documentAction, mode }
         placeholder='Write your heart out...'
         spellCheck
         autoFocus
-        className='prose dark:prose-light min-w-full min-h-screen font-editor'
+        className='prose prose-neutral dark:prose-invert prose-h1:text-3xl prose-a:text-accent-1-500 hover:prose-a:text-accent-1-300 dark:prose-a:text-accent-1-50 dark:hover:prose-a:text-accent-1-200 dark:prose-pre:bg-gray-800 min-w-full min-h-screen font-editor'
         readOnly={mode !== EditorModes.Editing}
         id='document_editor'
       />
