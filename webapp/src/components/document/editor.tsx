@@ -26,12 +26,10 @@ export enum EditorModes {
 export default function DocumentEditor ({ activeDocument, documentAction, mode }: { activeDocument: ParchmentDocument, documentAction: Dispatch<DocumentAction>, mode: EditorModes }): JSX.Element {
   const editor = useMemo(() =>
     withLinks(
-      withNoDoubleSpaces(
-        withShortcuts(
-          withReact(
-            withHistory(
-              createEditor()
-            )
+      withShortcuts(
+        withReact(
+          withHistory(
+            createEditor()
           )
         )
       )
