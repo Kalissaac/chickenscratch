@@ -6,5 +6,8 @@ module.exports = {
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/triple-slash-reference': 'off'
+  },
+  parserOptions: {
+    project: './tsconfig.json'
   }
 }
