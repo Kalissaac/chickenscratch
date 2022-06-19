@@ -1,7 +1,6 @@
 import { serialize } from 'cookie'
 import type { NextApiResponse } from 'next'
-import jwtVerify from 'jose/jwt/verify'
-import SignJWT from 'jose/jwt/sign'
+import { jwtVerify, SignJWT } from 'jose'
 
 const TOKEN_NAME = 'token'
 const MAX_AGE = 60 * 60 * 24 * 7 * 2 // 2 weeks

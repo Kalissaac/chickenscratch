@@ -27,6 +27,7 @@ export default function DocumentPreview ({ activeDocument, setActiveDocument }: 
           </header>
           <div className='relative flex-1 px-4 sm:px-6'>
             <div className='absolute inset-0 px-4 sm:px-6 h-full'>
+              {/* @ts-expect-error 2801 */}
               <button className='basis rounded-lg bg-red-500 text-gray-50 focus:border-black p-2 px-4' onClick={() => { fetch(`/api/document/delete?id=${activeDocument._id}`).then(r => r.status === 200 && mutate('/api/home') && setSlideoverOpen(false)).catch(console.error) }}>Delete Document</button>
             </div>
           </div>

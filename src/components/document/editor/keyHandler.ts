@@ -4,9 +4,15 @@ import type { ReactEditor } from 'slate-react'
 
 const keyEventHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEditor): void => {
   const codeBlock = matchBlock('code-block', editor)
+  const bulletedListBlock = matchBlock('bulleted-list', editor)
+  const orderedListBlock = matchBlock('ordered-list', editor)
 
   if (codeBlock) {
     codeBlockHandler(event, editor)
+  } else if (bulletedListBlock) {
+    bulletedBlockHandler(event, editor)
+  } else if (orderedListBlock) {
+    orderedBlockHandler(event, editor)
   }
 }
 
@@ -36,6 +42,28 @@ const codeBlockHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEdi
     event.preventDefault()
     Transforms.insertText(editor, '\n')
   } else if (event.key === 'Tab') {
+    event.preventDefault()
+    Transforms.insertText(editor, '  ')
+  }
+}
+
+const bulletedBlockHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEditor): void => {
+  if (event.key === 'Tab') {
+    event.preventDefault()
+    Transforms.insertNodes(editor, [{
+      type: 'bulleted-list',
+      children: [
+        {
+          type: 'list-item',
+          text: ''
+        }
+      ]
+    }])
+  }
+}
+
+const orderedBlockHandler = (event: KeyboardEvent<HTMLDivElement>, editor: ReactEditor): void => {
+  if (event.key === 'Tab') {
     event.preventDefault()
     Transforms.insertText(editor, '  ')
   }

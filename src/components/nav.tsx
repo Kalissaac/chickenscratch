@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import SearchBar from '@components/search'
-import { Edit2, Menu, MoreVertical, Plus } from '@kalissaac/react-feather'
+import { AlertTriangle, ArrowRight, Menu, MoreVertical, Plus } from '@kalissaac/react-feather'
 import Image from 'next/image'
 import Slideover from '@components/slideover'
 import { useRouter } from 'next/router'
@@ -81,6 +81,22 @@ export default function Nav ({ files }: { files?: ParchmentDocument[] }): JSX.El
 function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Function, sidebarOpen: boolean }): JSX.Element {
   const { user } = useUser()
   const router = useRouter()
+  const [preferences, setPreferences] = useState<any>({})
+
+  useEffect(() => {
+    setPreferences({
+      name: user.name
+    })
+  }, [])
+
+  useEffect(() => {
+    fetch('/api/user/update', {
+      method: 'POST',
+      body: JSON.stringify({
+        user: preferences
+      })
+    }).catch(console.error)
+  }, [preferences])
 
   return (
     <Slideover setSlideoverOpen={setSidebarOpen} slideoverOpen={sidebarOpen}>
@@ -96,10 +112,27 @@ function ProfileSidebar ({ setSidebarOpen, sidebarOpen }: { setSidebarOpen: Func
           <Image src='/images/user.jpg' alt='Profile picture' layout='fill' objectFit='cover' className='rounded-full' />
         </div>
         <div className='ml-5 flex-grow'>
-          {/* <input id='username' type='text' className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all' placeholder='Enter your name' /> */}
-          <div className='font-semibold text-lg'>{user.name} <button><Edit2 width='0.9em' height='0.9em' /></button></div>
+          <input id='username' type='text'
+            className='font-semibold text-lg outline-none bg-transparent focus:border-gray-800 dark:focus:border-gray-50 border-transparent border-b-2 w-full transition-all'
+            placeholder='Enter your name'
+            value={preferences.name}
+            // onChange={e => setPreferences((oldPrefs: any) => { return { ...oldPrefs, name: e.target.value } })}
+          />
           <div className='font-mono'>{user.email}</div>
         </div>
+      </div>
+
+      <div className='space-y-2'>
+        <h3 className='text-lg font-semibold tracking-wide'>Danger Zone</h3>
+        <div className='py-2'>
+          <h4 className='flex items-center font-medium'><AlertTriangle className='mr-2' /> Caution</h4>
+          <p className='text-sm'>
+            This action cannot be reversed!<br />
+            All of your data will be deleted from our servers.<br />
+            <button className='flex items-center border-b-2 border-transparent hover:border-current transition-colors mt-2'>If you have anything you want to keep, make a backup first <ArrowRight className='ml-2' /></button>
+          </p>
+        </div>
+        <button className='basis w-full bg-red-500 hover:bg-red-600 text-gray-50 focus:border-black p-2 px-4' title='Delete account' onClick={() => { fetch('/api/user/delete').then(r => r.ok && router.push('/')).catch(console.error) }}>Delete Account</button>
       </div>
     </Slideover>
   )

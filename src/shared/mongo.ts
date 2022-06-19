@@ -19,9 +19,11 @@ declare global {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
+// @ts-expect-error
 let cached = global.mongo
 
 if (!cached) {
+  // @ts-expect-error
   cached = global.mongo = { conn: null, promise: null }
 }
 

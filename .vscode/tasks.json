@@ -4,7 +4,6 @@
 		{
 			"type": "npm",
 			"script": "dev",
-			"path": "webapp/",
 			"problemMatcher": [
 				"$tsc"
 			],
@@ -22,7 +21,6 @@
 		{
 			"type": "npm",
 			"script": "build",
-			"path": "webapp/",
 			"problemMatcher": [
 				"$tsc"
 			],
